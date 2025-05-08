@@ -1,0 +1,27 @@
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UiBuilderLibrary", "UiBuilderLibrary/UiBuilderLibrary.csproj", "{8C5BB37E-53EA-484E-9A6A-A2FA937067E3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UiBuilderLibraryTests", "UiBuilderLibraryTests/UiBuilderLibraryTests.csproj", "{23E5A86E-15CB-4AA9-A7A0-8082428C43C4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Oxide = Debug|Oxide
+		Release|Oxide = Release|Oxide
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{83A717E6-02CE-4FA7-B006-0CCD4B5ADB33}.Debug|Oxide.ActiveCfg = Debug|Oxide
+		{83A717E6-02CE-4FA7-B006-0CCD4B5ADB33}.Debug|Oxide.Build.0 = Debug|Oxide
+		{83A717E6-02CE-4FA7-B006-0CCD4B5ADB33}.Release|Oxide.ActiveCfg = Release|Oxide
+		{83A717E6-02CE-4FA7-B006-0CCD4B5ADB33}.Release|Oxide.Build.0 = Release|Oxide
+		{23E5A86E-15CB-4AA9-A7A0-8082428C43C4}.Debug|Oxide.ActiveCfg = Debug|Any CPU
+		{23E5A86E-15CB-4AA9-A7A0-8082428C43C4}.Debug|Oxide.Build.0 = Debug|Any CPU
+		{23E5A86E-15CB-4AA9-A7A0-8082428C43C4}.Release|Oxide.ActiveCfg = Release|Any CPU
+		{23E5A86E-15CB-4AA9-A7A0-8082428C43C4}.Release|Oxide.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
