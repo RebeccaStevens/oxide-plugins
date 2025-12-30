@@ -1,0 +1,14 @@
+<Solution>
+  <Configurations>
+    <BuildType Name="Linux" />
+    <BuildType Name="Windows" />
+  </Configurations>
+
+  <ItemGroup>
+    <PackageReference Include="MJSU.Plugin.Merge" Version="1.0.12" />
+  </ItemGroup>
+
+  <Project Path="src/UiBuilderLibrary/UiBuilderLibrary.csproj" />
+
+  <Project Path="tests/tests.csproj" />
+</Solution>
