@@ -19,15 +19,14 @@ public partial class UiBuilderLibrary
             }
 
             /// <inheritdoc/>
-            internal override SafeCuiElement[] CreateCuiElements()
+            internal override ElementCuiElements CreateCuiElements()
             {
-                var elements = base.CreateCuiElements();
-                var rootCui = elements.First();
-                Debug.AssertNotNull(rootCui);
+                var cuiElements = base.CreateCuiElements();
+                Debug.AssertNotNull(cuiElements.Root);
 
-                rootCui.AddComponent(new CuiNeedsCursorComponent());
-                rootCui.AddComponent(new CuiNeedsKeyboardComponent());
-                return elements;
+                cuiElements.Root.AddComponent(new CuiNeedsCursorComponent());
+                cuiElements.Root.AddComponent(new CuiNeedsKeyboardComponent());
+                return cuiElements;
             }
         }
     }

@@ -19,11 +19,6 @@ public partial class UiBuilderLibrary
         private static readonly List<Ui> AllUIs = new();
 
         /// <summary>
-        /// How to position the root element of this UI.
-        /// </summary>
-        internal readonly ElementLayout Layout;
-
-        /// <summary>
         /// The root element that all other elements of this UI are children of.
         /// </summary>
         protected readonly RootElement Root;
@@ -37,7 +32,6 @@ public partial class UiBuilderLibrary
             if (layer == string.Empty)
                 throw new ArgumentException("must be non-empty", nameof(layer));
 
-            Layout = new AbsoluteLayout();
             Root = new RootElement(this, layer);
             AllUIs.Add(this);
         }
@@ -124,14 +118,21 @@ public partial class UiBuilderLibrary
                     state.GetCuiElementNames().Select(name => $"{{\"destroyUi\":\"{name}\"}}")
                 );
 
-            var layout = state.Element.GetParent()?.Layout ?? new AbsoluteLayout();
-            layout.Apply(state);
+            ElementLayout.PositionElementInParent(state);
+            var cuiComponents = state.Element.Layout.Prepare(state);
             var cuiElements = state.CreateCuiElements();
+            Debug.Assert(cuiElements.Root != null);
+            Debug.Assert(cuiElements.Content != null);
 
-            var updatedStates = cuiElements.Select(cuiElement => cuiElement.Encode(state));
+            if (cuiComponents != null)
+                foreach (var component in cuiComponents)
+                    cuiElements.Content.AddComponent(component);
+
+            var allCuis = cuiElements.GetAll().ToArray();
+            var updatedStates = allCuis.Select(cuiElement => cuiElement.Encode(state));
             var deleteStates = state
                 .GetCuiElementNames()
-                .Except(cuiElements.Select(cuiElement => cuiElement.Name))
+                .Except(allCuis.Select(cuiElement => cuiElement.Name))
                 .Select(name => $"{{\"destroyUi\":\"{name}\"}}");
 
             return (updatedStates, deleteStates);

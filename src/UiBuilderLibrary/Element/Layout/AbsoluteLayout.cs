@@ -11,8 +11,13 @@ public partial class UiBuilderLibrary
     /// </summary>
     public class AbsoluteLayout : StaticElementLayout
     {
+        private static readonly AbsoluteLayout Instance = new();
+
         /// <inheritdoc cref="AbsoluteLayout"/>
-        public AbsoluteLayout()
+        public static AbsoluteLayout Use() => Instance;
+
+        /// <inheritdoc cref="AbsoluteLayout"/>
+        protected AbsoluteLayout()
         {
         }
 
@@ -24,15 +29,17 @@ public partial class UiBuilderLibrary
             var complementWidth = childState.Element.WidthContext.GetBoundsValue(childState, () =>
                 childState.Element.Anchor switch
                 {
-                    PositionAnchor.UpperCenter or PositionAnchor.MiddleCenter or PositionAnchor.LowerCenter =>
-                        new Bounds.Value(1, 0),
+                    PositionAnchor.UpperCenter or
+                    PositionAnchor.MiddleCenter or
+                    PositionAnchor.LowerCenter => new Bounds.Value(1, 0),
                     _ => new Bounds.Value(1, 0) - x
                 }).TakeComplement();
             var complementHeight = childState.Element.HeightContext.GetBoundsValue(childState, () =>
                 childState.Element.Anchor switch
                 {
-                    PositionAnchor.MiddleLeft or PositionAnchor.MiddleCenter or PositionAnchor.MiddleRight =>
-                        new Bounds.Value(1, 0),
+                    PositionAnchor.MiddleLeft or
+                    PositionAnchor.MiddleCenter or
+                    PositionAnchor.MiddleRight => new Bounds.Value(1, 0),
                     _ => new Bounds.Value(1, 0) - y
                 }).TakeComplement();
             var (topFactor, rightFactor, bottomFactor, leftFactor) =

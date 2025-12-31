@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using Oxide.Game.Rust.Cui;
+
 namespace Oxide.Plugins;
 
 public partial class UiBuilderLibrary
@@ -8,6 +11,23 @@ public partial class UiBuilderLibrary
     public abstract class ElementLayout
     {
         /// <summary>
+        /// Does the layout needs recomputing.
+        /// </summary>
+        protected bool IsDirty { get; set; }
+
+        /// <summary>
+        /// Create a new layout.
+        /// </summary>
+        protected ElementLayout()
+        {
+        }
+
+        /// <summary>
+        /// Mark that this layout needs recomputing.
+        /// </summary>
+        public void MarkDirty() => IsDirty = true;
+
+        /// <summary>
         /// Update the bounds of the given child element to position it in this layout.
         /// </summary>
         /// <param name="childState">The state of a child element of this layout's element.</param>
@@ -15,21 +35,30 @@ public partial class UiBuilderLibrary
 
 
         /// <summary>
-        /// Apply this layout to the given element.
+        /// Prepare this layout for positioning the element in the its current state.
         /// </summary>
-        public virtual void Apply(ElementState state)
+        /// <param name="state">The state of the element to position.</param>
+        /// <returns>The cui components that should be added to the element's cui parent.</returns>
+        public abstract List<ICuiComponent>? Prepare(ElementState state);
+
+        /// <summary>
+        /// Position the given element in its parent's layout.
+        /// </summary>
+        /// <param name="state">The state of the element to position.</param>
+        public static void PositionElementInParent(ElementState state)
         {
-            var parentLayout = GetParentLayout(state);
-            Panic.IfNull(parentLayout);
+            var parentLayout = GetParentLayoutOf(state);
+            Debug.Assert(!parentLayout.IsDirty,
+                "Trying to position an element in a layout that is not prepared.");
             parentLayout.PositionChild(state);
         }
 
         /// <summary>
         /// Get the parent layout of the given element.
         /// </summary>
-        protected ElementLayout? GetParentLayout(ElementState state)
+        protected static ElementLayout GetParentLayoutOf(ElementState state)
         {
-            return state.Element.GetParent()?.Layout ?? (state.Element as RootElement)?.Ui.Layout;
+            return state.Element.GetParent()?.Layout ?? AbsoluteLayout.Use();
         }
     }
 
@@ -38,6 +67,17 @@ public partial class UiBuilderLibrary
     /// </summary>
     public abstract class StaticElementLayout : ElementLayout
     {
+        /// <inheritdoc cref="StaticElementLayout"/>
+        protected StaticElementLayout()
+        {
+            IsDirty = false;
+        }
+
+        /// <inheritdoc/>
+        public override List<ICuiComponent>? Prepare(ElementState state)
+        {
+            return null;
+        }
     }
 
     /// <summary>
@@ -46,16 +86,18 @@ public partial class UiBuilderLibrary
     public abstract class DynamicElementLayout : ElementLayout
     {
         /// <summary>
-        /// Does the layout needs recomputing.
+        /// The thing that this layout is for.
         /// </summary>
-        public bool IsDirty { get; private set; }
+        internal Element For;
 
-        /// <summary>
-        /// Create a new layout.
-        /// </summary>
-        protected DynamicElementLayout()
+        /// <inheritdoc cref="DynamicElementLayout"/>
+        /// <param name="element">The element this layout is for.</param>
+        protected DynamicElementLayout(Element element)
         {
             IsDirty = true;
+            For = element;
+            if (!element.HasLayout())
+                element.Layout = this;
         }
 
         /// <summary>
@@ -63,29 +105,18 @@ public partial class UiBuilderLibrary
         /// </summary>
         protected abstract void ComputeLayout(ElementState state);
 
-        /// <summary>
-        /// Mark that this layout needs recomputing.
-        /// </summary>
-        internal void MarkDirty() => IsDirty = true;
-
-        /// <summary>
-        /// Apply this layout to the given element.
-        /// </summary>
-        public override void Apply(ElementState state)
+        /// <inheritdoc/>
+        public override List<ICuiComponent>? Prepare(ElementState state)
         {
+            Debug.Assert((state.Element.Layout as DynamicElementLayout)?.For == state.Element,
+                "The layout assigned to the element is not for the element.");
+
             // Compute this layout.
             if (IsDirty)
-            {
                 ComputeLayout(state);
-                IsDirty = false;
-            }
+            IsDirty = false;
 
-            // The parent layout should already be applied and should not have been marked dirty since.
-            Debug.Assert(
-                (GetParentLayout(state) as DynamicElementLayout)?.IsDirty != true,
-                "Layout is dirty when positioning child.");
-
-            base.Apply(state);
+            return null;
         }
     }
 }

@@ -40,7 +40,7 @@ public partial class UiBuilderLibrary
         /// </summary>
         public ElementLayout Layout
         {
-            get => layout ??= new AbsoluteLayout();
+            get => layout ??= AbsoluteLayout.Use();
             set => layout = value;
         }
 
@@ -128,7 +128,7 @@ public partial class UiBuilderLibrary
         protected Element(Element parent) : this(parent, null)
         {
             parent.children.Add(this);
-            (parent.layout as DynamicElementLayout)?.MarkDirty(); // Dynamic layouts needs recomputing when their children change.
+            parent.layout?.MarkDirty(); // A layout needs to be recomputed when its children change.
         }
 
         /// <summary>
@@ -152,6 +152,13 @@ public partial class UiBuilderLibrary
             Padding = new DirectionalSizeValues("Padding", this, Size.Zero);
             Border = new ElementBorder(this);
         }
+
+        /// <summary>
+        /// Does this element have a layout assigned to it?<br/>
+        /// <br/>
+        /// Note: A layout will be automatically assigned to an element when the layout is attempted to be used.
+        /// </summary>
+        public bool HasLayout() => layout != null;
 
         /// <summary>
         /// Open this element for the given player.
@@ -227,12 +234,13 @@ public partial class UiBuilderLibrary
         /// <summary>
         /// Get the top most element in the hierarchy.
         /// </summary>
-        public Element GetRoot()
+        public RootElement GetRoot()
         {
-            Element? root = this;
+            var root = this;
             while (root.parent != null)
                 root = root.parent;
-            return root;
+            Debug.Assert(root is RootElement);
+            return (RootElement)root;
         }
 
         /// <summary>

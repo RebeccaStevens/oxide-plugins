@@ -84,36 +84,39 @@ public partial class UiBuilderLibrary
         }
 
         /// <inheritdoc/>
-        internal override SafeCuiElement[] CreateCuiElements()
+        internal override ElementCuiElements CreateCuiElements()
         {
-            var rootCui = new SafeCuiElement(GetCuiRootName(), GetParentCuiContentName());
+            var components = new ElementCuiElements
+            {
+                Root = new SafeCuiElement(GetCuiRootName(), GetParentCuiContentName())
+            };
 
             var marginInnerPosition = Element.Margin.GetInnerBounds(this);
             var borderInnerPosition = Element.Border.Size.GetInnerBounds(this);
             var paddingInnerPosition = Element.Padding.GetInnerBounds(this);
 
-            rootCui.SetPosition(Bounds + marginInnerPosition);
-            rootCui.AddComponent(new CuiImageComponent() { Color = ColorToCuiColor(Element.BgColor) });
+            components.Root.SetPosition(Bounds + marginInnerPosition);
+            components.Root.AddComponent(new CuiImageComponent() { Color = ColorToCuiColor(Element.BgColor) });
 
-            var borderTopCui =
-                CreateCuiBorderElementComponent(rootCui, borderInnerPosition, Element.Border, Direction.Top);
-            var borderRightCui =
-                CreateCuiBorderElementComponent(rootCui, borderInnerPosition, Element.Border, Direction.Right);
-            var borderBottomCui =
-                CreateCuiBorderElementComponent(rootCui, borderInnerPosition, Element.Border, Direction.Bottom);
-            var borderLeftCui =
-                CreateCuiBorderElementComponent(rootCui, borderInnerPosition, Element.Border, Direction.Left);
+            components.Others.Add(
+                CreateCuiBorderElementComponent(components.Root, borderInnerPosition, Element.Border, Direction.Top));
+            components.Others.Add(
+                CreateCuiBorderElementComponent(components.Root, borderInnerPosition, Element.Border, Direction.Right));
+            components.Others.Add(
+                CreateCuiBorderElementComponent(components.Root, borderInnerPosition, Element.Border, Direction.Bottom));
+            components.Others.Add(
+                CreateCuiBorderElementComponent(components.Root, borderInnerPosition, Element.Border, Direction.Left));
 
-            SafeCuiElement contentCui = new(GetCuiContentName(), rootCui.Name);
-            contentCui.SetPosition(borderInnerPosition + paddingInnerPosition);
+            components.Content = new(GetCuiContentName(), components.Root.Name);
+            components.Content.SetPosition(borderInnerPosition + paddingInnerPosition);
 
-            var allCuiElements = new[]
-                { rootCui, contentCui, borderTopCui, borderRightCui, borderBottomCui, borderLeftCui };
-            foreach (var cuiElement in allCuiElements)
-                if (!string.IsNullOrEmpty(cuiElement.Name))
-                    cuiElementNames.Add(cuiElement.Name);
+            foreach (var cuiElement in components.GetAll())
+            {
+                Debug.Assert(!string.IsNullOrEmpty(cuiElement.Name));
+                cuiElementNames.Add(cuiElement.Name);
+            }
 
-            return allCuiElements;
+            return components;
         }
     }
 }

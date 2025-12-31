@@ -32,7 +32,7 @@ public partial class UiBuilderLibrary
         public override ElementState Open(BasePlayer player)
         {
             var state = base.Open(player);
-            Ui.Layout.Apply(state);
+            ElementLayout.PositionElementInParent(state);
             return state;
         }
     }

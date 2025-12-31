@@ -135,7 +135,26 @@ public partial class UiBuilderLibrary
         /// <summary>
         /// Create the Cui Elements for the element in this state.
         /// </summary>
-        /// <returns>A list of Cui Elements that make up this element.</returns>
-        internal abstract SafeCuiElement[] CreateCuiElements();
+        /// <returns>The Cui Elements that make up this element.</returns>
+        internal abstract ElementCuiElements CreateCuiElements();
+
+        /// <summary>
+        /// The Cui Elements for the element in this state.
+        /// </summary>
+        internal struct ElementCuiElements
+        {
+            public SafeCuiElement? Root;
+            public SafeCuiElement? Content;
+            public List<SafeCuiElement> Others;
+
+            public ElementCuiElements()
+            {
+                Root = null;
+                Content = null;
+                Others = new List<SafeCuiElement>();
+            }
+
+            public IEnumerable<SafeCuiElement> GetAll() => new[] { Root, Content }.Concat(Others).OfType<SafeCuiElement>().Distinct();
+        }
     }
 }
