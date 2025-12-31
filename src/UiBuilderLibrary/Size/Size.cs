@@ -14,7 +14,7 @@ public partial class UiBuilderLibrary
         /// <summary>
         /// A value of zero.
         /// </summary>
-        public static readonly Size Zero = Pixels(0);
+        public static readonly PixelSize Zero = Pixels(0);
 
         /// <summary>
         /// Apply the given state to this.

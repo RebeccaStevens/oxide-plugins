@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 namespace Oxide.Plugins;
 
@@ -12,47 +13,47 @@ public partial class UiBuilderLibrary
         /// <summary>
         /// The top left corner.
         /// </summary>
-        UpperLeft,
+        UpperLeft = TextAnchor.UpperLeft,
 
         /// <summary>
         /// The center of the top side.
         /// </summary>
-        UpperCenter,
+        UpperCenter = TextAnchor.UpperCenter,
 
         /// <summary>
         /// The top right corner.
         /// </summary>
-        UpperRight,
+        UpperRight = TextAnchor.UpperRight,
 
         /// <summary>
         /// The middle of the left side.
         /// </summary>
-        MiddleLeft,
+        MiddleLeft = TextAnchor.MiddleLeft,
 
         /// <summary>
         /// The center in both the horizontal and vertical directions.
         /// </summary>
-        MiddleCenter,
+        MiddleCenter = TextAnchor.MiddleCenter,
 
         /// <summary>
         /// The middle of the right side.
         /// </summary>
-        MiddleRight,
+        MiddleRight = TextAnchor.MiddleRight,
 
         /// <summary>
         /// The bottom left corner.
         /// </summary>
-        LowerLeft,
+        LowerLeft = TextAnchor.LowerLeft,
 
         /// <summary>
         /// The center of the bottom side.
         /// </summary>
-        LowerCenter,
+        LowerCenter = TextAnchor.LowerCenter,
 
         /// <summary>
         /// The bottom right corner.
         /// </summary>
-        LowerRight
+        LowerRight = TextAnchor.LowerRight
     }
 
     /// <summary>
