@@ -53,11 +53,11 @@ public sealed class Debug
     /// </summary>
     [DoesNotReturn]
     [Conditional("DEBUG")]
-    public static void Fail(string? message = null) => throw new AsserttionException(message);
+    public static void Fail(string? message = null) => throw new AssertionException(message);
 
-    private sealed class AsserttionException : Exception
+    private sealed class AssertionException : Exception
     {
-        internal AsserttionException(string? message) : base(message)
+        internal AssertionException(string? message) : base(message)
         {
         }
     }
