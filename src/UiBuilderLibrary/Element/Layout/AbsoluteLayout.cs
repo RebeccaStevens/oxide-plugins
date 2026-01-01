@@ -45,10 +45,10 @@ public partial class UiBuilderLibrary
             var (topFactor, rightFactor, bottomFactor, leftFactor) =
                 PositionAnchorToEdgeFactors(childState.Element.Anchor);
 
-            childState.Bounds.FromTop = (bottomFactor - topFactor) * y - topFactor * complementHeight;
-            childState.Bounds.FromRight = (leftFactor - rightFactor) * x - rightFactor * complementWidth;
-            childState.Bounds.FromBottom = (topFactor - bottomFactor) * y - bottomFactor * complementHeight;
-            childState.Bounds.FromLeft = (rightFactor - leftFactor) * x - leftFactor * complementWidth;
+            childState.Bounds.FromTop = (bottomFactor - topFactor) * y + topFactor * complementHeight;
+            childState.Bounds.FromRight = (leftFactor - rightFactor) * x + rightFactor * complementWidth;
+            childState.Bounds.FromBottom = (topFactor - bottomFactor) * y + bottomFactor * complementHeight;
+            childState.Bounds.FromLeft = (rightFactor - leftFactor) * x + leftFactor * complementWidth;
         }
     }
 }

@@ -16,16 +16,16 @@ public partial class UiBuilderLibrary
             /// <summary>
             /// Take the complement of this component.
             /// </summary>
-            /// <returns>100% - this components</returns>
+            /// <returns>100% - this</returns>
             public Value TakeComplement()
             {
-                return this with { Relative = Relative - 1 };
+                return new Value(1 - Relative, -Absolute);
             }
 
             /// <summary>
             /// Negate this component.
             /// </summary>
-            /// <returns>0 - this component</returns>
+            /// <returns>0 - this</returns>
             public Value Negate()
             {
                 return new Value(-Relative, -Absolute);
