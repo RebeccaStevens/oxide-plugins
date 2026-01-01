@@ -150,10 +150,10 @@ public partial class UiBuilderLibrary
             this.parent = parent;
             parentLayer = layer;
             children = new List<Element>();
-            XContext = new SizeContext("X", this, Axis.X, Size.Auto);
-            YContext = new SizeContext("Y", this, Axis.Y, Size.Auto);
-            WidthContext = new SizeContext("Width", this, Axis.X, Size.Auto);
-            HeightContext = new SizeContext("Height", this, Axis.Y, Size.Auto);
+            XContext = new SizeContext("X", this, Size.Auto);
+            YContext = new SizeContext("Y", this, Size.Auto);
+            WidthContext = new SizeContext("Width", this, Size.Auto);
+            HeightContext = new SizeContext("Height", this, Size.Auto);
             Margin = new DirectionalSizeValues("Margin", this, Size.Zero);
             Padding = new DirectionalSizeValues("Padding", this, Size.Zero);
             Border = new ElementBorder(this);

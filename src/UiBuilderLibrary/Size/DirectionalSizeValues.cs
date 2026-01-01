@@ -72,10 +72,10 @@ public partial class UiBuilderLibrary
         /// </summary>
         internal DirectionalSizeValues(string name, Element appliedTo, Size initialValue)
         {
-            TopContext = new SizeContext($"{name}.{Direction.Top}", appliedTo, Axis.Y, initialValue);
-            RightContext = new SizeContext($"{name}.{Direction.Right}", appliedTo, Axis.X, initialValue);
-            BottomContext = new SizeContext($"{name}.{Direction.Bottom}", appliedTo, Axis.Y, initialValue);
-            LeftContext = new SizeContext($"{name}.{Direction.Left}", appliedTo, Axis.X, initialValue);
+            TopContext = new SizeContext($"{name}.{Direction.Top}", appliedTo, initialValue);
+            RightContext = new SizeContext($"{name}.{Direction.Right}", appliedTo, initialValue);
+            BottomContext = new SizeContext($"{name}.{Direction.Bottom}", appliedTo, initialValue);
+            LeftContext = new SizeContext($"{name}.{Direction.Left}", appliedTo, initialValue);
         }
 
         /// <summary>

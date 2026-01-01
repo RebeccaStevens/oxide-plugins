@@ -21,20 +21,14 @@ public partial class UiBuilderLibrary
         public readonly Element Element;
 
         /// <summary>
-        /// The axis this is applied to.
-        /// </summary>
-        internal readonly Axis Axis;
-
-        /// <summary>
         /// The value of this.
         /// </summary>
         private Size size;
 
-        internal SizeContext(string name, Element element, Axis axis, Size initialValue)
+        internal SizeContext(string name, Element element, Size initialValue)
         {
             Name = name;
             Element = element;
-            Axis = axis;
             size = initialValue;
         }
 
