@@ -128,6 +128,14 @@ public partial class UiBuilderLibrary
         }
 
         /// <summary>
+        /// Get the state of each child element of this state's element.
+        /// </summary>
+        public IEnumerable<ElementState> GetChildren()
+        {
+            return Element.GetChildren().Select((child) => child.GetState(Player));
+        }
+
+        /// <summary>
         /// Get the names of the Cui Elements for this element in this state.
         /// </summary>
         internal abstract string[] GetCuiElementNames();

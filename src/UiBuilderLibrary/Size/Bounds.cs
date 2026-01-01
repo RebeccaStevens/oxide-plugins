@@ -65,6 +65,21 @@ public partial class UiBuilderLibrary
         }
 
         /// <summary>
+        /// Set the values to the given source.
+        /// </summary>
+        /// <param name="source">The source to set the values of this to.</param>
+        public void SetTo(Bounds source)
+        {
+            FromTop = source.FromTop;
+            FromRight = source.FromRight;
+            FromBottom = source.FromBottom;
+            FromLeft = source.FromLeft;
+            PivotPoint = source.PivotPoint;
+            Rotation = source.Rotation;
+            TransformIndex = source.TransformIndex;
+        }
+
+        /// <summary>
         /// Add two positions together.
         /// </summary>
         public static Bounds Add(Bounds a, Bounds b)
@@ -275,7 +290,7 @@ public partial class UiBuilderLibrary
         /// <inheritdoc/>
         public override string ToString()
         {
-            return $"(top: {FromTop}, right: {FromRight}, bottom: {FromBottom}, left: {FromLeft})";
+            return $"(fromTop: {FromTop}, fromRight: {FromRight}, fromBottom: {FromBottom}, fromLeft: {FromLeft})";
         }
     }
 }
