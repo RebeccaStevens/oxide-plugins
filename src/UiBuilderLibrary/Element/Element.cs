@@ -223,11 +223,10 @@ public partial class UiBuilderLibrary
         }
 
         /// <summary>
-        /// Get the size of this element for the given axis.
+        /// Get the size context of this element for the given axis.
         /// </summary>
         /// <param name="axis">The axis to get the size for.</param>
-        /// <exception cref="ArgumentOutOfRangeException">When the given axis is not X or Y.</exception>
-        public SizeContext GetSize(Axis axis)
+        public SizeContext GetSizeContext(Axis axis)
         {
             return axis switch
             {
