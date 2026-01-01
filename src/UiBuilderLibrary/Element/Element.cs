@@ -33,6 +33,12 @@ public partial class UiBuilderLibrary
         /// </summary>
         private readonly List<Element> children;
 
+        /// <summary>
+        /// Used to determine the order of this element in regards to its siblings.<br/>
+        /// Lower values are considered to come before higher values.
+        /// </summary>
+        public double Weight;
+
         private ElementLayout? layout;
 
         /// <summary>
@@ -287,6 +293,7 @@ public partial class UiBuilderLibrary
         /// </summary>
         public IEnumerable<Element> GetChildren()
         {
+            children.Sort((a, b) => a.Weight.CompareTo(b.Weight));
             return children;
         }
 
