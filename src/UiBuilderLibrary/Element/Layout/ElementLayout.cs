@@ -25,7 +25,7 @@ public partial class UiBuilderLibrary
         /// <summary>
         /// Mark that this layout needs recomputing.
         /// </summary>
-        public void MarkDirty() => IsDirty = true;
+        public abstract void MarkDirty();
 
         /// <summary>
         /// Update the bounds of the given child element to position it in this layout.
@@ -74,6 +74,12 @@ public partial class UiBuilderLibrary
         }
 
         /// <inheritdoc/>
+        public override void MarkDirty()
+        {
+            // Do nothing - the layout is static.
+        }
+
+        /// <inheritdoc/>
         public override List<ICuiComponent>? Prepare(ElementState state)
         {
             return null;
@@ -99,6 +105,9 @@ public partial class UiBuilderLibrary
             if (!element.HasLayout())
                 element.Layout = this;
         }
+
+        /// <inheritdoc/>
+        public override void MarkDirty() => IsDirty = true;
 
         /// <summary>
         /// Compute the layout of the element.
