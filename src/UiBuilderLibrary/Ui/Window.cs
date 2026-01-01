@@ -47,51 +47,35 @@ public partial class UiBuilderLibrary
         {
             Data = new WindowData(
                 new PanelElement(Root) { Name = "main" },
-                new PanelElement(Root) { Name = "titleBar" }
+                new PanelElement(Root) { Name = "titleBar", Weight = -1 }
             );
 
             Root.Name = "window";
-            Root.BgColor = new Color(1f, 1f, 1f, 0.25f);
             Root.Margin.SetAll(Size.Pixels(32));
             Root.Border.Size.SetAll(Size.Pixels(1));
+            Root.Layout = new FlexLayout(Root)
+            {
+                Direction = FlexLayout.FlexDirection.Vertical,
+                AlignItems = FlexLayout.ItemAlignment.Stretch,
+                JustifyContent = FlexLayout.JustifyAlignment.Start,
+            };
 
-            // var rootLayout = new FlexLayout(Root)
-            // {
-            //     Direction = FlexLayout.FlexDirection.Vertical,
-            //     // AlignItems = FlexLayout.ItemAlignment.Stretch,
-            //     // JustifyContent = FlexLayout.JustifyAlignment.Start,
-            // };
-            // rootLayout.Gap.SetAll(Size.Pixels(4));
-            // Root.Layout = rootLayout;
-
-            // TitleBar.BgColor = new Color(.5f, 1f, 1f, 0.25f);
-            TitleBar.BgColor = Color.red;
             TitleBar.Height = Size.Pixels(32);
             TitleBar.Border.Size.SetAll(Size.Zero, Size.Zero, Size.Pixels(1), Size.Zero);
+            TitleBar.Layout = new FlexLayout(TitleBar)
+            {
+                Direction = FlexLayout.FlexDirection.Horizontal,
+                AlignItems = FlexLayout.ItemAlignment.Stretch,
+                JustifyContent = FlexLayout.JustifyAlignment.End,
+            };
 
-            // var titleBarLayout = new FlexLayout(titleBar)
-            // {
-            //     Direction = FlexLayout.FlexDirection.Horizontal,
-            //     // AlignItems = FlexLayout.ItemAlignment.Stretch,
-            //     // JustifyContent = FlexLayout.JustifyAlignment.End,
-            // };
-            // TitleBar.Layout = titleBarLayout;
-
-            // var closeButton = new PanelElement(TitleBar)
-            // {
-            //     Name = "closeButton",
-            //     BgColor = Color.red,
-            // };
-            // // closeButton.Margin.SetAll(Size.Pixels(8));
-            // closeButton.Width.SetAll(Size.Pixels(72));
-
-            // Main.BgColor = Color.blue;
-            // Main.Border.Size.SetAll(Size.Pixels(1));
-            // Main.Padding.SetAll(Size.Pixels(8));
-            // Main.X.SetAll(Size.Pixels(200));
-            // Main.Y.SetAll(Size.Pixels(50));
-            // Main.Width.SetAll(Size.Pixels(100));
-            // Main.Height.SetAll(Size.Pixels(100));
+            // TODO: Make this a button.
+            var closeButton = new PanelElement(TitleBar)
+            {
+                Name = "closeButton",
+                BgColor = Color.red,
+                Width = Size.Pixels(72),
+            };
 
             initializer(Data);
         }
