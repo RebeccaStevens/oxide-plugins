@@ -74,8 +74,7 @@ public partial class UiBuilderLibrary
                 Array.Reverse(childrenStates);
 
             var (majorAxis, minorAxis) = ToAxes(Direction);
-            var (majorSizeContext, _) = GetSizeContext(state);
-            var majorSizeBounds = majorSizeContext.GetBoundsValue(state);
+            var majorSizeBounds = new Bounds.Value(1, 0);
             var majorAxisChildrenExplicitSize = new Bounds.Value();
             var numberOfImplicitlySizedChildren = 0;
 
@@ -166,22 +165,22 @@ public partial class UiBuilderLibrary
                     _ => throw new ArgumentOutOfRangeException($"Invalid alignment: {AlignItems}"),
                 };
 
-                if (!layoutData.TryGetValue(child.state, out var component))
-                    component = new Bounds();
+                if (!layoutData.TryGetValue(child.state, out var bounds))
+                    bounds = new Bounds();
 
-                component.FromTop = childMinorOffset;
-                component.FromRight = (childMajorOffset + childMajorSize).TakeComplement();
-                component.FromBottom = (childMinorOffset + childMinorSize).TakeComplement();
-                component.FromLeft = childMajorOffset;
+                bounds.FromTop = childMinorOffset;
+                bounds.FromRight = (childMajorOffset + childMajorSize).TakeComplement();
+                bounds.FromBottom = (childMinorOffset + childMinorSize).TakeComplement();
+                bounds.FromLeft = childMajorOffset;
                 if (majorAxis == Axis.Y)
                 {
                     // Swap the axis.
-                    (component.FromTop, component.FromLeft) = (component.FromLeft, component.FromTop);
-                    (component.FromBottom, component.FromRight) = (component.FromRight, component.FromBottom);
+                    (bounds.FromTop, bounds.FromLeft) = (bounds.FromLeft, bounds.FromTop);
+                    (bounds.FromBottom, bounds.FromRight) = (bounds.FromRight, bounds.FromBottom);
                 }
 
                 childMajorOffset += childMajorSize + gapValue;
-                layoutData.Add(child.state, component);
+                layoutData.Add(child.state, bounds);
             }
         }
 
