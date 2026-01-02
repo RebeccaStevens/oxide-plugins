@@ -59,22 +59,22 @@ public partial class UiBuilderLibrary
         /// <summary>
         /// The context for the x position of this element.
         /// </summary>
-        public readonly SizeContext XContext;
+        internal readonly SizeContext XContext;
 
         /// <summary>
         /// The context for the y position of this element.
         /// </summary>
-        public readonly SizeContext YContext;
+        internal readonly SizeContext YContext;
 
         /// <summary>
         /// The context for the width of this element.
         /// </summary>
-        public readonly SizeContext WidthContext;
+        internal readonly SizeContext WidthContext;
 
         /// <summary>
         /// The context for the height of this element.
         /// </summary>
-        public readonly SizeContext HeightContext;
+        internal readonly SizeContext HeightContext;
 
         /// <summary>
         /// The x position of this element.
@@ -198,9 +198,9 @@ public partial class UiBuilderLibrary
         /// <summary>
         /// Get the position of this element.
         /// </summary>
-        public (SizeContext X, SizeContext Y) GetPosition()
+        public (Size X, Size Y) GetPosition()
         {
-            return (XContext, YContext);
+            return (X, Y);
         }
 
         /// <summary>
@@ -208,7 +208,52 @@ public partial class UiBuilderLibrary
         /// </summary>
         /// <param name="axis">The axis to get the position for.</param>
         /// <exception cref="ArgumentOutOfRangeException">When the given axis is not X or Y.</exception>
-        public SizeContext GetPosition(Axis axis)
+        public Size GetPosition(Axis axis)
+        {
+            return axis switch
+            {
+                Axis.X => X,
+                Axis.Y => Y,
+                _ => throw new ArgumentOutOfRangeException(nameof(axis)),
+            };
+        }
+
+        /// <summary>
+        /// Get the size of this element.
+        /// </summary>
+        public (Size Width, Size Height) GetSize()
+        {
+            return (Width, Height);
+        }
+
+        /// <summary>
+        /// Get the size of this element for the given axis.
+        /// </summary>
+        /// <param name="axis">The axis to get the size for.</param>
+        public Size GetSize(Axis axis)
+        {
+            return axis switch
+            {
+                Axis.X => Width,
+                Axis.Y => Height,
+                _ => throw new ArgumentOutOfRangeException(nameof(axis)),
+            };
+        }
+
+        /// <summary>
+        /// Get the position context of this element.
+        /// </summary>
+        internal (SizeContext X, SizeContext Y) GetPositionContext()
+        {
+            return (XContext, YContext);
+        }
+
+        /// <summary>
+        /// Get the position context of this element for the given axis.
+        /// </summary>
+        /// <param name="axis">The axis to get the position for.</param>
+        /// <exception cref="ArgumentOutOfRangeException">When the given axis is not X or Y.</exception>
+        internal SizeContext GetPositionContext(Axis axis)
         {
             return axis switch
             {
@@ -219,9 +264,9 @@ public partial class UiBuilderLibrary
         }
 
         /// <summary>
-        /// Get the size of this element.
+        /// Get the size context of this element.
         /// </summary>
-        public (SizeContext Width, SizeContext Height) GetSize()
+        internal (SizeContext Width, SizeContext Height) GetSizeContext()
         {
             return (WidthContext, HeightContext);
         }
@@ -230,7 +275,7 @@ public partial class UiBuilderLibrary
         /// Get the size context of this element for the given axis.
         /// </summary>
         /// <param name="axis">The axis to get the size for.</param>
-        public SizeContext GetSizeContext(Axis axis)
+        internal SizeContext GetSizeContext(Axis axis)
         {
             return axis switch
             {

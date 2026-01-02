@@ -14,22 +14,22 @@ public partial class UiBuilderLibrary
         /// <summary>
         /// The context for the top value.
         /// </summary>
-        public readonly SizeContext TopContext;
+        internal readonly SizeContext TopContext;
 
         /// <summary>
         /// The context for the right value.
         /// </summary>
-        public readonly SizeContext RightContext;
+        internal readonly SizeContext RightContext;
 
         /// <summary>
         /// The context for the bottom value.
         /// </summary>
-        public readonly SizeContext BottomContext;
+        internal readonly SizeContext BottomContext;
 
         /// <summary>
         /// The context for the left value.
         /// </summary>
-        public readonly SizeContext LeftContext;
+        internal readonly SizeContext LeftContext;
 
         /// <summary>
         /// The top value.
@@ -83,7 +83,7 @@ public partial class UiBuilderLibrary
         /// </summary>
         /// <param name="direction">The direction.</param>
         /// <returns>The context for the given direction.</returns>
-        public SizeContext this[Direction direction] => direction switch
+        internal SizeContext this[Direction direction] => direction switch
         {
             Direction.Top => TopContext,
             Direction.Bottom => BottomContext,

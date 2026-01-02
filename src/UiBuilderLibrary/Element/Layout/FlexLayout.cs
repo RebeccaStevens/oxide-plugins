@@ -36,7 +36,7 @@ public partial class UiBuilderLibrary
         /// <summary>
         /// The context for the spacing between elements.
         /// </summary>
-        public readonly SizeContext GapContext;
+        internal readonly SizeContext GapContext;
 
         /// <summary>
         /// The spacing between elements.
@@ -188,7 +188,7 @@ public partial class UiBuilderLibrary
         /// <summary>
         /// Get the major and minor axis bounds' values for the given element state.
         /// </summary>
-        protected (SizeContext Major, SizeContext Minor) GetSizeContext(ElementState state)
+        private (SizeContext Major, SizeContext Minor) GetSizeContext(ElementState state)
         {
             var (majorAxis, minorAxis) = ToAxes(Direction);
             return (state.Element.GetSizeContext(majorAxis),
