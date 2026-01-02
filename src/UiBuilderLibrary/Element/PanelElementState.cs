@@ -21,20 +21,6 @@ public partial class UiBuilderLibrary
             Element = element;
         }
 
-        internal override string GetCuiRootName()
-        {
-            Debug.Assert(!string.IsNullOrEmpty(Element.Name));
-            Panic.If(string.IsNullOrEmpty(Id));
-            return $"{Element.Name}-root-{Id}";
-        }
-
-        internal override string GetCuiContentName()
-        {
-            Debug.Assert(!string.IsNullOrEmpty(Element.Name));
-            Panic.If(string.IsNullOrEmpty(Id));
-            return $"{Element.Name}-content-{Id}";
-        }
-
         /// <inheritdoc/>
         internal override string[] GetCuiElementNames()
         {

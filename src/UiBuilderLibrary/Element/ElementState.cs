@@ -61,12 +61,22 @@ public partial class UiBuilderLibrary
         /// <summary>
         /// Get the name of the root CUI element for this state.
         /// </summary>
-        internal abstract string GetCuiRootName();
+        internal virtual string GetCuiRootName()
+        {
+            Debug.Assert(!string.IsNullOrEmpty(Element.Name));
+            Panic.If(string.IsNullOrEmpty(Id));
+            return $"{Element.Name}-root-{Id}";
+        }
 
         /// <summary>
         /// Get the name of the content CUI element for this state (can be the same as the root).
         /// </summary>
-        internal abstract string GetCuiContentName();
+        internal virtual string GetCuiContentName()
+        {
+            Debug.Assert(!string.IsNullOrEmpty(Element.Name));
+            Panic.If(string.IsNullOrEmpty(Id));
+            return $"{Element.Name}-content-{Id}";
+        }
 
         /// <summary>
         /// Get the name of the parent CUI content element for this state.
