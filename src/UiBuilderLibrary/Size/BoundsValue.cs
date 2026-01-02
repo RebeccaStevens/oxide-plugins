@@ -35,7 +35,7 @@ public partial class UiBuilderLibrary
             /// Get the anchor and offset values to use in a CuiRectTransformComponent.
             /// </summary>
             /// <param name="direction">The direction these components are in.</param>
-            public (double Anchor, double Offset) ToCuiPositionComponents(Direction direction)
+            internal (double Anchor, double Offset) ToCuiPositionComponents(Direction direction)
             {
                 return (ToCuiPositionAnchor(direction), ToCuiPositionOffset(direction));
             }
