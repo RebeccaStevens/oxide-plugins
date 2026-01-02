@@ -48,9 +48,15 @@ public partial class UiBuilderLibrary
                     Direction.Bottom or Direction.Left => Relative,
                     _ => throw new ArgumentOutOfRangeException(nameof(direction)),
                 };
+                return RoundAnchorValue(value);
+            }
 
-                // If really close to 0 or 1, return that instead.
-                var epsilon = 0.0005;
+            /// <summary>
+            /// If really close to 0 or 1, return that instead.
+            /// </summary>
+            private static double RoundAnchorValue(double value)
+            {
+                const double epsilon = 0.0005;
                 var lowAbsValue = Math.Abs(value);
                 var highAbsValue = Math.Abs(value - 1d);
                 return lowAbsValue < epsilon ? 0d : highAbsValue < epsilon ? 1d : value;
