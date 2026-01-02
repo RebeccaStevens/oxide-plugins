@@ -51,7 +51,7 @@ public partial class UiBuilderLibrary
             );
 
             Root.Name = "window";
-            Root.Margin.SetAll(Size.Pixels(32));
+            Root.Margin.SetSize(Size.Pixels(32));
             Root.Border.SetSize(Size.Pixels(4));
             Root.Layout = new FlexLayout(Root)
             {

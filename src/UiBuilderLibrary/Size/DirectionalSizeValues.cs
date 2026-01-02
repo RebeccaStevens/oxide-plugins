@@ -111,7 +111,7 @@ public partial class UiBuilderLibrary
         /// Set all directional values to the given value.
         /// </summary>
         /// <param name="value">The value to set all directional values to.</param>
-        public void SetAll(Size value)
+        public void SetSize(Size value)
         {
             Top = value;
             Right = value;
@@ -124,7 +124,7 @@ public partial class UiBuilderLibrary
         /// </summary>
         /// <param name="x">The value to set the horizontal values to.</param>
         /// <param name="y">The value to set the vertical values to.</param>
-        public void SetAll(Size x, Size y)
+        public void SetSize(Size x, Size y)
         {
             Top = y;
             Right = x;
@@ -139,7 +139,7 @@ public partial class UiBuilderLibrary
         /// <param name="right">The value to set the right value to.</param>
         /// <param name="bottom">The value to set the bottom value to.</param>
         /// <param name="left">The value to set the left value to.</param>
-        public void SetAll(Size top, Size right, Size bottom, Size left)
+        public void SetSize(Size top, Size right, Size bottom, Size left)
         {
             Top = top;
             Bottom = bottom;
