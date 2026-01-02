@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Newtonsoft.Json;
+using Oxide.Core;
 using Oxide.Game.Rust.Cui;
 
 namespace Oxide.Plugins;
@@ -144,8 +145,11 @@ public partial class UiBuilderLibrary
                 // Destroy the ui if it has no size.
                 // TODO: If the ui is not open, don't do anything
                 if (position != null)
+                {
+                    Interface.Oxide.LogDebug($"Destroying UI {cuiElement.Name} because it has no size ({position}).");
                     return JsonConvert.SerializeObject(new CuiElement() { DestroyUi = cuiElement.DestroyUi },
                         _jsonSettings);
+                }
             }
             else
                 cuiElement.Components.Add(rectTransform);
