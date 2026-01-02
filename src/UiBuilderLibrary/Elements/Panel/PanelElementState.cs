@@ -35,20 +35,21 @@ public partial class UiBuilderLibrary
                 Root = new SafeCuiElement(GetCuiRootName(), GetParentCuiContentName()),
             };
 
-            var rootPosition = Bounds + Element.Margin.GetInnerBounds(this);
-            var contentPosition = Element.Padding.GetInnerBounds(this);
+            var position = Bounds + Element.Margin.GetInnerBounds(this);
+            var hasBorder = Element.HasBorder();
 
-            components.Root.SetPosition(rootPosition);
+            if (hasBorder)
+                position += Element.Border.GetInnerBounds(this);
+
+            components.Root.SetPosition(position);
             components.Root.AddComponent(new CuiImageComponent { Color = ColorToCuiColor(Element.BgColor) });
 
-            if (Element.HasBorder())
-            {
-                contentPosition += Element.Border.GetInnerBounds(this);
+            if (hasBorder)
                 components.Root.AddComponents(Element.Border.ApplyState(this));
-            }
 
-            components.Content = new SafeCuiElement(GetCuiContentName(), components.Root.Name);
-            components.Content.SetPosition(contentPosition);
+            components.Content = new SafeCuiElement(GetCuiContentName(), components.Root.Parent);
+            position += Element.Padding.GetInnerBounds(this);
+            components.Content.SetPosition(position);
 
             foreach (var cuiElement in components.GetAll())
             {
