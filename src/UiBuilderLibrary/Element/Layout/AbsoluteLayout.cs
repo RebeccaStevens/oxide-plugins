@@ -26,20 +26,20 @@ public partial class UiBuilderLibrary
         {
             var x = childState.Element.XContext.GetBoundsValue(childState);
             var y = childState.Element.YContext.GetBoundsValue(childState);
-            var complementWidth = childState.Element.WidthContext.GetBoundsValue(childState, () =>
+            var complementWidth = childState.Element.WidthContext.GetBoundsValue(childState,
                 childState.Element.Anchor switch
                 {
                     PositionAnchor.UpperCenter or
-                    PositionAnchor.MiddleCenter or
-                    PositionAnchor.LowerCenter => new Bounds.Value(1, 0),
+                        PositionAnchor.MiddleCenter or
+                        PositionAnchor.LowerCenter => new Bounds.Value(1, 0),
                     _ => new Bounds.Value(1, 0) - x
                 }).TakeComplement();
-            var complementHeight = childState.Element.HeightContext.GetBoundsValue(childState, () =>
+            var complementHeight = childState.Element.HeightContext.GetBoundsValue(childState,
                 childState.Element.Anchor switch
                 {
                     PositionAnchor.MiddleLeft or
-                    PositionAnchor.MiddleCenter or
-                    PositionAnchor.MiddleRight => new Bounds.Value(1, 0),
+                        PositionAnchor.MiddleCenter or
+                        PositionAnchor.MiddleRight => new Bounds.Value(1, 0),
                     _ => new Bounds.Value(1, 0) - y
                 }).TakeComplement();
             var (topFactor, rightFactor, bottomFactor, leftFactor) =

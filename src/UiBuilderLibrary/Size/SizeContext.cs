@@ -62,28 +62,38 @@ public partial class UiBuilderLibrary
         /// Get bounds' value for the given element state.
         /// </summary>
         /// <param name="state">The state of the element to get the value for.</param>
-        /// <param name="computeAutoValue">A function to compute the value if the value is a <see cref="Size.AutoSize"/>. If null, the auto value will be treated as 0.</param>
+        /// <param name="autoValue">The value to use if the size is a <see cref="Size.AutoSize"/>.</param>
         /// <returns>The bounds' value for the given element state.</returns>
-        public virtual Bounds.Value GetBoundsValue(ElementState state,
-            Func<Bounds.Value>? computeAutoValue = null)
+        public virtual Bounds.Value GetBoundsValue(ElementState state, Bounds.Value autoValue = default)
         {
             Debug.Assert(Element == state.Element, "The given state is for a different element.");
-            return GetStateValue(state, computeAutoValue).GetBoundsValue();
+            return GetStateValue(state, autoValue).GetBoundsValue();
+        }
+
+        /// <summary>
+        /// Get bounds' value for the given element state.
+        /// </summary>
+        /// <param name="state">The state of the element to get the value for.</param>
+        /// <param name="computeAutoValue">A function to compute the value to use if the size is a <see cref="Size.AutoSize"/>.</param>
+        /// <returns>The bounds' value for the given element state.</returns>
+        public virtual Bounds.Value GetBoundsValue(ElementState state,
+            Func<ElementState, Bounds.Value> computeAutoValue)
+        {
+            return GetBoundsValue(state, computeAutoValue(state));
         }
 
         /// <summary>
         /// Get the value for the given element state.
         /// </summary>
         /// <param name="state">The state of the element to get the value for.</param>
-        /// <param name="computeAutoValue">A function to compute the value if the value is a <see cref="Size.AutoSize"/>. If null, the auto value will be treated as 0.</param>
+        /// <param name="autoValue">The value if the size is a <see cref="Size.AutoSize"/>.</param>
         /// <returns>The unit value for the given element state.</returns>
-        private SizeStateValue GetStateValue(ElementState state, Func<Bounds.Value>? computeAutoValue)
+        private SizeStateValue GetStateValue(ElementState state, Bounds.Value autoValue)
         {
             Panic.If(Element != state.Element);
 
             if (size == Size.Auto)
-                return SizeStateValue.GetOrCreateValue(this, state,
-                    computeAutoValue?.Invoke() ?? new Bounds.Value(0, 0));
+                return SizeStateValue.GetOrCreateValue(this, state, autoValue);
 
             return ApplyState(state);
         }
