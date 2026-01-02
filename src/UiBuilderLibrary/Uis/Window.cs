@@ -61,7 +61,8 @@ public partial class UiBuilderLibrary
             };
 
             TitleBar.Height = Size.Pixels(32);
-            // TitleBar.Border.SetSize(Size.Zero, Size.Zero, Size.Pixels(1), Size.Zero);
+            TitleBar.BgColor = new Color(0f, 0f, 0f, 0.8f);
+            TitleBar.Padding.SetSize(Size.Pixels(1), Size.Pixels(1), Size.Zero, Size.Zero); // Workaround for non pixel-perfect client.
             TitleBar.Layout = new FlexLayout(TitleBar)
             {
                 Direction = FlexLayout.FlexDirection.Horizontal,
@@ -69,7 +70,17 @@ public partial class UiBuilderLibrary
                 JustifyContent = FlexLayout.JustifyAlignment.End,
             };
 
+            // ReSharper disable once UnusedVariable
+            var divider = new PanelElement(Root)
+            {
+                Name = "divider",
+                Weight = -0.5,
+                BgColor = Color.black,
+                Height = Size.Pixels(1),
+            };
+
             // TODO: Make this a button.
+            // ReSharper disable once UnusedVariable
             var closeButton = new PanelElement(TitleBar)
             {
                 Name = "closeButton",
