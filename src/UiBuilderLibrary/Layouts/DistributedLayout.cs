@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Oxide.Game.Rust.Cui;
 using UnityEngine;
@@ -20,10 +21,23 @@ public partial class UiBuilderLibrary
         /// </summary>
         public Axis Axis;
 
+        // TODO: Support other sizes - will require converting over sizes to pixels.
+        private Size.PixelSize? gapSize;
+
         /// <summary>
         /// The spacing between elements.
         /// </summary>
-        public Size.PixelSize Gap;
+        public Size Gap
+        {
+            get => gapSize ??= (Size.PixelSize)Size.Zero;
+            set
+            {
+                if (value is not Size.PixelSize size)
+                    throw new InvalidOperationException(
+                        "Only pixel sizes are currently supported for distributed layout gaps.");
+                gapSize = size;
+            }
+        }
 
         /// <inheritdoc cref="DistributedLayout"/>
         /// <param name="axis">The axis to layout the children of this element.</param>
@@ -43,7 +57,7 @@ public partial class UiBuilderLibrary
                 : new CuiVerticalLayoutGroupComponent();
 
             layoutComponent.ChildAlignment = (TextAnchor)state.Element.Anchor;
-            layoutComponent.Spacing = Gap.Value;
+            layoutComponent.Spacing = ((Size.PixelSize)Gap).Value;
             layoutComponent.ChildControlWidth = true;
             layoutComponent.ChildControlHeight = true;
 

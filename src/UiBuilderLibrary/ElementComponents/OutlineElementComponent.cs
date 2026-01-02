@@ -12,6 +12,8 @@ public partial class UiBuilderLibrary
     /// </summary>
     public class OutlineElementComponent : IElementComponent
     {
+        // TODO: Support other sizes - will require converting over sizes to pixels.
+
         private Size.PixelSize? xSize;
         private Size.PixelSize? ySize;
 
@@ -20,7 +22,7 @@ public partial class UiBuilderLibrary
         /// </summary>
         public Size X
         {
-            get => xSize ??= Size.Zero;
+            get => xSize ??= (Size.PixelSize)Size.Zero;
             set {
                 if (value is not Size.PixelSize size)
                     throw new InvalidOperationException("Only pixel sizes are currently supported for outline offsets.");
@@ -33,7 +35,7 @@ public partial class UiBuilderLibrary
         /// </summary>
         public Size Y
         {
-            get => ySize ??= Size.Zero;
+            get => ySize ??= (Size.PixelSize)Size.Zero;
             set
             {
                 if (value is not Size.PixelSize size)
