@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using UnityEngine;
 
 namespace Oxide.Plugins;
 
@@ -122,14 +121,19 @@ public partial class UiBuilderLibrary
         public readonly DirectionalSizeValues Margin;
 
         /// <summary>
-        /// The Padding applied to this element.
+        /// The padding applied to this element.
         /// </summary>
         public readonly DirectionalSizeValues Padding;
 
         /// <summary>
+        /// The actual outline element component.
+        /// </summary>
+        private OutlineElementComponent? outline;
+
+        /// <summary>
         /// The border applied to this element.
         /// </summary>
-        public readonly ElementBorder Border;
+        public OutlineElementComponent Border => outline ??= new OutlineElementComponent();
 
         /// <summary>
         /// Create a new element.
@@ -160,7 +164,6 @@ public partial class UiBuilderLibrary
             HeightContext = new SizeContext("Height", this, Size.Auto);
             Margin = new DirectionalSizeValues("Margin", this, Size.Zero);
             Padding = new DirectionalSizeValues("Padding", this, Size.Zero);
-            Border = new ElementBorder(this);
         }
 
         /// <summary>
@@ -169,6 +172,11 @@ public partial class UiBuilderLibrary
         /// Note: A layout will be automatically assigned to an element when the layout is attempted to be used.
         /// </summary>
         public bool HasLayout() => layout != null;
+
+        /// <summary>
+        /// Does this element have a border?
+        /// </summary>
+        public bool HasBorder() => outline != null && outline.HasSize();
 
         /// <summary>
         /// Open this element for the given player.
@@ -378,32 +386,6 @@ public partial class UiBuilderLibrary
         /// <param name="player">The player to create the state for.</param>
         /// <returns>A new state for this element for the given player.</returns>
         protected abstract ElementState InitialState(BasePlayer player);
-
-        /// <summary>
-        /// A border applied to an element.
-        /// </summary>
-        public class ElementBorder
-        {
-            /// <summary>
-            /// The size of the border.
-            /// </summary>
-            public readonly DirectionalSizeValues Size;
-
-            /// <summary>
-            /// The color of the border.
-            /// </summary>
-            public Color Color;
-
-            /// <summary>
-            /// Create a new border for the given element.
-            /// </summary>
-            /// <param name="appliedTo">The element this border is for.</param>
-            internal ElementBorder(Element appliedTo)
-            {
-                Size = new DirectionalSizeValues("Border.Size", appliedTo, UiBuilderLibrary.Size.Zero);
-                Color = Color.black;
-            }
-        }
 
         /// <summary>
         /// Assert that the given element is a child of this element.

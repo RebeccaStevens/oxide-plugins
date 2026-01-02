@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Newtonsoft.Json;
 using Oxide.Game.Rust.Cui;
@@ -112,6 +113,16 @@ public partial class UiBuilderLibrary
             Debug.Assert(!component.GetType().IsInstanceOfType(typeof(CuiRectTransformComponent)),
                 "CuiRectTransformComponents should be added with SetPosition.");
             cuiElement.Components.Add(component);
+        }
+
+        /// <summary>
+        /// Add all the given components to this element.
+        /// </summary>
+        /// <param name="components">The components to add.</param>
+        public void AddComponents(IEnumerable<ICuiComponent> components)
+        {
+            foreach (var component in components)
+                AddComponent(component);
         }
 
         /// <summary>

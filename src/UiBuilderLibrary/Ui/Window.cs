@@ -52,7 +52,7 @@ public partial class UiBuilderLibrary
 
             Root.Name = "window";
             Root.Margin.SetAll(Size.Pixels(32));
-            Root.Border.Size.SetAll(Size.Pixels(1));
+            Root.Border.SetSize(Size.Pixels(4));
             Root.Layout = new FlexLayout(Root)
             {
                 Direction = FlexLayout.FlexDirection.Vertical,
@@ -61,7 +61,7 @@ public partial class UiBuilderLibrary
             };
 
             TitleBar.Height = Size.Pixels(32);
-            TitleBar.Border.Size.SetAll(Size.Zero, Size.Zero, Size.Pixels(1), Size.Zero);
+            // TitleBar.Border.SetSize(Size.Zero, Size.Zero, Size.Pixels(1), Size.Zero);
             TitleBar.Layout = new FlexLayout(TitleBar)
             {
                 Direction = FlexLayout.FlexDirection.Horizontal,
