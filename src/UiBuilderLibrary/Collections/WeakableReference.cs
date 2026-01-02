@@ -5,7 +5,7 @@ namespace Oxide.Plugins;
 
 /// <summary>
 /// A reference to an object of type `T` that can be toggled between being either a strong or a weak reference.
-/// 
+///
 /// A weak reference can be garbage collected and thus may become unavaliable.
 /// </summary>
 public class WeakableReference<T> where T : class
@@ -52,7 +52,6 @@ public class WeakableReference<T> where T : class
             return weak.TryGetTarget(out target);
         target = strong;
         return true;
-
     }
 
     /// <summary>

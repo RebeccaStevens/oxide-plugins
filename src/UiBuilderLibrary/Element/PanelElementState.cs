@@ -103,7 +103,8 @@ public partial class UiBuilderLibrary
             components.Others.Add(
                 CreateCuiBorderElementComponent(components.Root, borderInnerPosition, Element.Border, Direction.Right));
             components.Others.Add(
-                CreateCuiBorderElementComponent(components.Root, borderInnerPosition, Element.Border, Direction.Bottom));
+                CreateCuiBorderElementComponent(components.Root, borderInnerPosition, Element.Border,
+                    Direction.Bottom));
             components.Others.Add(
                 CreateCuiBorderElementComponent(components.Root, borderInnerPosition, Element.Border, Direction.Left));
 

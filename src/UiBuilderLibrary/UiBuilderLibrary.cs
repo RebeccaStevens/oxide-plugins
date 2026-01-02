@@ -30,7 +30,7 @@ public partial class UiBuilderLibrary : RustPlugin
     }
 
     // ReSharper disable UnusedMember.Local
-    
+
     private void Init()
     {
         config.Init();

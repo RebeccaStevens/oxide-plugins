@@ -7,7 +7,7 @@ namespace Oxide.Plugins;
 
 /// <summary>
 /// Test that things are as expected.
-/// 
+///
 /// These functions are only enabled in debug builds.
 /// </summary>
 public sealed class Debug
@@ -32,7 +32,8 @@ public sealed class Debug
     /// <param name="value">The value to check.</param>
     /// <param name="message">Default's to the expression passed as the condition.</param>
     [Conditional("DEBUG")]
-    public static void AssertNotNull([NotNull] object? value, [CallerArgumentExpression(nameof(value))] string? message = null)
+    public static void AssertNotNull([NotNull] object? value,
+        [CallerArgumentExpression(nameof(value))] string? message = null)
     {
         Assert(value != null, $"{message} is not null.");
     }

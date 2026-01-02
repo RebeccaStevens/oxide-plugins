@@ -162,7 +162,8 @@ public partial class UiBuilderLibrary
                 Others = new List<SafeCuiElement>();
             }
 
-            public IEnumerable<SafeCuiElement> GetAll() => new[] { Root, Content }.Concat(Others).OfType<SafeCuiElement>().Distinct();
+            public IEnumerable<SafeCuiElement> GetAll() =>
+                new[] { Root, Content }.Concat(Others).OfType<SafeCuiElement>().Distinct();
         }
     }
 }

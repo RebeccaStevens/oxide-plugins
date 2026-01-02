@@ -288,7 +288,7 @@ public partial class UiBuilderLibrary
 
             /// <summary>
             /// Items are evenly distributed in the line with equal space around them.
-            /// 
+            ///
             /// Note that visually the spaces aren’t equal, since all the items have equal space on both sides.
             /// The first item will have one unit of space against the container edge,
             /// but two units of space between the next item because that next item has its own spacing that applies.

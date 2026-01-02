@@ -21,7 +21,8 @@ public sealed class Panic
     /// <param name="condition">When to panic.</param>
     /// <param name="message">Default's to the expression passed as the condition.</param>
     public static void If([DoesNotReturnIf(true)] bool condition,
-        [CallerArgumentExpression(nameof(condition))] string? message = null)
+        [CallerArgumentExpression(nameof(condition))]
+        string? message = null)
     {
         if (condition)
             Now(message);

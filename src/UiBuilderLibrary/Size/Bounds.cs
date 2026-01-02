@@ -95,7 +95,7 @@ public partial class UiBuilderLibrary
 
         /// <summary>
         /// Add the given components to the position in the given direction.
-        /// 
+        ///
         /// Note: This mutates the position.
         /// </summary>
         public Bounds Add(Direction direction, Value components)
@@ -137,7 +137,7 @@ public partial class UiBuilderLibrary
 
         /// <summary>
         /// Subtract the given components to the position in the given direction.
-        /// 
+        ///
         /// Note: This mutates the position.
         /// </summary>
         public Bounds Subtract(Direction direction, Value components)
@@ -232,7 +232,7 @@ public partial class UiBuilderLibrary
 
         /// <summary>
         /// Create a CuiRectTransformComponent from this position.
-        /// 
+        ///
         /// Returns null if the bounds has no size.
         /// </summary>
         public CuiRectTransformComponent? CreateCuiRectTransformComponent(ElementState state)

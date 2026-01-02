@@ -65,7 +65,7 @@ public partial class UiBuilderLibrary
                     applied.dirty = true;
         }
 
-        /// <summary> 
+        /// <summary>
         /// Try to get the value for the given context with the given state.
         /// </summary>
         /// <param name="context">The context to get the value for.</param>

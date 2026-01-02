@@ -80,7 +80,8 @@ public partial class UiBuilderLibrary
         /// The x position of this element.
         /// Used by some layouts; ignored by others.
         /// </summary>
-        public Size X {
+        public Size X
+        {
             get => XContext.Get();
             set => XContext.Set(value);
         }
@@ -89,7 +90,8 @@ public partial class UiBuilderLibrary
         /// The y position of this element.
         /// Used by some layouts; ignored by others.
         /// </summary>
-        public Size Y {
+        public Size Y
+        {
             get => YContext.Get();
             set => YContext.Set(value);
         }
@@ -98,7 +100,8 @@ public partial class UiBuilderLibrary
         /// The width of this element.
         /// Used by some layouts; ignored by others.
         /// </summary>
-        public Size Width {
+        public Size Width
+        {
             get => WidthContext.Get();
             set => WidthContext.Set(value);
         }
@@ -107,7 +110,8 @@ public partial class UiBuilderLibrary
         /// The height of this element.
         /// Used by some layouts; ignored by others.
         /// </summary>
-        public Size Height {
+        public Size Height
+        {
             get => HeightContext.Get();
             set => HeightContext.Set(value);
         }
