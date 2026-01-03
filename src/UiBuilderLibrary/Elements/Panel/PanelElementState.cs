@@ -36,16 +36,14 @@ public partial class UiBuilderLibrary
             };
 
             var position = Bounds + Element.Margin.GetInnerBounds(this);
-            var hasBorder = Element.HasBorder();
 
-            if (hasBorder)
-                position += Element.Border.GetInnerBounds(this);
-
-            components.Root.SetPosition(position);
             components.Root.AddComponent(new CuiImageComponent { Color = ColorToCuiColor(Element.BgColor) });
-
-            if (hasBorder)
+            if (Element.HasBorder())
+            {
+                position += Element.Border.GetInnerBounds(this);
                 components.Root.AddComponents(Element.Border.ApplyState(this));
+            }
+            components.Root.SetPosition(position);
 
             components.Content = new SafeCuiElement(GetCuiContentName(), components.Root.Parent);
             position += Element.Padding.GetInnerBounds(this);
