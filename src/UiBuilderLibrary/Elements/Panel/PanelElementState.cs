@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Oxide.Game.Rust.Cui;
@@ -13,46 +12,67 @@ public partial class UiBuilderLibrary
         /// <inheritdoc cref="ElementState.Element"/>
         public new readonly PanelElement Element;
 
-        protected readonly HashSet<string> cuiElementNames = new();
+        /// <summary>
+        /// The bounds of the outer edge of this element.
+        /// </summary>
+        protected readonly Bounds OuterBounds;
+
+        /// <summary>
+        /// The bounds of the content within this element.
+        /// </summary>
+        protected readonly Bounds InnerBounds;
+
+        /// <summary>
+        /// All the cui elements that have been created for this state.
+        /// </summary>
+        protected readonly HashSet<string> CuiElementNames = new();
 
         /// <inheritdoc cref="ElementState"/>
         public PanelElementState(PanelElement element, BasePlayer player) : base(element, player)
         {
             Element = element;
+            OuterBounds = new Bounds();
+            InnerBounds = new Bounds();
         }
 
         /// <inheritdoc/>
-        internal override string[] GetCuiElementNames()
+        internal override string[] GetCuiElementNames() => CuiElementNames.ToArray();
+
+        /// <summary>
+        /// Update the bounds of this element.
+        /// </summary>
+        protected void UpdateBounds()
         {
-            return cuiElementNames.ToArray();
+            OuterBounds.SetTo(Bounds);
+            OuterBounds.AddPosition(Element.Margin.GetInnerBounds(this));
+            if (Element.HasBorder())
+                OuterBounds.AddPosition(Element.Border.GetInnerBounds(this));
+
+            InnerBounds.SetTo(OuterBounds);
+            InnerBounds.AddPosition(Element.Padding.GetInnerBounds(this));
         }
 
         /// <inheritdoc/>
         internal override ElementCuiElements CreateCuiElements()
         {
+            UpdateBounds();
             var components = new ElementCuiElements
             {
                 Root = new SafeCuiElement(GetCuiRootName(), GetParentCuiContentName()),
             };
 
-            var position = Bounds + Element.Margin.GetInnerBounds(this);
-
+            components.Root.SetPosition(OuterBounds);
             components.Root.AddComponent(new CuiImageComponent { Color = ColorToCuiColor(Element.BgColor) });
             if (Element.HasBorder())
-            {
-                position += Element.Border.GetInnerBounds(this);
                 components.Root.AddComponents(Element.Border.ApplyState(this));
-            }
-            components.Root.SetPosition(position);
 
             components.Content = new SafeCuiElement(GetCuiContentName(), components.Root.Parent);
-            position += Element.Padding.GetInnerBounds(this);
-            components.Content.SetPosition(position);
+            components.Content.SetPosition(InnerBounds);
 
             foreach (var cuiElement in components.GetAll())
             {
                 Debug.Assert(!string.IsNullOrEmpty(cuiElement.Name));
-                cuiElementNames.Add(cuiElement.Name);
+                CuiElementNames.Add(cuiElement.Name);
             }
 
             return components;
