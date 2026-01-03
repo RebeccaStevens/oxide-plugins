@@ -8,7 +8,10 @@ namespace Oxide.Plugins;
 public partial class UiBuilderLibrary
 {
     /// <summary>
-    /// The bounds of a rectangle.
+    /// The bounds of a rectangle.<br />
+    /// <br />
+    /// Bound positions can be added, subtracted, multiplied and divided using the +, -, * and / operators.<br />
+    /// Note: When using these operators, only the position is effected, rotation and other properties are not effected.
     /// </summary>
     public partial class Bounds
     {
@@ -42,33 +45,27 @@ public partial class UiBuilderLibrary
         public (double X, double Y) PivotPoint;
 
         // TODO: Document rotation units (degrees, radians, etc.)
+
         /// <summary>
         /// The rotation of this element around its pivot point.<br />
         /// Defaults to 0.
         /// </summary>
-        public float Rotation;
-
-        /// <summary>
-        /// Change the order of a GameObject within its parent's hierarchy.<br />
-        /// Defaults to -1, which means it will use the default transform order.
-        /// </summary>
-        public int TransformIndex;
+        public double Rotation;
 
         /// <summary>
         /// Create a new bounds.
         /// </summary>
         public Bounds()
         {
-            PivotPoint = (0.5, 0.5);
+            PivotPoint = PositionAnchorToPointComponents(PositionAnchor.MiddleCenter);
             Rotation = 0;
-            TransformIndex = -1;
         }
 
         /// <summary>
         /// Set the values to the given source.
         /// </summary>
         /// <param name="source">The source to set the values of this to.</param>
-        public void SetTo(Bounds source)
+        public Bounds SetTo(Bounds source)
         {
             FromTop = source.FromTop;
             FromRight = source.FromRight;
@@ -76,29 +73,91 @@ public partial class UiBuilderLibrary
             FromLeft = source.FromLeft;
             PivotPoint = source.PivotPoint;
             Rotation = source.Rotation;
-            TransformIndex = source.TransformIndex;
+            return this;
         }
 
         /// <summary>
-        /// Add two positions together.
+        /// Set the position of this to that of the given bounds.
         /// </summary>
-        public static Bounds Add(Bounds a, Bounds b)
+        public Bounds SetPosition(Bounds source)
         {
-            return new Bounds()
-            {
-                FromTop = a.FromTop + b.FromTop,
-                FromRight = a.FromRight + b.FromRight,
-                FromBottom = a.FromBottom + b.FromBottom,
-                FromLeft = a.FromLeft + b.FromLeft,
-            };
+            FromTop = source.FromTop;
+            FromRight = source.FromRight;
+            FromBottom = source.FromBottom;
+            FromLeft = source.FromLeft;
+            return this;
         }
 
         /// <summary>
-        /// Add the given components to the position in the given direction.
-        ///
-        /// Note: This mutates the position.
+        /// Set the rotation of this to the given value.
         /// </summary>
-        public Bounds Add(Direction direction, Value components)
+        public Bounds SetRotation(double rotation)
+        {
+            Rotation = rotation;
+            return this;
+        }
+
+        /// <summary>
+        /// Set the rotation of this to that of the given bounds.
+        /// </summary>
+        public Bounds SetRotation(Bounds source)
+        {
+            Rotation = source.Rotation;
+            return this;
+        }
+
+        /// <summary>
+        /// Set the pivot point of this to the given anchor.
+        /// </summary>
+        public Bounds SetPivotPoint(PositionAnchor anchor)
+        {
+            PivotPoint = PositionAnchorToPointComponents(anchor);
+            return this;
+        }
+
+        /// <summary>
+        /// Set the pivot point of this to the given position.
+        /// </summary>
+        public Bounds SetPivotPoint((double X, double Y) pivotPoint)
+        {
+            PivotPoint = pivotPoint;
+            return this;
+        }
+
+        /// <summary>
+        /// Set the pivot point of this to the given x and y values.
+        /// </summary>
+        public Bounds SetPivotPoint(double x, double y)
+        {
+            PivotPoint = (x, y);
+            return this;
+        }
+
+        /// <summary>
+        /// Set the pivot point of this to that of the given bounds.
+        /// </summary>
+        public Bounds SetPivotPoint(Bounds source)
+        {
+            PivotPoint = source.PivotPoint;
+            return this;
+        }
+
+        /// <summary>
+        /// Add the position of the given bounds to this.
+        /// </summary>
+        public Bounds AddPosition(Bounds other)
+        {
+            FromTop += other.FromTop;
+            FromRight += other.FromRight;
+            FromBottom += other.FromBottom;
+            FromLeft += other.FromLeft;
+            return this;
+        }
+
+        /// <summary>
+        /// Add the given bound value to this in the given direction.
+        /// </summary>
+        public Bounds AddPosition(Direction direction, Value components)
         {
             switch (direction)
             {
@@ -122,25 +181,39 @@ public partial class UiBuilderLibrary
         }
 
         /// <summary>
-        /// Subtract a position from another.
+        /// Add the given rotation to this.
         /// </summary>
-        public static Bounds Subtract(Bounds a, Bounds b)
+        public Bounds AddRotation(double rotation)
         {
-            return new Bounds()
-            {
-                FromTop = a.FromTop - b.FromTop,
-                FromRight = a.FromRight - b.FromRight,
-                FromBottom = a.FromBottom - b.FromBottom,
-                FromLeft = a.FromLeft - b.FromLeft,
-            };
+            Rotation += rotation;
+            return this;
         }
 
         /// <summary>
-        /// Subtract the given components to the position in the given direction.
-        ///
-        /// Note: This mutates the position.
+        /// Add the rotation of the given bounds to this.
         /// </summary>
-        public Bounds Subtract(Direction direction, Value components)
+        public Bounds AddRotation(Bounds other)
+        {
+            Rotation += other.Rotation;
+            return this;
+        }
+
+        /// <summary>
+        /// Subtract the position of the given bounds from this.
+        /// </summary>
+        public Bounds SubtractPosition(Bounds other)
+        {
+            FromTop -= other.FromTop;
+            FromRight -= other.FromRight;
+            FromBottom -= other.FromBottom;
+            FromLeft -= other.FromLeft;
+            return this;
+        }
+
+        /// <summary>
+        /// Subtract the given bound value from this in the given direction.
+        /// </summary>
+        public Bounds SubtractPosition(Direction direction, Value components)
         {
             switch (direction)
             {
@@ -164,54 +237,74 @@ public partial class UiBuilderLibrary
         }
 
         /// <summary>
-        /// Multiply a position by a scalar.
+        /// Subtract the given rotation from this.
         /// </summary>
-        public static Bounds Multiply(double scalar, Bounds value)
+        public Bounds SubtractRotation(double rotation)
         {
-            return new Bounds()
-            {
-                FromTop = scalar * value.FromTop,
-                FromRight = scalar * value.FromRight,
-                FromBottom = scalar * value.FromBottom,
-                FromLeft = scalar * value.FromLeft,
-            };
+            Rotation -= rotation;
+            return this;
         }
 
         /// <summary>
-        /// Divide a position by a scalar.
+        /// Subtract the rotation of the given bounds from this.
         /// </summary>
-        public static Bounds Divide(Bounds value, double scalar)
+        public Bounds SubtractRotation(Bounds other)
         {
-            return new Bounds()
-            {
-                FromTop = value.FromTop / scalar,
-                FromRight = value.FromRight / scalar,
-                FromBottom = value.FromBottom / scalar,
-                FromLeft = value.FromLeft / scalar,
-            };
+            Rotation -= other.Rotation;
+            return this;
         }
 
-        /// <inheritdoc cref="Add(Bounds, Bounds)"/>
-        public static Bounds operator +(Bounds a, Bounds b) => Add(a, b);
-
-        /// <inheritdoc cref="Subtract(Bounds, Bounds)"/>
-        public static Bounds operator -(Bounds a, Bounds b) => Subtract(a, b);
-
-        /// <inheritdoc cref="Multiply(double, Bounds)"/>
-        public static Bounds operator *(double scalar, Bounds value) => Multiply(scalar, value);
-
-        /// <inheritdoc cref="Divide(Bounds, double)"/>
-        public static Bounds operator /(Bounds value, double scalar) => Divide(value, scalar);
+        /// <summary>
+        /// Multiply the position of the given bounds by a scalar.
+        /// </summary>
+        public Bounds MultiplyPosition(double scalar)
+        {
+            FromTop *= scalar;
+            FromRight *= scalar;
+            FromBottom *= scalar;
+            FromLeft *= scalar;
+            return this;
+        }
 
         /// <summary>
-        /// Make this bounds to fill its parent.
+        /// Multiply the rotation of this bounds by a scalar.
         /// </summary>
-        public Bounds Maximize()
+        public Bounds MultiplyRotation(double scalar)
         {
-            FromTop = new(0, 0);
-            FromRight = new(0, 0);
-            FromBottom = new(0, 0);
-            FromLeft = new(0, 0);
+            Rotation *= scalar;
+            return this;
+        }
+
+        /// <summary>
+        /// Divide the position of the given bounds by a scalar.
+        /// </summary>
+        public Bounds DividePosition(double scalar)
+        {
+            FromTop /= scalar;
+            FromRight /= scalar;
+            FromBottom /= scalar;
+            FromLeft /= scalar;
+            return this;
+        }
+
+        /// <summary>
+        /// Divide the rotation of this bounds by a scalar.
+        /// </summary>
+        public Bounds DivideRotation(double scalar)
+        {
+            Rotation /= scalar;
+            return this;
+        }
+
+        /// <summary>
+        /// Maximize the position of this bounds.
+        /// </summary>
+        public Bounds MaximizePosition()
+        {
+            FromTop = new Value(0, 0);
+            FromRight = new Value(0, 0);
+            FromBottom = new Value(0, 0);
+            FromLeft = new Value(0, 0);
             return this;
         }
 
@@ -257,9 +350,14 @@ public partial class UiBuilderLibrary
                 OffsetMin = $"{leftOffset} {bottomOffset}",
                 OffsetMax = $"{rightOffset} {topOffset}",
                 Pivot = $"{PivotPoint.X} {PivotPoint.Y}",
-                Rotation = Rotation,
-                SetTransformIndex = TransformIndex,
+                Rotation = (float)Rotation,
             };
+        }
+
+        /// <inheritdoc/>
+        public override string ToString()
+        {
+            return $"(fromTop: {FromTop}, fromRight: {FromRight}, fromBottom: {FromBottom}, fromLeft: {FromLeft})";
         }
 
         /// <summary>
@@ -271,6 +369,80 @@ public partial class UiBuilderLibrary
         {
             return (ScreenWidth, ScreenHeight);
         }
+
+        /// <summary>
+        /// Add two positions together.
+        /// </summary>
+        public static Bounds AddPosition(Bounds a, Bounds b)
+        {
+            return new Bounds()
+            {
+                FromTop = a.FromTop + b.FromTop,
+                FromRight = a.FromRight + b.FromRight,
+                FromBottom = a.FromBottom + b.FromBottom,
+                FromLeft = a.FromLeft + b.FromLeft,
+            };
+        }
+
+        /// <summary>
+        /// Subtract a position from another.
+        /// </summary>
+        public static Bounds SubtractPosition(Bounds a, Bounds b)
+        {
+            return new Bounds()
+            {
+                FromTop = a.FromTop - b.FromTop,
+                FromRight = a.FromRight - b.FromRight,
+                FromBottom = a.FromBottom - b.FromBottom,
+                FromLeft = a.FromLeft - b.FromLeft,
+            };
+        }
+
+        /// <summary>
+        /// Multiply a position by a scalar.
+        /// </summary>
+        public static Bounds MultiplyPosition(double scalar, Bounds value)
+        {
+            return new Bounds()
+            {
+                FromTop = scalar * value.FromTop,
+                FromRight = scalar * value.FromRight,
+                FromBottom = scalar * value.FromBottom,
+                FromLeft = scalar * value.FromLeft,
+            };
+        }
+
+        /// <inheritdoc cref="MultiplyPosition(double, Bounds)"/>
+        public static Bounds MultiplyPosition(Bounds value, double scalar) => MultiplyPosition(scalar, value);
+
+        /// <summary>
+        /// Divide a position by a scalar.
+        /// </summary>
+        public static Bounds DividePosition(Bounds value, double scalar)
+        {
+            return new Bounds()
+            {
+                FromTop = value.FromTop / scalar,
+                FromRight = value.FromRight / scalar,
+                FromBottom = value.FromBottom / scalar,
+                FromLeft = value.FromLeft / scalar,
+            };
+        }
+
+        /// <inheritdoc cref="AddPosition(Bounds, Bounds)"/>
+        public static Bounds operator +(Bounds a, Bounds b) => AddPosition(a, b);
+
+        /// <inheritdoc cref="SubtractPosition(Bounds, Bounds)"/>
+        public static Bounds operator -(Bounds a, Bounds b) => SubtractPosition(a, b);
+
+        /// <inheritdoc cref="MultiplyPosition(double, Bounds)"/>
+        public static Bounds operator *(double scalar, Bounds value) => MultiplyPosition(scalar, value);
+
+        /// <inheritdoc cref="MultiplyPosition(double, Bounds)"/>
+        public static Bounds operator *(Bounds value, double scalar) => MultiplyPosition(value, scalar);
+
+        /// <inheritdoc cref="DividePosition(Bounds, double)"/>
+        public static Bounds operator /(Bounds value, double scalar) => DividePosition(value, scalar);
 
         /// <summary>
         /// Get the size of the screen in the given axis.
@@ -285,12 +457,6 @@ public partial class UiBuilderLibrary
                 Axis.Y => ScreenHeight,
                 _ => throw new ArgumentOutOfRangeException(nameof(axis)),
             };
-        }
-
-        /// <inheritdoc/>
-        public override string ToString()
-        {
-            return $"(fromTop: {FromTop}, fromRight: {FromRight}, fromBottom: {FromBottom}, fromLeft: {FromLeft})";
         }
     }
 }

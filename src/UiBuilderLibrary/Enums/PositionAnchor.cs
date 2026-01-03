@@ -76,4 +76,24 @@ public partial class UiBuilderLibrary
             _ => throw new ArgumentOutOfRangeException(nameof(anchor)),
         };
     }
+
+    /// <summary>
+    /// Convert a PositionAnchor to a pivot point.
+    /// </summary>
+    public static (double X, double Y) PositionAnchorToPointComponents(PositionAnchor anchor)
+    {
+        return anchor switch
+        {
+            PositionAnchor.UpperLeft => (0, 1),
+            PositionAnchor.UpperCenter => (0.5, 1),
+            PositionAnchor.UpperRight => (1, 1),
+            PositionAnchor.MiddleLeft => (0, 0.5),
+            PositionAnchor.MiddleCenter => (0.5, 0.5),
+            PositionAnchor.MiddleRight => (1, 0.5),
+            PositionAnchor.LowerLeft => (0, 0),
+            PositionAnchor.LowerCenter => (0.5, 0),
+            PositionAnchor.LowerRight => (1, 0),
+            _ => throw new ArgumentOutOfRangeException(nameof(anchor)),
+        };
+    }
 }

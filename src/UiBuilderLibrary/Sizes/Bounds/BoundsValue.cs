@@ -51,17 +51,6 @@ public partial class UiBuilderLibrary
                 return RoundAnchorValue(value);
             }
 
-            /// <summary>
-            /// If really close to 0 or 1, return that instead.
-            /// </summary>
-            private static double RoundAnchorValue(double value)
-            {
-                const double epsilon = 0.0005;
-                var lowAbsValue = Math.Abs(value);
-                var highAbsValue = Math.Abs(value - 1d);
-                return lowAbsValue < epsilon ? 0d : highAbsValue < epsilon ? 1d : value;
-            }
-
             private double ToCuiPositionOffset(Direction direction)
             {
                 return direction switch
@@ -108,6 +97,9 @@ public partial class UiBuilderLibrary
                 );
             }
 
+            /// <inheritdoc cref="Multiply(double, Value)"/>
+            public static Value Multiply(Value components, double scalar) => Multiply(scalar, components);
+
             /// <summary>
             /// Divide a lot of components by a scalar.
             /// </summary>
@@ -128,8 +120,22 @@ public partial class UiBuilderLibrary
             /// <inheritdoc cref="Multiply(double, Value)"/>
             public static Value operator *(double scalar, Value value) => Multiply(scalar, value);
 
+            /// <inheritdoc cref="Multiply(Value, double)"/>
+            public static Value operator *(Value value, double scalar) => Multiply(value, scalar);
+
             /// <inheritdoc cref="Divide(Value, double)"/>
             public static Value operator /(Value value, double scalar) => Divide(value, scalar);
+
+            /// <summary>
+            /// If really close to 0 or 1, return that instead.
+            /// </summary>
+            private static double RoundAnchorValue(double value)
+            {
+                const double epsilon = 0.0005;
+                var lowAbsValue = Math.Abs(value);
+                var highAbsValue = Math.Abs(value - 1d);
+                return lowAbsValue < epsilon ? 0d : highAbsValue < epsilon ? 1d : value;
+            }
         }
     }
 }
