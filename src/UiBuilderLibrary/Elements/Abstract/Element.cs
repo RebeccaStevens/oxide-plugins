@@ -121,28 +121,11 @@ public partial class UiBuilderLibrary
         public readonly DirectionalSizeValues Margin;
 
         /// <summary>
-        /// The padding applied to this element.
-        /// </summary>
-        public readonly DirectionalSizeValues Padding;
-
-        /// <summary>
-        /// The actual outline element component.
-        /// </summary>
-        private OutlineElementComponent? outline;
-
-        /// <summary>
-        /// The border applied to this element.
-        /// </summary>
-        public OutlineElementComponent Border => outline ??= new OutlineElementComponent();
-
-        /// <summary>
         /// Create a new element.
         /// </summary>
         /// <param name="parent">The parent element of this element.</param>
         protected Element(Element parent) : this(parent, null)
         {
-            parent.children.Add(this);
-            parent.layout?.MarkDirty(); // A layout needs to be recomputed when its children change.
         }
 
         /// <summary>
@@ -153,8 +136,13 @@ public partial class UiBuilderLibrary
         {
         }
 
-        private Element(Element? parent, string? layer)
+        /// <summary>
+        /// Create a new element.
+        /// </summary>
+        protected Element(Element? parent, string? layer)
         {
+            Debug.Assert(parent == null && layer != null || parent != null && layer == null,
+                "Must provide either parent or layer, but not both.");
             this.parent = parent;
             parentLayer = layer;
             children = new List<Element>();
@@ -163,7 +151,11 @@ public partial class UiBuilderLibrary
             WidthContext = new SizeContext("Width", this, Size.Auto);
             HeightContext = new SizeContext("Height", this, Size.Auto);
             Margin = new DirectionalSizeValues("Margin", this, Size.Zero);
-            Padding = new DirectionalSizeValues("Padding", this, Size.Zero);
+
+            if (parent == null)
+                return;
+            parent.children.Add(this);
+            parent.layout?.MarkDirty(); // A layout needs to be recomputed when its children change.
         }
 
         /// <summary>
@@ -174,18 +166,13 @@ public partial class UiBuilderLibrary
         public bool HasLayout() => layout != null;
 
         /// <summary>
-        /// Does this element have a border?
-        /// </summary>
-        public bool HasBorder() => outline != null && outline.HasSize();
-
-        /// <summary>
         /// Open this element for the given player.
         /// </summary>
         /// <param name="player">The player to open this element for.</param>
         /// <returns>The state this element is in for the given player.</returns>
         public virtual ElementState Open(BasePlayer player)
         {
-            stateByPlayer.TryGetValueAndMarkStrong(player.userID, out ElementState? state);
+            stateByPlayer.TryGetValueAndMarkStrong(player.userID, out var state);
             state = EnsureState(player, state);
             state.Open();
             return state;
@@ -360,7 +347,7 @@ public partial class UiBuilderLibrary
         /// <returns>The existing state of this element for the given player if there is one, otherwise a newly created state.</returns>
         public ElementState GetState(BasePlayer player)
         {
-            stateByPlayer.TryGetValue(player.userID, out ElementState? state);
+            stateByPlayer.TryGetValue(player.userID, out var state);
             return EnsureState(player, state);
         }
 
