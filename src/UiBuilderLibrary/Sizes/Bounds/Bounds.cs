@@ -62,6 +62,15 @@ public partial class UiBuilderLibrary
         }
 
         /// <summary>
+        /// Create a new bounds that is a copy of the given bounds.
+        /// </summary>
+        public Bounds(Bounds? source)
+        {
+            if (source != null)
+                SetTo(source);
+        }
+
+        /// <summary>
         /// Set the values to the given source.
         /// </summary>
         /// <param name="source">The source to set the values of this to.</param>
