@@ -83,6 +83,7 @@ public partial class UiBuilderLibrary
                 {
                     Distance = $"{((Size.PixelSize)X).Value} {((Size.PixelSize)Y).Value}",
                     Color = ColorToCuiColor(Color),
+                    UseGraphicAlpha = true,
                 },
             };
         }
