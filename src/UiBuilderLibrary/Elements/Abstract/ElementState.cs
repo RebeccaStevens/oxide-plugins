@@ -29,9 +29,19 @@ public partial class UiBuilderLibrary
         public readonly BasePlayer Player;
 
         /// <summary>
-        /// The bounds of this element.
+        /// The bounds that this element will place itself within.
         /// </summary>
         public readonly Bounds Bounds;
+
+        /// <summary>
+        /// The bounds of the content (children) of this element.
+        /// </summary>
+        protected readonly Bounds ContentBounds;
+
+        /// <summary>
+        /// The bounds of the root cui element taking into account things like the element's margin.
+        /// </summary>
+        protected readonly Bounds CuiBounds;
 
         /// <summary>
         /// Does this state need to be (re)sent to the player?
@@ -53,9 +63,11 @@ public partial class UiBuilderLibrary
             Element = element;
             Id = CuiHelper.GetGuid();
             Player = player;
-            Bounds = new Bounds();
             NeedsSync = false;
             IsOpen = false;
+            Bounds = new Bounds();
+            ContentBounds = new Bounds();
+            CuiBounds = new Bounds();
         }
 
         /// <summary>
@@ -151,29 +163,68 @@ public partial class UiBuilderLibrary
         internal abstract string[] GetCuiElementNames();
 
         /// <summary>
-        /// Create the Cui Elements for the element in this state.
+        /// Compute (update) the cui and content bounds of this element based on the bounds, margin, padding ect. of the element.
+        /// </summary>
+        protected virtual void ComputeInternalBounds()
+        {
+            CuiBounds.SetTo(Bounds);
+            CuiBounds.AddPosition(Element.Margin.GetInnerBounds(this));
+            ContentBounds.MaximizePosition();
+        }
+
+        /// <summary>
+        /// Get the Cui Elements for the element in this state.
         /// </summary>
         /// <returns>The Cui Elements that make up this element.</returns>
-        internal abstract ElementCuiElements CreateCuiElements();
+        public ElementCuiElements GetCuiElements()
+        {
+            ComputeInternalBounds();
+            return CreateCuiElements();
+        }
+
+        /// <summary>
+        /// Create the Cui Elements for the element in this state.<br/>
+        /// <br/>
+        /// Note: UpdateCuiBounds and UpdateContentBounds will be called before this method is called.
+        /// </summary>
+        /// <returns>The Cui Elements that make up this element.</returns>
+        protected abstract ElementCuiElements CreateCuiElements();
 
         /// <summary>
         /// The Cui Elements for the element in this state.
         /// </summary>
-        internal struct ElementCuiElements
+        public struct ElementCuiElements
         {
-            public SafeCuiElement? Root;
-            public SafeCuiElement? Content;
-            public List<SafeCuiElement> Others;
+            private SafeCuiElement? root;
+            private SafeCuiElement? content;
+            private readonly List<SafeCuiElement> others;
+
+            public SafeCuiElement? Root
+            {
+                get => root;
+                set => root = value;
+            }
+
+            public SafeCuiElement? Content
+            {
+                get => content ?? root;
+                set => content = value;
+            }
 
             public ElementCuiElements()
             {
-                Root = null;
-                Content = null;
-                Others = new List<SafeCuiElement>();
+                root = null;
+                content = null;
+                others = new List<SafeCuiElement>();
+            }
+
+            public void Add(SafeCuiElement other)
+            {
+                others.Add(other);
             }
 
             public IEnumerable<SafeCuiElement> GetAll() =>
-                new[] { Root, Content }.Concat(Others).OfType<SafeCuiElement>().Distinct();
+                new[] { root, content }.Concat(others).OfType<SafeCuiElement>().Distinct();
         }
     }
 }

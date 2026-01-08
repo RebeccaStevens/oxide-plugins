@@ -19,7 +19,7 @@ public partial class UiBuilderLibrary
             }
 
             /// <inheritdoc/>
-            internal override ElementCuiElements CreateCuiElements()
+            protected override ElementCuiElements CreateCuiElements()
             {
                 var cuiElements = base.CreateCuiElements();
                 Debug.AssertNotNull(cuiElements.Root);

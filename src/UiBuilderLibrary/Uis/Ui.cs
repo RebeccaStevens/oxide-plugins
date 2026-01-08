@@ -120,7 +120,7 @@ public partial class UiBuilderLibrary
 
             ElementLayout.PositionElementInParent(state);
             var cuiComponents = state.Element.Layout.Prepare(state);
-            var cuiElements = state.CreateCuiElements();
+            var cuiElements = state.GetCuiElements();
             Debug.Assert(cuiElements.Root != null);
             Debug.Assert(cuiElements.Content != null);
 

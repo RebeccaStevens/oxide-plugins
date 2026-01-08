@@ -62,7 +62,6 @@ public partial class UiBuilderLibrary
 
             TitleBar.Height = Size.Pixels(32);
             TitleBar.BgColor = new Color(0f, 0f, 0f, 0.8f);
-            TitleBar.Padding.SetSize(Size.Pixels(1), Size.Pixels(1), Size.Zero, Size.Zero); // Workaround for non pixel-perfect client.
             TitleBar.Layout = new FlexLayout(TitleBar)
             {
                 Direction = FlexLayout.FlexDirection.Horizontal,
