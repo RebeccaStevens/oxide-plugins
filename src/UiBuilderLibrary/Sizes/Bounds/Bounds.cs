@@ -343,31 +343,62 @@ public partial class UiBuilderLibrary
         }
 
         /// <summary>
-        /// Create a CuiRectTransformComponent from this position.
-        ///
-        /// Returns null if the bounds has no size.
+        /// Does this bounds have a size greater than zero in both directions?
         /// </summary>
-        public CuiRectTransformComponent? CreateCuiRectTransformComponent(ElementState state)
+        public bool HasSize()
         {
-            var (topAnchor, topOffset) = FromTop.ToCuiPositionComponents(Direction.Top);
-            var (rightAnchor, rightOffset) = FromRight.ToCuiPositionComponents(Direction.Right);
-            var (bottomAnchor, bottomOffset) = FromBottom.ToCuiPositionComponents(Direction.Bottom);
-            var (leftAnchor, leftOffset) = FromLeft.ToCuiPositionComponents(Direction.Left);
+            var top = FromTop.ToCuiPositionComponents(Direction.Top);
+            var right = FromRight.ToCuiPositionComponents(Direction.Right);
+            var bottom = FromBottom.ToCuiPositionComponents(Direction.Bottom);
+            var left = FromLeft.ToCuiPositionComponents(Direction.Left);
+
+            return HasSize(top, right, bottom, left);
+        }
+
+        /// <summary>
+        /// Does this bounds have a size greater than zero in both directions?
+        /// </summary>
+        public static bool HasSize(
+            (double topAnchor, double topOffset) top,
+            (double rightAnchor, double rightOffset) right,
+            (double bottomAnchor, double bottomOffset) bottom,
+            (double leftAnchor, double leftOffset) left
+        )
+        {
+            var (topAnchor, topOffset) = top;
+            var (rightAnchor, rightOffset) = right;
+            var (bottomAnchor, bottomOffset) = bottom;
+            var (leftAnchor, leftOffset) = left;
 
             var xAnchor = rightAnchor - leftAnchor;
             var xOffset = rightOffset - leftOffset;
             var yAnchor = topAnchor - bottomAnchor;
             var yOffset = topOffset - bottomOffset;
 
-            if (xAnchor <= 0 && xOffset <= 0 || yAnchor <= 0 && yOffset <= 0)
+            return !(xAnchor <= 0 && xOffset <= 0 || yAnchor <= 0 && yOffset <= 0);
+        }
+
+        /// <summary>
+        /// Create a CuiRectTransformComponent from this position.
+        ///
+        /// Returns null if the bounds has no size.
+        /// </summary>
+        public CuiRectTransformComponent? CreateCuiRectTransformComponent(ElementState state)
+        {
+            var top = FromTop.ToCuiPositionComponents(Direction.Top);
+            var right = FromRight.ToCuiPositionComponents(Direction.Right);
+            var bottom = FromBottom.ToCuiPositionComponents(Direction.Bottom);
+            var left = FromLeft.ToCuiPositionComponents(Direction.Left);
+
+            if (!HasSize(top, right, bottom, left))
                 return null;
 
             return new CuiRectTransformComponent
             {
-                AnchorMin = $"{leftAnchor} {bottomAnchor}",
-                AnchorMax = $"{rightAnchor} {topAnchor}",
-                OffsetMin = $"{leftOffset} {bottomOffset}",
-                OffsetMax = $"{rightOffset} {topOffset}",
+                AnchorMin = $"{left.Anchor} {bottom.Anchor}",
+                AnchorMax = $"{right.Anchor} {top.Anchor}",
+                OffsetMin = $"{left.Offset} {bottom.Offset}",
+                OffsetMax = $"{right.Offset} {top.Offset}",
                 Pivot = $"{PivotPoint.X} {PivotPoint.Y}",
                 Rotation = (float)Rotation,
             };
