@@ -26,7 +26,7 @@ public partial class UiBuilderLibrary
             /// Negate this component.
             /// </summary>
             /// <returns>0 - this</returns>
-            public Value Negate()
+            public Value Negated()
             {
                 return new Value(-Relative, -Absolute);
             }
