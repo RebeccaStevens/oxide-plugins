@@ -39,6 +39,16 @@ public partial class UiBuilderLibrary
         public Value FromLeft;
 
         /// <summary>
+        /// The width of these bounds.
+        /// </summary>
+        public Value Width => new Value(1d, 0d) - FromLeft - FromRight;
+
+        /// <summary>
+        /// The height of these bounds.
+        /// </summary>
+        public Value Height => new Value(1d, 0d) - FromTop - FromBottom;
+
+        /// <summary>
         /// The pivot point of this element relative to the element's anchor.
         /// Defaults to (0.5, 0.5) (the center of the element).
         /// </summary>
