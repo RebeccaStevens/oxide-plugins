@@ -15,8 +15,8 @@ public partial class UiBuilderLibrary
     /// </summary>
     public partial class Bounds
     {
-        private static readonly (double AsRelative, double AsAbsolute) ScreenWidth = (1d, 1280d);
-        private static readonly (double AsRelative, double AsAbsolute) ScreenHeight = (1d, 720d);
+        private static readonly double ScreenWidth = 1280d;
+        private static readonly double ScreenHeight = 720d;
 
         /// <summary>
         /// How far from the top of the parent container this is.
@@ -380,16 +380,6 @@ public partial class UiBuilderLibrary
         }
 
         /// <summary>
-        /// Get the size of the screen.
-        /// </summary>
-        /// <returns>The size of the screen in each axis both as a relative value and as an absolute value.</returns>
-        public static ((double AsRelative, double AsAbsolute) Width, (double AsRelative, double AsAbsolute) Height)
-            GetScreenSize()
-        {
-            return (ScreenWidth, ScreenHeight);
-        }
-
-        /// <summary>
         /// Add two positions together.
         /// </summary>
         public static Bounds AddPosition(Bounds a, Bounds b)
@@ -464,11 +454,20 @@ public partial class UiBuilderLibrary
         public static Bounds operator /(Bounds value, double scalar) => DividePosition(value, scalar);
 
         /// <summary>
+        /// Get the size of the screen.
+        /// </summary>
+        /// <returns>The screen size in pixels.</returns>
+        public static (double Width, double Height) GetScreenSizeAsAbsolute()
+        {
+            return (ScreenWidth, ScreenHeight);
+        }
+
+        /// <summary>
         /// Get the size of the screen in the given axis.
         /// </summary>
         /// <param name="axis">The axis of the screen to get the size of.</param>
-        /// <returns>The size of the screen in the given axis both as a relative value and as an absolute value.</returns>
-        public static (double AsRelative, double AsAbsolute) GetScreenSize(Axis axis)
+        /// <returns>The size of the screen in the given axis in pixels.</returns>
+        public static double GetScreenSizeAsAbsolute(Axis axis)
         {
             return axis switch
             {

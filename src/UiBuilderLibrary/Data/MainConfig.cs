@@ -15,7 +15,7 @@ public partial class UiBuilderLibrary
             /// The screen aspect ratio to use for players that have not set their own.
             /// </summary>
             public double DefaultScreenAspectRatio =
-                Bounds.GetScreenSize(Axis.X).AsAbsolute / Bounds.GetScreenSize(Axis.Y).AsAbsolute;
+                Bounds.GetScreenSizeAsAbsolute(Axis.X) / Bounds.GetScreenSizeAsAbsolute(Axis.Y);
 
             /// <summary>
             /// The render scale to use for players that have not set their own.

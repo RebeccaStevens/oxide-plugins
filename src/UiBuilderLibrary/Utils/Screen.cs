@@ -12,7 +12,7 @@ public partial class UiBuilderLibrary
     internal static double PixelsToScreenPercentage(int value, BasePlayer player, Axis axis)
     {
         Debug.AssertNotNull(builder);
-        var size = Bounds.GetScreenSize(axis).AsAbsolute;
+        var size = Bounds.GetScreenSizeAsAbsolute(axis);
         return axis switch
         {
             Axis.X => value / size,
@@ -27,7 +27,7 @@ public partial class UiBuilderLibrary
     internal static int ScreenPercentageToPixels(double value, BasePlayer player, Axis axis)
     {
         Debug.AssertNotNull(builder);
-        var size = Bounds.GetScreenSize(axis).AsAbsolute;
+        var size = Bounds.GetScreenSizeAsAbsolute(axis);
         return axis switch
         {
             Axis.X => (int)(value * size),
