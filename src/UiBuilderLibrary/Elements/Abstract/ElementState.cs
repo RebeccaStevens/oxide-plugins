@@ -150,6 +150,12 @@ public partial class UiBuilderLibrary
         }
 
         /// <summary>
+        /// Get the parent state of this state.
+        /// </summary>
+        /// <returns>The state of this element's parent for the same player, or null if this element has no parent.</returns>
+        public ElementState? GetParent() => Element.GetParent()?.GetState(Player);
+
+        /// <summary>
         /// Get the state of each child element of this state's element.
         /// </summary>
         public IEnumerable<ElementState> GetChildren()
