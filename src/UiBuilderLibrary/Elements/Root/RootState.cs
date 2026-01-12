@@ -12,7 +12,7 @@ public partial class UiBuilderLibrary
         /// <inheritdoc/>
         public class RootState : PanelElementState
         {
-            /// <inheritdoc cref="PanelElementState(PanelElement, BasePlayer)"/>
+            /// <inheritdoc cref="PanelElementState(PanelElementBase, BasePlayer)"/>
             public RootState(RootElement element, BasePlayer player) : base(element, player)
             {
             }
