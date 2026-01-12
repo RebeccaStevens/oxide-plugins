@@ -13,4 +13,12 @@ public partial class UiBuilderLibrary
     {
         return $"{color.r} {color.g} {color.b} {color.a}";
     }
+
+    /// <summary>
+    /// Multiply the color channels of the given color by the given amount.
+    /// </summary>
+    internal static Color ColorMultiply(Color color, float amount)
+    {
+        return new Color(color.r * amount, color.g * amount, color.b * amount, color.a);
+    }
 }
