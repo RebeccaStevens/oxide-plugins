@@ -58,10 +58,14 @@ public partial class UiBuilderLibrary
         /// </summary>
         /// <param name="element">The element this state is for.</param>
         /// <param name="player">The player this state is for.</param>
-        protected ElementState(Element element, BasePlayer player)
+        protected ElementState(Element element, BasePlayer player) : this(element, player, CuiHelper.GetGuid())
+        {
+        }
+
+        internal ElementState(Element element, BasePlayer player, string id)
         {
             Element = element;
-            Id = CuiHelper.GetGuid();
+            Id = id;
             Player = player;
             NeedsSync = false;
             IsOpen = false;

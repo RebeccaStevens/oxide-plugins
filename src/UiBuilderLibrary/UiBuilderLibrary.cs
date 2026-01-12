@@ -18,6 +18,16 @@ public partial class UiBuilderLibrary : RustPlugin
     private readonly MainData mainData;
 
     /// <summary>
+    /// The scope (prefix) of all console commands of this library.
+    /// </summary>
+    private const string CommandScope = "uibuilderlibrary";
+
+    /// <summary>
+    /// The command to close a UI.
+    /// </summary>
+    private const string CommandClose = $"{CommandScope}.close";
+
+    /// <summary>
     /// Initialize the UI Builder
     /// </summary>
     public UiBuilderLibrary()
@@ -35,14 +45,37 @@ public partial class UiBuilderLibrary : RustPlugin
     {
         config.Init();
 
-#if DEBUG
-        cmd.AddConsoleCommand("close-all", this, (data) =>
+        cmd.AddConsoleCommand(CommandClose, this, (data) =>
         {
-            Ui.CloseEverythingForAll();
-            data.ReplyWith("Closed all user UIs.");
-            return true;
+            var args = Utils.ParseCommandLineArgs(data.Args);
+
+            if (args.Values.Count == 0)
+            {
+                data.ReplyWith($"No ids specified.\nUsage: {CommandClose} [flags] <id> [<id> ...]");
+                return false;
+            }
+
+            var sync = Utils.ParseBooleanMultiFlag(args, 's', "sync", 'S', "no-sync", true);
+
+            var player = (BasePlayer)data.Connection.player;
+            var uisClosed = 0;
+            foreach (var id in args.Values)
+            {
+                Debug.Assert(!string.IsNullOrEmpty(id));
+
+                var ui = Ui.Find(id);
+                if (ui == null)
+                {
+                    data.ReplyWith($"UI with id '{id}' not found.");
+                    continue;
+                }
+
+                ui.Close(player, sync);
+                uisClosed += 1;
+            }
+
+            return uisClosed > 0;
         });
-#endif
     }
 
     private void Loaded()

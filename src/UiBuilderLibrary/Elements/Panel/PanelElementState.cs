@@ -16,6 +16,10 @@ public partial class UiBuilderLibrary
         {
         }
 
+        internal PanelElementState(PanelElementBase element, BasePlayer player, string id) : base(element, player, id)
+        {
+        }
+
         /// <inheritdoc/>
         internal override string[] GetCuiElementNames() => new[]
         {

@@ -16,7 +16,12 @@ public partial class UiBuilderLibrary
         /// <summary>
         /// All UIs that have been created.
         /// </summary>
-        private static readonly List<Ui> AllUIs = new();
+        private static readonly Dictionary<string, Ui> AllUIs = new();
+
+        /// <summary>
+        /// A unique id for this UI.
+        /// </summary>
+        internal readonly string Id;
 
         /// <summary>
         /// The root element that all other elements of this UI are children of.
@@ -33,7 +38,8 @@ public partial class UiBuilderLibrary
                 throw new ArgumentException("must be non-empty", nameof(layer));
 
             Root = new RootElement(this, layer);
-            AllUIs.Add(this);
+            Id = CuiHelper.GetGuid();
+            AllUIs.Add(Id, this);
         }
 
         /// <summary>
@@ -63,46 +69,73 @@ public partial class UiBuilderLibrary
         /// <summary>
         /// Close this UI for the given player.
         /// </summary>
-        /// <param name="player"></param>
-        public virtual void Close(BasePlayer player)
+        /// <param name="player">The player to close the UI for.</param>
+        /// <param name="sync">Whether to send the command to the player to close the UI on their end.</param>
+        public virtual void Close(BasePlayer player, bool sync = true)
         {
             var state = Root.Close(player);
 
             if (state == null || !player.Connection.active)
                 return;
 
-            CuiHelper.DestroyUi(player, state.GetCuiRootName());
+            if (sync)
+                CuiHelper.DestroyUi(player, state.GetCuiRootName());
         }
 
         /// <summary>
         /// Close this UI for all players.
         /// </summary>
-        public void CloseForAll()
+        /// <param name="sync">Whether to send the command to the player to close the UI on their end.</param>
+        public void CloseForAll(bool sync = true)
         {
             foreach (var player in BasePlayer.allPlayerList)
-                Close(player);
+                Close(player, sync);
         }
 
         /// <summary>
         /// Close all UI for all the players.
         /// </summary>
-        internal static void CloseEverythingForAll()
+        /// <param name="sync">Whether to send the command to the player to close the UI on their end.</param>
+        internal static void CloseEverythingForAll(bool sync = true)
         {
             foreach (var player in BasePlayer.allPlayerList)
-                CloseEverything(player);
+                CloseEverything(player, sync);
         }
 
         /// <summary>
         /// Close all UI for the given player.
         /// </summary>
-        internal static void CloseEverything(BasePlayer player)
+        /// <param name="player">The player to close the UI for.</param>
+        /// <param name="sync">Whether to send the command to the player to close the UI on their end.</param>
+        internal static void CloseEverything(BasePlayer player, bool sync = true)
         {
-            foreach (var ui in AllUIs)
+            foreach (var kvp in AllUIs)
             {
-                var state = ui.Root.Close(player);
-                if (state != null && player.Connection.active)
+                var state = kvp.Value.Root.Close(player);
+                if (sync && state != null && player.Connection.active)
                     CuiHelper.DestroyUi(player, state.GetCuiRootName());
             }
+        }
+
+        /// <summary>
+        /// Find a UI by its id.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static Ui? Find(string id) => AllUIs.TryGetValue(id, out var ui) ? ui : null;
+
+        /// <summary>
+        /// Get the name of the root CUI element for this UI.
+        /// </summary>
+        /// <param name="player">The player to get the name for.</param>
+        public string GetRootCuiElementName(BasePlayer player) => Root.GetState(player).GetCuiRootName();
+
+        /// <summary>
+        /// Get the command that will close this UI.
+        /// </summary>
+        public string GetCloseCommand(bool sync = true)
+        {
+            return sync ? $"{CommandClose} {Id}" : $"{CommandClose} -S {Id}";
         }
 
         /// <summary>

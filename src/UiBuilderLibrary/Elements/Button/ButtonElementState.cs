@@ -33,8 +33,8 @@ public partial class UiBuilderLibrary
                     ColorMultiplier = Element.BgColorMultiplier,
                     Material = string.IsNullOrEmpty(Element.BgMaterial) ? null : Element.BgMaterial,
                     Sprite = string.IsNullOrEmpty(Element.Sprite) ? null : Element.Sprite,
-                    Close = (Element.Action as UiActionCloseUi)?.GetUiName(Player),
-                    Command = (Element.Action as IUiActionCommand)?.GetCommand(),
+                    Close = (Element.Action as UiActionCloseUi)?.GetUiRootCuiElementName(Player),
+                    Command = Element.Action?.GetCommand(),
                 });
 
                 if (Element.HasBorder())

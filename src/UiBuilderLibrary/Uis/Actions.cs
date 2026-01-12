@@ -4,7 +4,10 @@ namespace Oxide.Plugins;
 
 public partial class UiBuilderLibrary
 {
-    public class UiAction
+    /// <summary>
+    /// An action that can be performed by a UI element.
+    /// </summary>
+    public abstract class UiAction
     {
         /// <summary>
         /// Close the given UI.
@@ -29,31 +32,17 @@ public partial class UiBuilderLibrary
         {
             return new UiActionRun(action);
         }
-    }
 
-    /// <summary>
-    /// An action that can be performed on a UI.
-    /// </summary>
-    public interface IUiActionRootUi
-    {
-        /// <summary>
-        /// Get the name of the root CUI element.
-        /// </summary>
-        string GetUiName(BasePlayer player);
-    }
-
-    /// <summary>
-    /// An action that will be performed via a command.
-    /// </summary>
-    public interface IUiActionCommand
-    {
         /// <summary>
         /// Get the command to run.
         /// </summary>
-        string GetCommand();
+        public abstract string GetCommand();
     }
 
-    internal class UiActionCloseUi : UiAction, IUiActionRootUi
+    /// <summary>
+    /// An action that closes the given UI.
+    /// </summary>
+    internal class UiActionCloseUi : UiAction
     {
         private readonly Ui ui;
 
@@ -65,13 +54,22 @@ public partial class UiBuilderLibrary
         /// <summary>
         /// Get the name of the CUI element to close for the given player.
         /// </summary>
-        public string GetUiName(BasePlayer player)
+        public string GetUiRootCuiElementName(BasePlayer player)
         {
-            return ui.Root.GetState(player).GetCuiRootName();
+            return ui.GetRootCuiElementName(player);
+        }
+
+        /// <inheritdoc/>
+        public override string GetCommand()
+        {
+            return ui.GetCloseCommand(false);
         }
     }
 
-    internal class UiActionCommand : UiAction, IUiActionCommand
+    /// <summary>
+    /// An action that runs the given command.
+    /// </summary>
+    internal class UiActionCommand : UiAction
     {
         private readonly string command;
 
@@ -81,13 +79,16 @@ public partial class UiBuilderLibrary
         }
 
         /// <inheritdoc/>
-        public string GetCommand()
+        public override string GetCommand()
         {
             return command;
         }
     }
 
-    internal class UiActionRun : UiAction, IUiActionCommand
+    /// <summary>
+    /// An action that runs the given action.
+    /// </summary>
+    internal class UiActionRun : UiAction
     {
         private readonly Action action;
 
@@ -97,7 +98,7 @@ public partial class UiBuilderLibrary
         }
 
         /// <inheritdoc/>
-        public string GetCommand()
+        public override string GetCommand()
         {
             throw new NotImplementedException();
         }

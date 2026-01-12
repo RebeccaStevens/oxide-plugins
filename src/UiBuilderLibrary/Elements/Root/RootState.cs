@@ -12,8 +12,11 @@ public partial class UiBuilderLibrary
         /// <inheritdoc/>
         public class RootState : PanelElementState
         {
+            /// <inheritdoc cref="ElementState.Element"/>
+            public new RootElement Element => (RootElement)base.Element;
+
             /// <inheritdoc cref="PanelElementState(PanelElementBase, BasePlayer)"/>
-            public RootState(RootElement element, BasePlayer player) : base(element, player)
+            public RootState(RootElement element, BasePlayer player) : base(element, player, element.Ui.Id)
             {
             }
 
