@@ -10,7 +10,7 @@ public partial class UiBuilderLibrary
     public class PanelElementState : ElementState
     {
         /// <inheritdoc cref="ElementState.Element"/>
-        public new readonly PanelElement Element;
+        public new PanelElement Element => (PanelElement)base.Element;
 
         /// <summary>
         /// All the cui elements that have been created for this state.
@@ -20,7 +20,6 @@ public partial class UiBuilderLibrary
         /// <inheritdoc cref="ElementState"/>
         public PanelElementState(PanelElement element, BasePlayer player) : base(element, player)
         {
-            Element = element;
         }
 
         /// <inheritdoc/>
