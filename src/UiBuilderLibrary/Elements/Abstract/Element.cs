@@ -116,6 +116,17 @@ public partial class UiBuilderLibrary
         }
 
         /// <summary>
+        /// The size of this element in both dimensions - useful for square elements.
+        /// </summary>
+        public Size Size
+        {
+            set {
+                Width = value;
+                Height = value;
+            }
+        }
+
+        /// <summary>
         /// The margin applied to this element.
         /// </summary>
         public readonly DirectionalSizeValues Margin;
