@@ -7,27 +7,22 @@ public partial class UiBuilderLibrary
     /// <summary>
     /// A simple panel element.
     /// </summary>
-    public class PanelElement : Element
+    public class PanelElement : PanelElementBase
     {
-        /// <summary>
-        /// The padding applied to this element.
-        /// </summary>
-        public readonly DirectionalSizeValues Padding;
-
-        /// <summary>
-        /// The actual outline element component.
-        /// </summary>
-        private OutlineElementComponent? outline;
-
-        /// <summary>
-        /// The border applied to this element.
-        /// </summary>
-        public OutlineElementComponent Border => outline ??= new OutlineElementComponent();
-
         /// <summary>
         /// The background color of the element.
         /// </summary>
-        public Color BgColor = Color.gray;
+        public Color BgColor {
+            get => Color;
+            set => Color = value;
+        }
+
+        /// <inheritdoc cref="PanelElementBase.Material"/>
+        public new string? Material
+        {
+            get => base.Material;
+            set => base.Material = value;
+        }
 
         /// <summary>
         /// Create a new panel element.
@@ -49,18 +44,8 @@ public partial class UiBuilderLibrary
         /// </summary>
         protected PanelElement(Element? parent, string? layer) : base(parent, layer)
         {
-            Padding = new DirectionalSizeValues("Padding", this, Size.Zero);
-        }
-
-        /// <summary>
-        /// Does this element have a border?
-        /// </summary>
-        public bool HasBorder() => outline != null && outline.HasSize();
-
-        /// <inheritdoc/>
-        protected override ElementState InitialState(BasePlayer player)
-        {
-            return new PanelElementState(this, player);
+            BgColor = ColorPallete.BackgroundLevel1;
+            Material = "assets/content/ui/ui.background.tiletex.psd";
         }
     }
 }

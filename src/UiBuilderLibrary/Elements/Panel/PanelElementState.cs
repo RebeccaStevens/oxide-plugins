@@ -9,10 +9,10 @@ public partial class UiBuilderLibrary
     public class PanelElementState : ElementState
     {
         /// <inheritdoc cref="ElementState.Element"/>
-        public new PanelElement Element => (PanelElement)base.Element;
+        public new PanelElementBase Element => (PanelElementBase)base.Element;
 
         /// <inheritdoc cref="ElementState"/>
-        public PanelElementState(PanelElement element, BasePlayer player) : base(element, player)
+        public PanelElementState(PanelElementBase element, BasePlayer player) : base(element, player)
         {
         }
 
@@ -72,7 +72,13 @@ public partial class UiBuilderLibrary
         {
             Debug.AssertNotNull(cuiElements.Root);
 
-            cuiElements.Root.AddComponent(new CuiImageComponent { Color = ColorToCuiColor(Element.BgColor) });
+            cuiElements.Root.AddComponent(new CuiImageComponent
+            {
+                Color = ColorToCuiColor(Element.Color),
+                Material = string.IsNullOrEmpty(Element.Material) ? null : Element.Material,
+                Sprite = string.IsNullOrEmpty(Element.Sprite) ? null : Element.Sprite,
+            });
+
             if (Element.HasBorder())
                 cuiElements.Root.AddComponents(Element.Border.ApplyState(this));
         }
