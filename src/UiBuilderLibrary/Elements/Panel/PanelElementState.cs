@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Linq;
 using Oxide.Game.Rust.Cui;
 
@@ -12,18 +11,17 @@ public partial class UiBuilderLibrary
         /// <inheritdoc cref="ElementState.Element"/>
         public new PanelElement Element => (PanelElement)base.Element;
 
-        /// <summary>
-        /// All the cui elements that have been created for this state.
-        /// </summary>
-        protected readonly HashSet<string> CuiElementNames = new();
-
         /// <inheritdoc cref="ElementState"/>
         public PanelElementState(PanelElement element, BasePlayer player) : base(element, player)
         {
         }
 
         /// <inheritdoc/>
-        internal override string[] GetCuiElementNames() => CuiElementNames.ToArray();
+        internal override string[] GetCuiElementNames() => new[]
+        {
+            GetCuiRootName(),
+            GetCuiContentName(),
+        };
 
         /// <inheritdoc/>
         protected override void ComputeInternalBounds()
@@ -59,18 +57,11 @@ public partial class UiBuilderLibrary
             root.SetPosition(CuiBounds);
             content?.SetPosition(ContentBounds);
 
-            var components = new ElementCuiElements
+            return new ElementCuiElements
             {
                 Root = root,
                 Content = content
             };
-            foreach (var cuiElement in components.GetAll())
-            {
-                Debug.Assert(!string.IsNullOrEmpty(cuiElement.Name));
-                CuiElementNames.Add(cuiElement.Name);
-            }
-
-            return components;
         }
 
         /// <summary>
