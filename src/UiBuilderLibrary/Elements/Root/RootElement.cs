@@ -23,10 +23,7 @@ public partial class UiBuilderLibrary
         }
 
         /// <inheritdoc/>
-        protected override ElementState InitialState(BasePlayer player)
-        {
-            return new RootState(this, player);
-        }
+        protected override ElementState InitialState(BasePlayer player) => new RootState(this, player);
 
         /// <inheritdoc/>
         public override ElementState Open(BasePlayer player)

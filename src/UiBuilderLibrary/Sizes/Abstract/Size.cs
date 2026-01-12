@@ -1,5 +1,3 @@
-using System;
-
 // ReSharper disable UnusedMember.Global
 
 namespace Oxide.Plugins;

@@ -230,6 +230,8 @@ public partial class UiBuilderLibrary
                 others = new List<SafeCuiElement>();
             }
 
+            public bool HasContent => content != null;
+
             public void Add(SafeCuiElement other)
             {
                 others.Add(other);
