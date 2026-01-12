@@ -24,11 +24,15 @@ public partial class UiBuilderLibrary
 
                 cuiElements.Root.AddComponent(new CuiButtonComponent
                 {
-                    Color = ColorToCuiColor(Element.BgColor),
+                    Enabled = Element.Enabled,
+                    NormalColor = ColorToCuiColor(Element.BgColor),
                     DisabledColor = ColorToCuiColor(Element.BgColorDisabled),
                     HighlightedColor = ColorToCuiColor(Element.BgColorHighlighted),
                     PressedColor = ColorToCuiColor(Element.BgColorPressed),
                     SelectedColor = ColorToCuiColor(Element.BgColorSelected),
+                    ColorMultiplier = Element.BgColorMultiplier,
+                    Material = string.IsNullOrEmpty(Element.BgMaterial) ? null : Element.BgMaterial,
+                    Sprite = string.IsNullOrEmpty(Element.Sprite) ? null : Element.Sprite,
                     Close = (Element.Action as UiActionCloseUi)?.GetUiName(Player),
                     Command = (Element.Action as IUiActionCommand)?.GetCommand(),
                 });

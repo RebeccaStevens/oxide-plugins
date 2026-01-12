@@ -15,7 +15,7 @@ public partial class UiBuilderLibrary
         public readonly DirectionalSizeValues Padding;
 
         /// <summary>
-        /// The actual outline element component.
+        /// The stored outline element component.
         /// </summary>
         private OutlineElementComponent? outline;
 

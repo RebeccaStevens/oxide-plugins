@@ -37,12 +37,7 @@ public partial class UiBuilderLibrary
             /// <summary>
             /// The close button of the window.
             /// </summary>
-            ButtonElement CloseButton,
-
-            /// <summary>
-            /// The icon displayed on the close button.
-            /// </summary>
-            ImageElement CloseButtonIcon
+            ButtonElement CloseButton
         );
 
         /// <summary>
@@ -108,24 +103,16 @@ public partial class UiBuilderLibrary
             {
                 Name = "window-close-button",
                 BgColor = ColorPallete.Red,
+                BgColorSelected = ColorPallete.Red,
                 Width = Size.Pixels(64),
                 Weight = 100,
                 Action = UiAction.CloseUi(this),
-            };
-            closeButton.Layout = new FlexLayout(closeButton)
-            {
-                Direction = FlexLayout.FlexDirection.Horizontal,
-                AlignItems = FlexLayout.ItemAlignment.Center,
-                JustifyContent = FlexLayout.JustifyAlignment.Center,
-            };
-
-            var closeButtonIcon = new ImageElement(closeButton)
-            {
-                Name = "window-close-button-icon",
-                Color = ColorPallete.OnRed,
-                Sprite = "assets/icons/close.png",
-                Width = Size.Pixels(14),
-                Height = Size.Pixels(14),
+                Icon =
+                {
+                    Color = ColorPallete.OnRed,
+                    Sprite = "assets/icons/close.png",
+                    Size = Size.Pixels(14),
+                }
             };
 
             var divider = new PanelElement(Root)
@@ -141,8 +128,7 @@ public partial class UiBuilderLibrary
                 TitleBar: titleBar,
                 WindowLabel: windowLabel,
                 Divider: divider,
-                CloseButton: closeButton,
-                CloseButtonIcon: closeButtonIcon
+                CloseButton: closeButton
             );
             initializer(Components);
         }

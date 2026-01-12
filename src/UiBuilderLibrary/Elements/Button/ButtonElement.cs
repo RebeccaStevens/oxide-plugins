@@ -7,27 +7,86 @@ public partial class UiBuilderLibrary
     /// <summary>
     /// A button element.
     /// </summary>
-    public partial class ButtonElement : PanelElement
+    public partial class ButtonElement : PanelElementBase
     {
+        /// <summary>
+        /// Whether the button is enabled or not.
+        /// </summary>
+        public bool Enabled = true;
+
+        /// <summary>
+        /// The background color of the element.
+        /// </summary>
+        public Color BgColor
+        {
+            get => Color;
+            set => Color = value;
+        }
+
+        /// <summary>
+        /// The value stored for the background color when the button is highlighted.
+        /// </summary>
+        private Color? bgColorHighlighted;
+
         /// <summary>
         /// The color of the icon when it is highlighted.
         /// </summary>
-        public Color BgColorHighlighted;
+        public Color BgColorHighlighted {
+            get => bgColorHighlighted ??= ColorMultiply(Color, 1.2f);
+            set => bgColorHighlighted = value;
+        }
+
+        /// <summary>
+        /// The value stored for the background color when the button is pressed.
+        /// </summary>
+        private Color? bgColorPressed;
 
         /// <summary>
         /// The color of the icon when it is pressed.
         /// </summary>
-        public Color BgColorPressed;
+        public Color BgColorPressed {
+            get => bgColorPressed ??= ColorMultiply(Color, 0.8f);
+            set => bgColorPressed = value;
+        }
+
+        /// <summary>
+        /// The value stored for the background color when the button is selected.
+        /// </summary>
+        private Color? bgColorSelected;
 
         /// <summary>
         /// The color of the icon when it is selected.
         /// </summary>
-        public Color BgColorSelected;
+        public Color BgColorSelected {
+            get => bgColorSelected ??= ColorPallete.RustGreen;
+            set => bgColorSelected = value;
+        }
+
+        /// <summary>
+        /// The value stored for the background color when the button is disabled.
+        /// </summary>
+        private Color? bgColorDisabled;
 
         /// <summary>
         /// The color of the icon when it is disabled.
         /// </summary>
-        public Color BgColorDisabled;
+        public Color BgColorDisabled {
+            get => bgColorDisabled ??= ColorMultiply(Color, 0.4f);
+            set => bgColorDisabled = value;
+        }
+
+        /// <summary>
+        /// The color multiplier to apply to the background colors.<br/>
+        /// See <a href="https://docs.unity3d.com/560/Documentation/ScriptReference/UI.ColorBlock-colorMultiplier.html">Unity's documentation</a> for more information.
+        /// </summary>
+        public float BgColorMultiplier = 1f;
+
+        /// <inheritdoc cref="PanelElementBase.Material"/>
+        public string? BgMaterial
+        {
+            get => Material;
+            set => Material = value;
+        }
 
         /// <summary>
         /// The action to perform when the button is clicked.
@@ -35,104 +94,67 @@ public partial class UiBuilderLibrary
         public UiAction? Action;
 
         /// <summary>
+        /// The stored label element.
+        /// </summary>
+        private LabelElement? label;
+
+        /// <summary>
+        /// The label element to display on the button.
+        /// </summary>
+        public LabelElement Label
+        {
+            get => label ??= new LabelElement(this)
+            {
+                Name = $"{Name}-label",
+                Weight = -1,
+                TextAlignment = TextAnchor.MiddleCenter ,
+                TextColor = ColorPallete.TextRegular,
+                Font = Font.Regular,
+                FontSize = Size.Pixels(18),
+            };
+            set => label = value;
+        }
+
+        /// <summary>
+        /// The stored icon element.
+        /// </summary>
+        private ImageElement? icon;
+
+        /// <summary>
+        /// The icon element to display on the button.
+        /// </summary>
+        public ImageElement Icon
+        {
+            get => icon ??= new ImageElement(this)
+            {
+                Name = $"{Name}-icon",
+                Weight = -2,
+                Size = Size.Pixels(16),
+                Color = ColorPallete.TextRegular,
+            };
+            set => icon = value;
+        }
+
+        /// <summary>
         /// Create a new button element.
         /// </summary>
-        internal ButtonElement(Element element) : base(element)
+        public ButtonElement(Element element) : base(element)
         {
             BgColor = ColorPallete.ItemLevel1;
-            Material = null;
-
-            SetHighlightBgColorModifier(1.2f);
-            SetPressedBgColorModifier(0.8f);
-            SetSelectedBgColorModifier(1.05f);
-            SetDisabledBgColorModifier(0.5f);
+            BgMaterial = null;
+            Padding.SetSize(Size.Pixels(8), Size.Zero);
+            Width = Size.Pixels(128);
+            Height = Size.Pixels(32);
+            Layout = new FlexLayout(this)
+            {
+                Direction = FlexLayout.FlexDirection.Horizontal,
+                AlignItems = FlexLayout.ItemAlignment.Center,
+                JustifyContent = FlexLayout.JustifyAlignment.Center,
+                Gap = Size.Pixels(8),
+            };
         }
 
         /// <inheritdoc/>
         protected override ElementState InitialState(BasePlayer player) => new ButtonElementState(this, player);
-
-        /// <summary>
-        /// Set the amount to modify the background color by when the button is highlighted.
-        /// </summary>
-        /// <param name="modifier">How much to modify the color by (&gt;1 is brighter, &lt;1 is darker).</param>
-        public void SetHighlightBgColorModifier(float modifier)
-        {
-            BgColorHighlighted = new Color(modifier, modifier, modifier);
-        }
-
-        /// <summary>
-        /// Set the amount to modify the background color by when the button is highlighted.
-        /// </summary>
-        /// <param name="r">How much to modify the red channel by (&gt;1 is brighter, &lt;1 is darker).</param>
-        /// <param name="g">How much to modify the green channel by (&gt;1 is brighter, &lt;1 is darker).</param>
-        /// <param name="b">How much to modify the blue channel by (&gt;1 is brighter, &lt;1 is darker).</param>
-        /// <param name="a">How much to modify the alpha channel by (&gt;1 is brighter, &lt;1 is darker).</param>
-        public void SetHighlightBgColorModifier(float r, float g, float b, float a = 1f)
-        {
-            BgColorHighlighted = new Color(r, g, b, a);
-        }
-
-        /// <summary>
-        /// Set the amount to modify the background color by when the button is pressed.
-        /// </summary>
-        /// <param name="modifier">How much to modify the color by (&gt;1 is brighter, &lt;1 is darker).</param>
-        public void SetPressedBgColorModifier(float modifier)
-        {
-            BgColorPressed = new Color(modifier, modifier, modifier);
-        }
-
-        /// <summary>
-        /// Set the amount to modify the background color by when the button is pressed.
-        /// </summary>
-        /// <param name="r">How much to modify the red channel by (&gt;1 is brighter, &lt;1 is darker).</param>
-        /// <param name="g">How much to modify the green channel by (&gt;1 is brighter, &lt;1 is darker).</param>
-        /// <param name="b">How much to modify the blue channel by (&gt;1 is brighter, &lt;1 is darker).</param>
-        /// <param name="a">How much to modify the alpha channel by (&gt;1 is brighter, &lt;1 is darker).</param>
-        public void SetPressedBgColorModifier(float r, float g, float b, float a = 1f)
-        {
-            BgColorPressed = new Color(r, g, b, a);
-        }
-
-        /// <summary>
-        /// Set the amount to modify the background color by when the button is selected.
-        /// </summary>
-        /// <param name="modifier">How much to modify the color by (&gt;1 is brighter, &lt;1 is darker).</param>
-        public void SetSelectedBgColorModifier(float modifier)
-        {
-            BgColorSelected = new Color(modifier, modifier, modifier);
-        }
-
-        /// <summary>
-        /// Set the amount to modify the background color by when the button is selected.
-        /// </summary>
-        /// <param name="r">How much to modify the red channel by (&gt;1 is brighter, &lt;1 is darker).</param>
-        /// <param name="g">How much to modify the green channel by (&gt;1 is brighter, &lt;1 is darker).</param>
-        /// <param name="b">How much to modify the blue channel by (&gt;1 is brighter, &lt;1 is darker).</param>
-        /// <param name="a">How much to modify the alpha channel by (&gt;1 is brighter, &lt;1 is darker).</param>
-        public void SetSelectedBgColorModifier(float r, float g, float b, float a = 1f)
-        {
-            BgColorSelected = new Color(r, g, b, a);
-        }
-
-        /// <summary>
-        /// Set the amount to modify the background color by when the button is disabled.
-        /// </summary>
-        /// <param name="modifier">How much to modify the color by (&gt;1 is brighter, &lt;1 is darker).</param>
-        public void SetDisabledBgColorModifier(float modifier)
-        {
-            BgColorDisabled = new Color(modifier, modifier, modifier);
-        }
-
-        /// <summary>
-        /// Set the amount to modify the background color by when the button is disabled.
-        /// </summary>
-        /// <param name="r">How much to modify the red channel by (&gt;1 is brighter, &lt;1 is darker).</param>
-        /// <param name="g">How much to modify the green channel by (&gt;1 is brighter, &lt;1 is darker).</param>
-        /// <param name="b">How much to modify the blue channel by (&gt;1 is brighter, &lt;1 is darker).</param>
-        /// <param name="a">How much to modify the alpha channel by (&gt;1 is brighter, &lt;1 is darker).</param>
-        public void SetDisabledBgColorModifier(float r, float g, float b, float a = 1f)
-        {
-            BgColorDisabled = new Color(r, g, b, a);
-        }
     }
 }
