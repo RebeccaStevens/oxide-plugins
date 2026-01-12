@@ -110,6 +110,7 @@ public partial class UiBuilderLibrary
                 BgColor = ColorPallete.Red,
                 Width = Size.Pixels(64),
                 Weight = 100,
+                Action = UiAction.CloseUi(this),
             };
             closeButton.Layout = new FlexLayout(closeButton)
             {

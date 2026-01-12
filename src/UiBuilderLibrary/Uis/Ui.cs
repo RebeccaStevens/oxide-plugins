@@ -21,7 +21,7 @@ public partial class UiBuilderLibrary
         /// <summary>
         /// The root element that all other elements of this UI are children of.
         /// </summary>
-        protected readonly RootElement Root;
+        protected internal readonly RootElement Root;
 
         /// <summary>
         /// Create a new UI.

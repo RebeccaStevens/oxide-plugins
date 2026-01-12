@@ -29,6 +29,8 @@ public partial class UiBuilderLibrary
                     HighlightedColor = ColorToCuiColor(Element.BgColorHighlighted),
                     PressedColor = ColorToCuiColor(Element.BgColorPressed),
                     SelectedColor = ColorToCuiColor(Element.BgColorSelected),
+                    Close = (Element.Action as UiActionCloseUi)?.GetUiName(Player),
+                    Command = (Element.Action as IUiActionCommand)?.GetCommand(),
                 });
 
                 if (Element.HasBorder())

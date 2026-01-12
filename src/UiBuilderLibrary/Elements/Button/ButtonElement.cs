@@ -30,6 +30,11 @@ public partial class UiBuilderLibrary
         public Color BgColorDisabled;
 
         /// <summary>
+        /// The action to perform when the button is clicked.
+        /// </summary>
+        public UiAction? Action;
+
+        /// <summary>
         /// Create a new button element.
         /// </summary>
         internal ButtonElement(Element element) : base(element)
