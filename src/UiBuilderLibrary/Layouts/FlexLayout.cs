@@ -136,15 +136,6 @@ public partial class UiBuilderLibrary
                 _ => throw new ArgumentOutOfRangeException($"Invalid justification: {JustifyContent}"),
             };
 
-            var minorAutoSize = (ElementState childState) =>
-            {
-                Interface.Oxide.LogDebug(
-                    $"The Element ({childState.Element.Name}) (child of {state.Element.Name}) has no explicit size in the minor axis ({minorAxis}) and thus it will have no size.\n" +
-                    "Either give it a size or set AlignItems to Stretch"
-                );
-                return new Bounds.Value();
-            };
-
             foreach (var child in childrenData)
             {
                 var childMajorSize = child.SizeContext.Major.GetBoundsValue(child.state, majorChildImplicitSize);
@@ -152,7 +143,7 @@ public partial class UiBuilderLibrary
                 {
                     ItemAlignment.Start or
                         ItemAlignment.Center or
-                        ItemAlignment.End => child.SizeContext.Minor.GetBoundsValue(child.state, minorAutoSize),
+                        ItemAlignment.End => child.SizeContext.Minor.GetBoundsValue(child.state, new Bounds.Value(1, 0)),
                     ItemAlignment.Stretch => majorSizeBounds,
                     _ => throw new ArgumentOutOfRangeException($"Invalid alignment: {AlignItems}"),
                 };
