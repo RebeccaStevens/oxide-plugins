@@ -26,7 +26,7 @@ public partial class UiBuilderLibrary
             /// <inheritdoc />
             internal override SizeStateValue ApplyState(ElementState state, SizeContext context) =>
                 SizeStateValue.GetOrCreateValue(context, state, () =>
-                    new Bounds.Value(0, ScreenPercentageToPixels(value, state.Player, Axis.X))
+                    Bounds.AbsoluteValue(ScreenPercentageToPixels(value, state.Player, Axis.X))
                 );
 
             /// <inheritdoc/>

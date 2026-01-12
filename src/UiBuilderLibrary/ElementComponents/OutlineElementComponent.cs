@@ -93,8 +93,8 @@ public partial class UiBuilderLibrary
         /// </summary>
         public Bounds GetInnerBounds(ElementState state)
         {
-            var x = new Bounds.Value(0, ((Size.PixelSize)X).Value);
-            var y = new Bounds.Value(0, ((Size.PixelSize)Y).Value);
+            var x = Bounds.AbsoluteValue(((Size.PixelSize)X).Value);
+            var y = Bounds.AbsoluteValue(((Size.PixelSize)Y).Value);
             return new Bounds()
             {
                 FromTop = y,

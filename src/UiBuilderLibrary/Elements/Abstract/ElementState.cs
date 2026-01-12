@@ -188,8 +188,8 @@ public partial class UiBuilderLibrary
 
             // Workaround for how the client renders nested elements.
             // For some reason this fixes things in both the x and y directions.
-            CuiBounds.FromRight += new Bounds.Value(0, 1);
-            ContentBounds.FromRight += new Bounds.Value(0, -1);
+            CuiBounds.FromRight += Bounds.AbsoluteValue(1);
+            ContentBounds.FromRight += Bounds.AbsoluteValue(-1);
 
             return CreateCuiElements();
         }

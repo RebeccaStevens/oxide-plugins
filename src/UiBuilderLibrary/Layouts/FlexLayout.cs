@@ -73,8 +73,7 @@ public partial class UiBuilderLibrary
             if (Direction is FlexDirection.HorizontalReversed or FlexDirection.VerticalReversed)
                 Array.Reverse(childrenStates);
 
-            var (majorAxis, minorAxis) = ToAxes(Direction);
-            var majorSizeBounds = new Bounds.Value(1, 0);
+            var majorAxis = ToAxis(Direction);
             var majorAxisChildrenExplicitSize = new Bounds.Value();
             var numberOfImplicitlySizedChildren = 0;
 
@@ -97,11 +96,11 @@ public partial class UiBuilderLibrary
                     JustifyAlignment.Center or
                     JustifyAlignment.End => GapContext.GetBoundsValue(state),
                 JustifyAlignment.SpaceBetween =>
-                    (new Bounds.Value(1, 0) - majorAxisChildrenExplicitSize) / gapCount,
+                    (Bounds.Value.Full - majorAxisChildrenExplicitSize) / gapCount,
                 JustifyAlignment.SpaceAround =>
-                    (new Bounds.Value(1, 0) - majorAxisChildrenExplicitSize) / (gapCount + 1),
+                    (Bounds.Value.Full - majorAxisChildrenExplicitSize) / (gapCount + 1),
                 JustifyAlignment.SpaceEvenly =>
-                    (new Bounds.Value(1, 0) - majorAxisChildrenExplicitSize) / (gapCount + 2),
+                    (Bounds.Value.Full - majorAxisChildrenExplicitSize) / (gapCount + 2),
                 _ => throw new ArgumentOutOfRangeException($"Invalid justification: {JustifyContent}"),
             };
             var majorContentSize = majorAxisChildrenExplicitSize + gapCount * gapValue;
@@ -120,7 +119,7 @@ public partial class UiBuilderLibrary
             }
             else
             {
-                var implicitChildrenSize = majorSizeBounds - majorContentSize;
+                var implicitChildrenSize = Bounds.Value.Full - majorContentSize;
                 majorContentSize += implicitChildrenSize;
                 majorChildImplicitSize = implicitChildrenSize / numberOfImplicitlySizedChildren;
             }
@@ -128,8 +127,8 @@ public partial class UiBuilderLibrary
             var childMajorOffset = JustifyContent switch
             {
                 JustifyAlignment.Start => new Bounds.Value(),
-                JustifyAlignment.Center => (majorSizeBounds - majorContentSize) / 2,
-                JustifyAlignment.End => majorSizeBounds - majorContentSize,
+                JustifyAlignment.Center => (Bounds.Value.Full - majorContentSize) / 2,
+                JustifyAlignment.End => Bounds.Value.Full - majorContentSize,
                 JustifyAlignment.SpaceBetween => new Bounds.Value(),
                 JustifyAlignment.SpaceAround => gapValue / 2,
                 JustifyAlignment.SpaceEvenly => gapValue,
@@ -143,15 +142,15 @@ public partial class UiBuilderLibrary
                 {
                     ItemAlignment.Start or
                         ItemAlignment.Center or
-                        ItemAlignment.End => child.SizeContext.Minor.GetBoundsValue(child.state, new Bounds.Value(1, 0)),
-                    ItemAlignment.Stretch => majorSizeBounds,
+                        ItemAlignment.End => child.SizeContext.Minor.GetBoundsValue(child.state, Bounds.Value.Full),
+                    ItemAlignment.Stretch => Bounds.Value.Full,
                     _ => throw new ArgumentOutOfRangeException($"Invalid alignment: {AlignItems}"),
                 };
                 var childMinorOffset = AlignItems switch
                 {
                     ItemAlignment.Start => new Bounds.Value(),
-                    ItemAlignment.Center => (majorSizeBounds - childMinorSize) / 2,
-                    ItemAlignment.End => majorSizeBounds - childMinorSize,
+                    ItemAlignment.Center => (Bounds.Value.Full - childMinorSize) / 2,
+                    ItemAlignment.End => Bounds.Value.Full - childMinorSize,
                     ItemAlignment.Stretch => new Bounds.Value(),
                     _ => throw new ArgumentOutOfRangeException($"Invalid alignment: {AlignItems}"),
                 };

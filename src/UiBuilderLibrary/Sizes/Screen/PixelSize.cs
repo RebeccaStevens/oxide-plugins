@@ -26,7 +26,7 @@ public partial class UiBuilderLibrary
 
             /// <inheritdoc/>
             internal override SizeStateValue ApplyState(ElementState state, SizeContext context) =>
-                SizeStateValue.GetOrCreateValue(context, state, new Bounds.Value(0, Value));
+                SizeStateValue.GetOrCreateValue(context, state, Bounds.AbsoluteValue(Value));
 
             /// <inheritdoc/>
             public override string ToString() => $"Pixels({Value})";

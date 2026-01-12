@@ -41,12 +41,12 @@ public partial class UiBuilderLibrary
         /// <summary>
         /// The width of these bounds.
         /// </summary>
-        public Value Width => new Value(1d, 0d) - FromLeft - FromRight;
+        public Value Width => Value.Full - FromLeft - FromRight;
 
         /// <summary>
         /// The height of these bounds.
         /// </summary>
-        public Value Height => new Value(1d, 0d) - FromTop - FromBottom;
+        public Value Height => Value.Full - FromTop - FromBottom;
 
         /// <summary>
         /// The pivot point of this element relative to the element's anchor.
@@ -320,10 +320,10 @@ public partial class UiBuilderLibrary
         /// </summary>
         public Bounds MaximizePosition()
         {
-            FromTop = new Value(0, 0);
-            FromRight = new Value(0, 0);
-            FromBottom = new Value(0, 0);
-            FromLeft = new Value(0, 0);
+            FromTop = Value.Zero;
+            FromRight = Value.Zero;
+            FromBottom = Value.Zero;
+            FromLeft = Value.Zero;
             return this;
         }
 

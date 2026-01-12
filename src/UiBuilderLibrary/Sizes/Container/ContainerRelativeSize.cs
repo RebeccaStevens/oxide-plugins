@@ -23,7 +23,7 @@ public partial class UiBuilderLibrary
 
             /// <inheritdoc />
             internal override SizeStateValue ApplyState(ElementState state, SizeContext context) =>
-                SizeStateValue.GetOrCreateValue(context, state, new Bounds.Value(value, 0));
+                SizeStateValue.GetOrCreateValue(context, state, Bounds.RelativeValue(value));
 
             /// <inheritdoc/>
             public override string ToString() => $"Container({value * 100}%)";

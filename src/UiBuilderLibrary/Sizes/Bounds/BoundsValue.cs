@@ -9,10 +9,35 @@ public partial class UiBuilderLibrary
     public partial class Bounds
     {
         /// <summary>
+        /// Create a relative value.
+        /// </summary>
+        public static Value RelativeValue(double value) => new Value(value, 0);
+
+        /// <summary>
+        /// Create an absolute value.
+        /// </summary>
+        public static Value AbsoluteValue(double value) => new Value(0, value);
+
+        /// <summary>
         /// The components of a position.
         /// </summary>
         public readonly record struct Value(double Relative, double Absolute)
         {
+            /// <summary>
+            /// A value of zero.
+            /// </summary>
+            public static readonly Value Zero = new Value(0, 0);
+
+            /// <summary>
+            /// 50%
+            /// </summary>
+            public static readonly Value Half = new Value(0.5, 0);
+
+            /// <summary>
+            /// 100%
+            /// </summary>
+            public static readonly Value Full = new Value(1, 0);
+
             /// <summary>
             /// Take the complement of this component.
             /// </summary>

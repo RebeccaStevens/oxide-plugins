@@ -31,16 +31,16 @@ public partial class UiBuilderLibrary
                 {
                     PositionAnchor.UpperCenter or
                         PositionAnchor.MiddleCenter or
-                        PositionAnchor.LowerCenter => new Bounds.Value(1, 0),
-                    _ => new Bounds.Value(1, 0) - x
+                        PositionAnchor.LowerCenter => Bounds.Value.Full,
+                    _ => Bounds.Value.Full - x
                 }).TakeComplement();
             var complementHeight = childState.Element.HeightContext.GetBoundsValue(childState,
                 childState.Element.Anchor switch
                 {
                     PositionAnchor.MiddleLeft or
                         PositionAnchor.MiddleCenter or
-                        PositionAnchor.MiddleRight => new Bounds.Value(1, 0),
-                    _ => new Bounds.Value(1, 0) - y
+                        PositionAnchor.MiddleRight => Bounds.Value.Full,
+                    _ => Bounds.Value.Full - y
                 }).TakeComplement();
             var (topFactor, rightFactor, bottomFactor, leftFactor) =
                 PositionAnchorToEdgeFactors(childState.Element.Anchor);
