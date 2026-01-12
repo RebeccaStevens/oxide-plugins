@@ -1,4 +1,3 @@
-using System.Linq;
 using Oxide.Game.Rust.Cui;
 
 namespace Oxide.Plugins;
@@ -19,14 +18,12 @@ public partial class UiBuilderLibrary
             }
 
             /// <inheritdoc/>
-            protected override ElementCuiElements CreateCuiElements()
+            protected override void AddCuiComponents(ElementCuiElements cuiElements)
             {
-                var cuiElements = base.CreateCuiElements();
                 Debug.AssertNotNull(cuiElements.Root);
-
+                base.AddCuiComponents(cuiElements);
                 cuiElements.Root.AddComponent(new CuiNeedsCursorComponent());
                 cuiElements.Root.AddComponent(new CuiNeedsKeyboardComponent());
-                return cuiElements;
             }
         }
     }

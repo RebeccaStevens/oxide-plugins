@@ -37,14 +37,20 @@ public partial class UiBuilderLibrary
 
             ContentBounds.MaximizePosition();
             ContentBounds.AddPosition(Element.Padding.GetInnerBounds(this));
-
-            // Workaround for how the client renders nested elements.
-            CuiBounds.FromRight += new Bounds.Value(0, 1);
-            ContentBounds.FromRight += new Bounds.Value(0, -1);
         }
 
         /// <inheritdoc/>
-        protected override ElementCuiElements CreateCuiElements()
+        protected sealed override ElementCuiElements CreateCuiElements()
+        {
+            var cuiElements = CreateCuiElementsBase();
+            AddCuiComponents(cuiElements);
+            return cuiElements;
+        }
+
+        /// <summary>
+        /// Create the CUI elements for this state without adding any CUI components to them.
+        /// </summary>
+        protected virtual ElementCuiElements CreateCuiElementsBase()
         {
             var root = new SafeCuiElement(GetCuiRootName(), GetParentCuiContentName());
             var content = Element.GetChildren().Any()
@@ -52,10 +58,6 @@ public partial class UiBuilderLibrary
                 : null; // Content isn't needed if there are no children.
 
             root.SetPosition(CuiBounds);
-            root.AddComponent(new CuiImageComponent { Color = ColorToCuiColor(Element.BgColor) });
-            if (Element.HasBorder())
-                root.AddComponents(Element.Border.ApplyState(this));
-
             content?.SetPosition(ContentBounds);
 
             var components = new ElementCuiElements
@@ -70,6 +72,19 @@ public partial class UiBuilderLibrary
             }
 
             return components;
+        }
+
+        /// <summary>
+        /// Add CUI components to the CUI elements for this state.
+        /// </summary>
+        /// <param name="cuiElements">The CUI elements to add components to.</param>
+        protected virtual void AddCuiComponents(ElementCuiElements cuiElements)
+        {
+            Debug.AssertNotNull(cuiElements.Root);
+
+            cuiElements.Root.AddComponent(new CuiImageComponent { Color = ColorToCuiColor(Element.BgColor) });
+            if (Element.HasBorder())
+                cuiElements.Root.AddComponents(Element.Border.ApplyState(this));
         }
     }
 }

@@ -185,6 +185,12 @@ public partial class UiBuilderLibrary
         public ElementCuiElements GetCuiElements()
         {
             ComputeInternalBounds();
+
+            // Workaround for how the client renders nested elements.
+            // For some reason this fixes things in both the x and y directions.
+            CuiBounds.FromRight += new Bounds.Value(0, 1);
+            ContentBounds.FromRight += new Bounds.Value(0, -1);
+
             return CreateCuiElements();
         }
 
