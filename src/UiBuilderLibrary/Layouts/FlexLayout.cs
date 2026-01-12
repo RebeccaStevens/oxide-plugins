@@ -14,11 +14,6 @@ public partial class UiBuilderLibrary
     public class FlexLayout : DynamicElementLayout
     {
         /// <summary>
-        /// The element this layout is for.
-        /// </summary>
-        protected readonly Element Element;
-
-        /// <summary>
         /// The direction of the flex layout.
         /// </summary>
         public FlexDirection Direction = FlexDirection.Horizontal;
@@ -34,18 +29,9 @@ public partial class UiBuilderLibrary
         public ItemAlignment AlignItems = ItemAlignment.Stretch;
 
         /// <summary>
-        /// The context for the spacing between elements.
-        /// </summary>
-        internal readonly SizeContext GapContext;
-
-        /// <summary>
         /// The spacing between elements.
         /// </summary>
-        public Size Gap
-        {
-            get => GapContext.Get();
-            set => GapContext.Set(value);
-        }
+        public Size Gap = Size.Zero;
 
         /// <summary>
         /// The results of the computed layout.
@@ -55,11 +41,8 @@ public partial class UiBuilderLibrary
         /// <summary>
         /// Create a new FlexLayout for the given element.
         /// </summary>
-        /// <param name="element">The element this layout is for - if that element doesn't already have a layout, this layout will be assigned to it.</param>
-        public FlexLayout(Element element) : base(element)
+        public FlexLayout()
         {
-            Element = element;
-            GapContext = new SizeContext("Gap", element, Size.Zero);
             layoutData = new ConditionalWeakTable<ElementState, Bounds>();
         }
 
@@ -76,6 +59,7 @@ public partial class UiBuilderLibrary
             var majorAxis = ToAxis(Direction);
             var majorAxisChildrenExplicitSize = new Bounds.Value();
             var numberOfImplicitlySizedChildren = 0;
+            var gapContext = new SizeContext("Gap", state.Element, Gap);
 
             IEnumerable<(ElementState state, (SizeContext Major, SizeContext Minor) SizeContext)> childrenData =
                 childrenStates.Select(childState => (childState, GetSizeContext(childState))).ToArray();
@@ -94,7 +78,7 @@ public partial class UiBuilderLibrary
             {
                 JustifyAlignment.Start or
                     JustifyAlignment.Center or
-                    JustifyAlignment.End => GapContext.GetBoundsValue(state),
+                    JustifyAlignment.End => gapContext.GetBoundsValue(state),
                 JustifyAlignment.SpaceBetween =>
                     (Bounds.Value.Full - majorAxisChildrenExplicitSize) / gapCount,
                 JustifyAlignment.SpaceAround =>
@@ -187,7 +171,6 @@ public partial class UiBuilderLibrary
         /// <inheritdoc/>
         protected override void PositionChild(ElementState childState)
         {
-            Element.AssertIsChild(childState.Element);
             layoutData.TryGetValue(childState, out var bounds);
             Panic.IfNull(bounds, "No bounds have been computed for this element.");
             childState.Bounds.SetTo(bounds);

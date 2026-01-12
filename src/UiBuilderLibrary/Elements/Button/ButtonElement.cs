@@ -145,7 +145,7 @@ public partial class UiBuilderLibrary
             Padding.SetSize(Size.Pixels(8), Size.Zero);
             Width = Size.Pixels(128);
             Height = Size.Pixels(32);
-            Layout = new FlexLayout(this)
+            Layout = new FlexLayout()
             {
                 Direction = FlexLayout.FlexDirection.Horizontal,
                 AlignItems = FlexLayout.ItemAlignment.Center,

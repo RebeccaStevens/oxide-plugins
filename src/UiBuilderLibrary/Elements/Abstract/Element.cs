@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 
 namespace Oxide.Plugins;
 
@@ -166,7 +165,6 @@ public partial class UiBuilderLibrary
             if (parent == null)
                 return;
             parent.children.Add(this);
-            parent.layout?.MarkDirty(); // A layout needs to be recomputed when its children change.
         }
 
         /// <summary>
@@ -384,16 +382,5 @@ public partial class UiBuilderLibrary
         /// <param name="player">The player to create the state for.</param>
         /// <returns>A new state for this element for the given player.</returns>
         protected abstract ElementState InitialState(BasePlayer player);
-
-        /// <summary>
-        /// Assert that the given element is a child of this element.
-        /// </summary>
-        /// <param name="child">The element to assert is a child of this element.</param>
-        [Conditional("DEBUG")]
-        internal void AssertIsChild(Element child)
-        {
-            Debug.Assert(children.Contains(child),
-                $"The given element ({child.Name}) is not a child of this element ({Name}).");
-        }
     }
 }

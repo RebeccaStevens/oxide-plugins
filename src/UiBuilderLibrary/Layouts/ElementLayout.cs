@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Oxide.Game.Rust.Cui;
 
@@ -11,11 +12,6 @@ public partial class UiBuilderLibrary
     public abstract class ElementLayout
     {
         /// <summary>
-        /// Does the layout needs recomputing.
-        /// </summary>
-        protected bool IsDirty { get; set; }
-
-        /// <summary>
         /// Create a new layout.
         /// </summary>
         protected ElementLayout()
@@ -23,19 +19,13 @@ public partial class UiBuilderLibrary
         }
 
         /// <summary>
-        /// Mark that this layout needs recomputing.
-        /// </summary>
-        public abstract void MarkDirty();
-
-        /// <summary>
         /// Update the bounds of the given child element to position it in this layout.
         /// </summary>
         /// <param name="childState">The state of a child element of this layout's element.</param>
         protected abstract void PositionChild(ElementState childState);
 
-
         /// <summary>
-        /// Prepare this layout for positioning the element in the its current state.
+        /// Prepare this layout for positioning its children and any adjustments needed to the container element.
         /// </summary>
         /// <param name="state">The state of the element to position.</param>
         /// <returns>The cui components that should be added to the element's cui parent.</returns>
@@ -48,8 +38,6 @@ public partial class UiBuilderLibrary
         public static void PositionElementInParent(ElementState state)
         {
             var parentLayout = GetParentLayoutOf(state);
-            Debug.Assert(!parentLayout.IsDirty,
-                "Trying to position an element in a layout that is not prepared.");
             parentLayout.PositionChild(state);
         }
 
@@ -70,13 +58,6 @@ public partial class UiBuilderLibrary
         /// <inheritdoc cref="StaticElementLayout"/>
         protected StaticElementLayout()
         {
-            IsDirty = false;
-        }
-
-        /// <inheritdoc/>
-        public override void MarkDirty()
-        {
-            // Do nothing - the layout is static.
         }
 
         /// <inheritdoc/>
@@ -91,23 +72,10 @@ public partial class UiBuilderLibrary
     /// </summary>
     public abstract class DynamicElementLayout : ElementLayout
     {
-        /// <summary>
-        /// The thing that this layout is for.
-        /// </summary>
-        internal Element For;
-
         /// <inheritdoc cref="DynamicElementLayout"/>
-        /// <param name="element">The element this layout is for.</param>
-        protected DynamicElementLayout(Element element)
+        protected DynamicElementLayout()
         {
-            IsDirty = true;
-            For = element;
-            if (!element.HasLayout())
-                element.Layout = this;
         }
-
-        /// <inheritdoc/>
-        public override void MarkDirty() => IsDirty = true;
 
         /// <summary>
         /// Compute the layout of the element.
@@ -117,14 +85,7 @@ public partial class UiBuilderLibrary
         /// <inheritdoc/>
         public override List<ICuiComponent>? Prepare(ElementState state)
         {
-            Debug.Assert((state.Element.Layout as DynamicElementLayout)?.For == state.Element,
-                "The layout assigned to the element is not for the element.");
-
-            // Compute this layout.
-            if (IsDirty)
-                ComputeLayout(state);
-            IsDirty = false;
-
+            ComputeLayout(state);
             return null;
         }
     }

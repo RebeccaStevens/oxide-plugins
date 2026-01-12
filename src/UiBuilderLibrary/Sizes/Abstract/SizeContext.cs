@@ -7,7 +7,7 @@ public partial class UiBuilderLibrary
     /// <summary>
     /// A size that is applied to an element.
     /// </summary>
-    internal class SizeContext
+    public class SizeContext
     {
         /// <summary>
         /// A label for this size.<br />

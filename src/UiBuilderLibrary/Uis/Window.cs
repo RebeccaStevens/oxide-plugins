@@ -66,7 +66,7 @@ public partial class UiBuilderLibrary
             Root.Name = "window";
             Root.Margin.SetSize(Size.Pixels(24));
             Root.Border.SetSize(Size.Pixels(2));
-            Root.Layout = new FlexLayout(Root)
+            Root.Layout = new FlexLayout()
             {
                 Direction = FlexLayout.FlexDirection.Vertical,
                 AlignItems = FlexLayout.ItemAlignment.Stretch,
@@ -75,7 +75,7 @@ public partial class UiBuilderLibrary
 
             titleBar.Height = Size.Pixels(30);
             titleBar.BgColor = ColorPallete.OverlayDarkenLevel1;
-            titleBar.Layout = new FlexLayout(titleBar)
+            titleBar.Layout = new FlexLayout()
             {
                 Direction = FlexLayout.FlexDirection.Horizontal,
                 AlignItems = FlexLayout.ItemAlignment.Stretch,
