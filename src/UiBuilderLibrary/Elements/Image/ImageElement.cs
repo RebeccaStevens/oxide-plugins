@@ -7,16 +7,16 @@ public partial class UiBuilderLibrary
     /// <summary>
     /// An image element.
     /// </summary>
-    public partial class ImageElement : PanelElementBase
+    public partial class ImageElement : BoxModelElementState
     {
-        /// <inheritdoc cref="PanelElementBase.Color"/>
+        /// <inheritdoc cref="BoxModelElementState.Color"/>
         public new Color Color
         {
             get => base.Color;
             set => base.Color = value;
         }
 
-        /// <inheritdoc cref="PanelElementBase.Sprite"/>
+        /// <inheritdoc cref="BoxModelElementState.Sprite"/>
         public new string? Sprite
         {
             get => base.Sprite;

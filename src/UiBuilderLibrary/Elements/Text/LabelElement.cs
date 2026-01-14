@@ -8,14 +8,14 @@ public partial class UiBuilderLibrary
     /// <summary>
     /// An label element.
     /// </summary>
-    public partial class LabelElement : PanelElementBase
+    public partial class LabelElement : BoxModelElementState
     {
         /// <summary>
         /// The text of the label.
         /// </summary>
         public string Text;
 
-        /// <inheritdoc cref="PanelElementBase.Color"/>
+        /// <inheritdoc cref="BoxModelElementState.Color"/>
         public Color TextColor
         {
             get => Color;

@@ -7,7 +7,7 @@ public partial class UiBuilderLibrary
     /// <summary>
     /// A simple panel element.
     /// </summary>
-    public class PanelElement : PanelElementBase
+    public class PanelElement : BoxModelElementState
     {
         /// <summary>
         /// The background color of the element.
@@ -17,7 +17,7 @@ public partial class UiBuilderLibrary
             set => Color = value;
         }
 
-        /// <inheritdoc cref="PanelElementBase.Material"/>
+        /// <inheritdoc cref="BoxModelElementState.Material"/>
         public new string? Material
         {
             get => base.Material;

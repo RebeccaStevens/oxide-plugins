@@ -5,9 +5,9 @@ namespace Oxide.Plugins;
 public partial class UiBuilderLibrary
 {
     /// <summary>
-    /// The base class for all panel elements.
+    /// An element that has a margin, border, and padding.
     /// </summary>
-    public abstract class PanelElementBase : Element
+    public abstract class BoxModelElementState : Element
     {
         /// <summary>
         /// The padding applied to this element.
@@ -43,21 +43,21 @@ public partial class UiBuilderLibrary
         /// Create a new panel element.
         /// </summary>
         /// <param name="parent">The parent of this element.</param>
-        protected PanelElementBase(Element parent) : this(parent, null)
+        protected BoxModelElementState(Element parent) : this(parent, null)
         {
         }
 
         /// <summary>
         /// Create a new top level panel element.
         /// </summary>
-        protected PanelElementBase(string layer) : this(null, layer)
+        protected BoxModelElementState(string layer) : this(null, layer)
         {
         }
 
         /// <summary>
         /// Create a new panel element.
         /// </summary>
-        protected PanelElementBase(Element? parent, string? layer) : base(parent, layer)
+        protected BoxModelElementState(Element? parent, string? layer) : base(parent, layer)
         {
             Padding = new DirectionalSizeValues("Padding", this, Size.Zero);
         }
@@ -68,6 +68,6 @@ public partial class UiBuilderLibrary
         public bool HasBorder() => outline?.HasSize() ?? false;
 
         /// <inheritdoc/>
-        protected override ElementState InitialState(BasePlayer player) => new PanelElementState(this, player);
+        protected override ElementState InitialState(BasePlayer player) => new BoxModelElementStateState(this, player);
     }
 }

@@ -6,17 +6,17 @@ namespace Oxide.Plugins;
 public partial class UiBuilderLibrary
 {
     /// <inheritdoc cref="ElementState"/>
-    public class PanelElementState : ElementState
+    public class BoxModelElementStateState : ElementState
     {
         /// <inheritdoc cref="ElementState.Element"/>
-        public new PanelElementBase Element => (PanelElementBase)base.Element;
+        public new BoxModelElementState Element => (BoxModelElementState)base.Element;
 
         /// <inheritdoc cref="ElementState"/>
-        public PanelElementState(PanelElementBase element, BasePlayer player) : base(element, player)
+        public BoxModelElementStateState(BoxModelElementState element, BasePlayer player) : base(element, player)
         {
         }
 
-        internal PanelElementState(PanelElementBase element, BasePlayer player, string id) : base(element, player, id)
+        internal BoxModelElementStateState(BoxModelElementState element, BasePlayer player, string id) : base(element, player, id)
         {
         }
 

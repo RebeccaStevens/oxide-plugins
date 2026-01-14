@@ -7,9 +7,9 @@ public partial class UiBuilderLibrary
     public partial class LabelElement
     {
         /// <inheritdoc/>
-        public class LabelElementState : PanelElementState
+        public class LabelElementState : BoxModelElementStateState
         {
-            /// <inheritdoc cref="PanelElementState.Element"/>
+            /// <inheritdoc cref="BoxModelElementStateState.Element"/>
             public new LabelElement Element => (LabelElement)base.Element;
 
             /// <inheritdoc cref="LabelElementState(LabelElement, BasePlayer)"/>
