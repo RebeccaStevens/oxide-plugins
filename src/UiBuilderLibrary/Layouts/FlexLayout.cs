@@ -14,6 +14,13 @@ public partial class UiBuilderLibrary
     public class FlexLayout : DynamicElementLayout
     {
         /// <summary>
+        /// Stores where each element is positioned.<br/>
+        /// This assumes that each element is only positioned within a single layout.
+        /// </summary>
+        private static readonly ConditionalWeakTable<ElementState, Bounds> LayoutData =
+            new ConditionalWeakTable<ElementState, Bounds>();
+
+        /// <summary>
         /// The direction of the flex layout.
         /// </summary>
         public FlexDirection Direction = FlexDirection.Horizontal;
@@ -32,19 +39,6 @@ public partial class UiBuilderLibrary
         /// The spacing between elements.
         /// </summary>
         public Size Gap = Size.Zero;
-
-        /// <summary>
-        /// The results of the computed layout.
-        /// </summary>
-        private readonly ConditionalWeakTable<ElementState, Bounds> layoutData;
-
-        /// <summary>
-        /// Create a new FlexLayout for the given element.
-        /// </summary>
-        public FlexLayout()
-        {
-            layoutData = new ConditionalWeakTable<ElementState, Bounds>();
-        }
 
         /// <inheritdoc/>
         protected override void ComputeLayout(ElementState state)
@@ -139,7 +133,7 @@ public partial class UiBuilderLibrary
                     _ => throw new ArgumentOutOfRangeException($"Invalid alignment: {AlignItems}"),
                 };
 
-                if (!layoutData.TryGetValue(child.state, out var bounds))
+                if (!LayoutData.TryGetValue(child.state, out var bounds))
                     bounds = new Bounds();
 
                 bounds.FromTop = childMinorOffset;
@@ -148,13 +142,13 @@ public partial class UiBuilderLibrary
                 bounds.FromLeft = childMajorOffset;
                 if (majorAxis == Axis.Y)
                 {
-                    // Swap the axis.
+                    // Swap the axes.
                     (bounds.FromTop, bounds.FromLeft) = (bounds.FromLeft, bounds.FromTop);
                     (bounds.FromBottom, bounds.FromRight) = (bounds.FromRight, bounds.FromBottom);
                 }
 
                 childMajorOffset += childMajorSize + gapValue;
-                layoutData.Add(child.state, bounds);
+                LayoutData.Add(child.state, bounds);
             }
         }
 
@@ -171,7 +165,7 @@ public partial class UiBuilderLibrary
         /// <inheritdoc/>
         protected override void PositionChild(ElementState childState)
         {
-            layoutData.TryGetValue(childState, out var bounds);
+            LayoutData.TryGetValue(childState, out var bounds);
             Panic.IfNull(bounds, "No bounds have been computed for this element.");
             childState.Bounds.SetTo(bounds);
         }
