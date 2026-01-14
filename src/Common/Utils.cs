@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Oxide.Plugins;
 
@@ -71,9 +72,10 @@ internal static class Utils
     /// <summary>
     /// Parse a boolean flag from the command line arguments.
     /// </summary>
-    /// <returns>The value of the flag or the default value if the flag was not present or a conflict was found.</returns>
+    /// <exception cref="InvalidDataException">Thrown if a flag value is invalid.</exception>
+    /// <exception cref="InvalidOperationException">Thrown if the flags conflict.</exception>
     public static bool ParseBooleanMultiFlag(ParsedCommandLineArgs args, char shortFlag, string longFlag,
-        char notShortFlag, string notLongFlag, bool defaultValue = default)
+        char notShortFlag, string notLongFlag, bool defaultValue = false)
     {
         var value = defaultValue;
         var trueMatches = 0;
@@ -91,23 +93,51 @@ internal static class Utils
             falseMatches += 1;
         }
 
-        if (args.LongFlags.TryGetValue(longFlag, out var syncValue))
+        if (args.LongFlags.TryGetValue(longFlag, out var stringValue))
         {
-            value = bool.TryParse(syncValue, out value) && value;
-            trueMatches += 1;
+            if (string.IsNullOrEmpty(stringValue))
+            {
+                value = true;
+                trueMatches += 1;
+            }
+            else if (bool.TryParse(stringValue, out value))
+            {
+                if (value)
+                    trueMatches += 1;
+                else
+                    falseMatches += 1;
+            }
+            else
+                throw new InvalidDataException($"Invalid value for flag {longFlag}: {stringValue}");
         }
 
-        if (args.LongFlags.TryGetValue(notLongFlag, out var noSyncValue))
+        if (args.LongFlags.TryGetValue(notLongFlag, out var stringNotValue))
         {
-            value = bool.TryParse(noSyncValue, out value) && !value;
-            falseMatches += 1;
+            if (string.IsNullOrEmpty(stringNotValue))
+            {
+                value = false;
+                falseMatches += 1;
+            }
+            else if (bool.TryParse(stringNotValue, out value))
+            {
+                value = !value;
+                if (value)
+                    trueMatches += 1;
+                else
+                    falseMatches += 1;
+            }
+            else
+                throw new InvalidDataException($"Invalid value for flag {notLongFlag}: {stringNotValue}");
         }
 
         Debug.Assert(trueMatches <= 1);
         Debug.Assert(falseMatches <= 1);
         Debug.Assert(trueMatches == 0 || falseMatches == 0);
 
-        return trueMatches == 0 || falseMatches == 0 ? value : defaultValue;
+        if (trueMatches > 0 && falseMatches > 0)
+            throw new InvalidOperationException("Conflicting boolean flags.");
+
+        return value;
     }
 
     /// <summary>

@@ -1,3 +1,5 @@
+using System;
+using System.IO;
 using Oxide.Core.Libraries.Covalence;
 
 namespace Oxide.Plugins;
@@ -55,7 +57,16 @@ public partial class UiBuilderLibrary : RustPlugin
                 return false;
             }
 
-            var sync = Utils.ParseBooleanMultiFlag(args, 's', "sync", 'S', "no-sync", true);
+            bool sync;
+            try
+            {
+                sync = Utils.ParseBooleanMultiFlag(args, 's', "sync", 'S', "no-sync", true);
+            }
+            catch (Exception e) when (e is InvalidDataException or InvalidOperationException)
+            {
+                data.ReplyWith(e.Message);
+                return false;
+            }
 
             var player = (BasePlayer)data.Connection.player;
             var uisClosed = 0;
