@@ -12,7 +12,7 @@ public partial class UiBuilderLibrary
     /// </summary>
     public class OutlineElementComponent : IElementComponent
     {
-        // TODO: Support other sizes - will require converting over sizes to pixels.
+        // TODO: Support other sizes - will require converting other sizes to pixels.
 
         private Size.PixelSize? xSize;
         private Size.PixelSize? ySize;

@@ -21,7 +21,7 @@ public partial class UiBuilderLibrary
         /// </summary>
         public Axis Axis;
 
-        // TODO: Support other sizes - will require converting over sizes to pixels.
+        // TODO: Support other sizes - will require converting other sizes to pixels.
         private Size.PixelSize? gapSize;
 
         /// <summary>
