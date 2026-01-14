@@ -23,9 +23,11 @@ public partial class UiBuilderLibrary
         public Size X
         {
             get => xSize ??= (Size.PixelSize)Size.Zero;
-            set {
+            set
+            {
                 if (value is not Size.PixelSize size)
-                    throw new InvalidOperationException("Only pixel sizes are currently supported for outline offsets.");
+                    throw new InvalidOperationException(
+                        "Only pixel sizes are currently supported for outline offsets.");
                 xSize = size;
             }
         }

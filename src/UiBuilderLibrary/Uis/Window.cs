@@ -23,17 +23,14 @@ public partial class UiBuilderLibrary
             /// The title bar of the window.
             /// </summary>
             PanelElement TitleBar,
-
             /// <summary>
             /// The label displayed in the title bar.
             /// </summary>
             LabelElement WindowLabel,
-
             /// <summary>
             /// The divider between the title bar and the main panel.
             /// </summary>
             PanelElement Divider,
-
             /// <summary>
             /// The close button of the window.
             /// </summary>

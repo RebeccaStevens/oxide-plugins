@@ -16,7 +16,8 @@ public partial class UiBuilderLibrary
         {
         }
 
-        internal BoxModelElementStateState(BoxModelElementState element, BasePlayer player, string id) : base(element, player, id)
+        internal BoxModelElementStateState(BoxModelElementState element, BasePlayer player, string id) : base(element,
+            player, id)
         {
         }
 

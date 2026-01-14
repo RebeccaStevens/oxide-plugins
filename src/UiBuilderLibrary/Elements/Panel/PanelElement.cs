@@ -12,7 +12,8 @@ public partial class UiBuilderLibrary
         /// <summary>
         /// The background color of the element.
         /// </summary>
-        public Color BgColor {
+        public Color BgColor
+        {
             get => Color;
             set => Color = value;
         }

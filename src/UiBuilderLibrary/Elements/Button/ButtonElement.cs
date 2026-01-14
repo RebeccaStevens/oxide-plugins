@@ -31,7 +31,8 @@ public partial class UiBuilderLibrary
         /// <summary>
         /// The color of the icon when it is highlighted.
         /// </summary>
-        public Color BgColorHighlighted {
+        public Color BgColorHighlighted
+        {
             get => bgColorHighlighted ??= ColorMultiply(Color, 1.2f);
             set => bgColorHighlighted = value;
         }
@@ -44,7 +45,8 @@ public partial class UiBuilderLibrary
         /// <summary>
         /// The color of the icon when it is pressed.
         /// </summary>
-        public Color BgColorPressed {
+        public Color BgColorPressed
+        {
             get => bgColorPressed ??= ColorMultiply(Color, 0.8f);
             set => bgColorPressed = value;
         }
@@ -57,7 +59,8 @@ public partial class UiBuilderLibrary
         /// <summary>
         /// The color of the icon when it is selected.
         /// </summary>
-        public Color BgColorSelected {
+        public Color BgColorSelected
+        {
             get => bgColorSelected ??= ColorPallete.RustGreen;
             set => bgColorSelected = value;
         }
@@ -70,7 +73,8 @@ public partial class UiBuilderLibrary
         /// <summary>
         /// The color of the icon when it is disabled.
         /// </summary>
-        public Color BgColorDisabled {
+        public Color BgColorDisabled
+        {
             get => bgColorDisabled ??= ColorMultiply(Color, 0.4f);
             set => bgColorDisabled = value;
         }
@@ -107,7 +111,7 @@ public partial class UiBuilderLibrary
             {
                 Name = $"{Name}-label",
                 Weight = -1,
-                TextAlignment = TextAnchor.MiddleCenter ,
+                TextAlignment = TextAnchor.MiddleCenter,
                 TextColor = ColorPallete.TextRegular,
                 Font = Font.Regular,
                 FontSize = Size.Pixels(18),

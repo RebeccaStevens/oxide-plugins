@@ -119,7 +119,8 @@ public partial class UiBuilderLibrary
         /// </summary>
         public Size Size
         {
-            set {
+            set
+            {
                 Width = value;
                 Height = value;
             }
@@ -162,9 +163,7 @@ public partial class UiBuilderLibrary
             HeightContext = new SizeContext("Height", this, Size.Auto);
             Margin = new DirectionalSizeValues("Margin", this, Size.Zero);
 
-            if (parent == null)
-                return;
-            parent.children.Add(this);
+            parent?.children.Add(this);
         }
 
         /// <summary>
