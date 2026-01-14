@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using Facepunch;
 
 namespace Oxide.Plugins;
 
@@ -259,7 +260,7 @@ public class WeakableValueDictionary<TKey, TValue> : IDictionary<TKey, TValue> w
     {
         get
         {
-            List<TKey> keys = new();
+            var keys = Pool.Get<List<TKey>>();
             var nullCount = 0;
 
             foreach (var kvp in dict)
@@ -271,7 +272,9 @@ public class WeakableValueDictionary<TKey, TValue> : IDictionary<TKey, TValue> w
             }
 
             AutoCleanup(nullCount);
-            return keys;
+            var result = keys.ToArray();
+            Pool.FreeUnmanaged(ref keys);
+            return result;
         }
     }
 
@@ -280,7 +283,7 @@ public class WeakableValueDictionary<TKey, TValue> : IDictionary<TKey, TValue> w
     {
         get
         {
-            List<TValue> values = new();
+            var values = Pool.Get<List<TValue>>();
             var nullCount = 0;
 
             foreach (var kvp in dict)
@@ -292,7 +295,9 @@ public class WeakableValueDictionary<TKey, TValue> : IDictionary<TKey, TValue> w
             }
 
             AutoCleanup(nullCount);
-            return values;
+            var result = values.ToArray();
+            Pool.FreeUnmanaged(ref values);
+            return result;
         }
     }
 

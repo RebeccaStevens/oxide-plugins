@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Facepunch;
 using Oxide.Game.Rust.Cui;
 
 namespace Oxide.Plugins;
@@ -106,7 +107,7 @@ public partial class UiBuilderLibrary
         /// <param name="markAsNoLongerNeedingResync">If true, each state that is returned will have its NeedsSync property set to false.</param>
         internal IEnumerable<ElementState> GetStatesNeedingSync(bool markAsNoLongerNeedingResync)
         {
-            var list = new List<ElementState>();
+            var list = Pool.Get<List<ElementState>>();
 
             var stack = new Stack<ElementState>();
             stack.Push(this);
@@ -128,7 +129,9 @@ public partial class UiBuilderLibrary
                     stack.Push(childState);
             }
 
-            return list;
+            var result = list.ToArray();
+            Pool.FreeUnmanaged(ref list);
+            return result;
         }
 
         /// <summary>
