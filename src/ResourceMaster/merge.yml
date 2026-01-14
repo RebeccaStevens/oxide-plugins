@@ -1,0 +1,62 @@
+# What platform to write the code file for (Oxide)
+Platform: Oxide
+Merge Settings:
+  # Outputted plugin name
+  Plugin Name: ResourceMaster
+  # Which type of file to output (Plugin, Framework, or MergeFramework)
+  Creator Mode: Plugin
+  # Overrides the default namespace
+  Namespace Override: ''
+  # Paths to use when reading in source code relative to the merge config
+  Plugin Input Paths:
+  - ./
+  - ../Common
+  # Paths to use when writing the plugin file relative to the merge config
+  Plugin Output Paths:
+  - ../../plugins
+  # Oxide //References: definitions
+  Reference Definitions: []
+  # Oxide //Requires: definitions
+  Requires Definitions: []
+  # #define definitions
+  Define Definitions:
+  - DEBUG
+  # Paths to be ignored when searching for source code relative to merge config
+  Ignore Paths: []
+  # Files to be ignored when searching for source code relative to merge config
+  Ignore Files: []
+  # Namespaces to ignore when processing output file
+  Ignore Namespaces: []
+  Code Style:
+    # Character to use for code indents
+    Indent Character: ' '
+    # The amount of characters to use when indenting once
+    Indent Char Amount: 4
+    # Indent value will increase / decrease by this number
+    Indent Multiplier: 1
+    # String to use for new lines in code
+    New Line String: "\r\n"
+    # Adds the code file path in a region
+    Write The Relative File Path In Region: false
+    # Adds the code file path in a region
+    Keep Code Comments: true
+Preprocessor Directive Settings:
+  # Preprocessor Directives that are required to build the plugin
+  Preprocessor Directives:
+  - # The Directive That Is Required By The Plugin
+    Directive: OXIDE
+    # The Compiler Error Message Show When The Directive Is Missing
+    Error Message: This plugin requires OXIDE
+    # If This Directive Is Enabled
+    Enabled: false
+Compile Settings:
+  Assembly Paths:
+  - ../../dependencies/server/Linux/RustDedicated_Data/Managed/
+  # Ignores the following paths relative to the merge config
+  Ignore Paths:
+  - ../../dependencies/server/Linux/RustDedicated_Data/Managed/x86/
+  - ../../dependencies/server/Linux/RustDedicated_Data/Managed/x64/
+  # Ignores the following files relative to the merge config
+  Ignore Files:
+  - ../../dependencies/server/Linux/RustDedicated_Data/Managed/Newtonsoft.Json.dll
+  Compile Log Level (Hidden, Info, Warning, Error): Error

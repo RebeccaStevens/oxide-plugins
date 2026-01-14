@@ -8,6 +8,8 @@
     <PackageReference Include="MJSU.Plugin.Merge" Version="1.0.12" />
   </ItemGroup>
 
+  <Project Path="src/ConfigMaster/ConfigMaster.csproj" />
+  <Project Path="src/ResourceMaster/ResourceMaster.csproj" />
   <Project Path="src/UiBuilderLibrary/UiBuilderLibrary.csproj" />
 
   <Project Path="tests/tests.csproj" />

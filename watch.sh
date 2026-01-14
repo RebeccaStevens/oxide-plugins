@@ -2,6 +2,8 @@
 
 projects=(
     "UiBuilderLibrary"
+    "ConfigMaster"
+    "ResourceMaster"
 )
 
 # Watch for changes and rebuild.
