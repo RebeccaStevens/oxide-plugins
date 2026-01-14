@@ -8,6 +8,9 @@ public partial class UiBuilderLibrary
     /// <summary>
     /// The base class of all elements.
     /// </summary>
+    /// <remarks>
+    /// Components of elements don't need to be pooled, as elements last for the lifetime of the plugin.
+    /// </remarks>
     public abstract class Element
     {
         /// <summary>
