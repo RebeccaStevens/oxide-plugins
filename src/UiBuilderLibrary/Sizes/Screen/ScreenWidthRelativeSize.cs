@@ -23,11 +23,33 @@ public partial class UiBuilderLibrary
                 this.value = value;
             }
 
+            /// <inheritdoc/>
+            internal override Bounds.Value GetBoundsValue(ElementState state) => Bounds.AbsoluteValue(
+                ScreenPercentageToPixels(value, state.Player, Axis.X));
+
+            /// <inheritdoc/>
+            public override Size Add(Size other) =>
+                other switch
+                {
+                    ScreenWidthRelativeSize otherSize => new ScreenWidthRelativeSize(value + otherSize.value),
+                    _ => new ComputedSize(state => GetBoundsValue(state) + other.GetBoundsValue(state)),
+                };
+
+            /// <inheritdoc/>
+            public override Size Subtract(Size other) =>
+                other switch
+                {
+                    ScreenWidthRelativeSize otherSize => new ScreenWidthRelativeSize(value - otherSize.value),
+                    _ => new ComputedSize(state => GetBoundsValue(state) - other.GetBoundsValue(state)),
+                };
+
             /// <inheritdoc />
-            internal override SizeStateValue ApplyState(ElementState state, SizeContext context) =>
-                SizeStateValue.GetOrCreateValue(context, state, () =>
-                    Bounds.AbsoluteValue(ScreenPercentageToPixels(value, state.Player, Axis.X))
-                );
+            public override Size Multiply(double multiplier) =>
+                new ScreenWidthRelativeSize(value * multiplier);
+
+            /// <inheritdoc />
+            public override Size Divide(double divisor) =>
+                new ScreenWidthRelativeSize(value / divisor);
 
             /// <inheritdoc/>
             public override string ToString() => $"ScreenWidth({value * 100}%)";

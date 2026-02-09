@@ -25,8 +25,29 @@ public partial class UiBuilderLibrary
             }
 
             /// <inheritdoc/>
-            internal override SizeStateValue ApplyState(ElementState state, SizeContext context) =>
-                SizeStateValue.GetOrCreateValue(context, state, Bounds.AbsoluteValue(Value));
+            internal override Bounds.Value GetBoundsValue(ElementState state) => Bounds.AbsoluteValue(Value);
+
+            /// <inheritdoc/>
+            public override Size Add(Size other) =>
+                other switch
+                {
+                    PixelSize otherSize => new PixelSize(Value + otherSize.Value),
+                    _ => new ComputedSize(state => GetBoundsValue(state) + other.GetBoundsValue(state)),
+                };
+
+            /// <inheritdoc/>
+            public override Size Subtract(Size other) =>
+                other switch
+                {
+                    PixelSize otherSize => new PixelSize(Value - otherSize.Value),
+                    _ => new ComputedSize(state => GetBoundsValue(state) - other.GetBoundsValue(state)),
+                };
+
+            /// <inheritdoc/>
+            public override Size Multiply(double multiplier) => new PixelSize((int)(Value * multiplier));
+
+            /// <inheritdoc/>
+            public override Size Divide(double divisor) => new PixelSize((int)(Value / divisor));
 
             /// <inheritdoc/>
             public override string ToString() => $"Pixels({Value})";

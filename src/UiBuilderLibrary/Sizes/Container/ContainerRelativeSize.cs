@@ -21,9 +21,32 @@ public partial class UiBuilderLibrary
                 this.value = value;
             }
 
+            /// <inheritdoc/>
+            internal override Bounds.Value GetBoundsValue(ElementState state) => Bounds.RelativeValue(value);
+
             /// <inheritdoc />
-            internal override SizeStateValue ApplyState(ElementState state, SizeContext context) =>
-                SizeStateValue.GetOrCreateValue(context, state, Bounds.RelativeValue(value));
+            public override Size Add(Size other) =>
+                other switch
+                {
+                    ContainerRelativeSize otherSize => new ContainerRelativeSize(value + otherSize.value),
+                    _ => new ComputedSize(state => GetBoundsValue(state) + other.GetBoundsValue(state)),
+                };
+
+            /// <inheritdoc />
+            public override Size Subtract(Size other) =>
+                other switch
+                {
+                    ContainerRelativeSize otherSize => new ContainerRelativeSize(value - otherSize.value),
+                    _ => new ComputedSize(state => GetBoundsValue(state) - other.GetBoundsValue(state)),
+                };
+
+            /// <inheritdoc />
+            public override Size Multiply(double multiplier) =>
+                new ContainerRelativeSize(value * multiplier);
+
+            /// <inheritdoc />
+            public override Size Divide(double divisor) =>
+                new ContainerRelativeSize(value / divisor);
 
             /// <inheritdoc/>
             public override string ToString() => $"Container({value * 100}%)";
