@@ -45,7 +45,7 @@ public partial class UiBuilderLibrary
         /// </summary>
         protected PanelElement(Element? parent, string? layer) : base(parent, layer)
         {
-            BgColor = ColorPallete.BackgroundLevel1;
+            BgColor = Theme.Colors.BackgroundLevel1;
             Material = "assets/content/ui/ui.background.tiletex.psd";
         }
     }

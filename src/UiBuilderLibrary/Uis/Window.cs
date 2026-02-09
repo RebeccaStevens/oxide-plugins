@@ -61,8 +61,8 @@ public partial class UiBuilderLibrary
             var titleBar = new PanelElement(Root) { Name = "titleBar", Weight = -1 };
 
             Root.Name = "window";
-            Root.Margin.SetSize(Size.Pixels(24));
-            Root.Border.SetSize(Size.Pixels(2));
+            Root.Margin.SetSize(Root.Theme.Spacing.ExtraLarge);
+            Root.Border.SetSize(Root.Theme.LineThickness.Medium);
             Root.Layout = new FlexLayout()
             {
                 Direction = FlexLayout.FlexDirection.Vertical,
@@ -70,8 +70,8 @@ public partial class UiBuilderLibrary
                 JustifyContent = FlexLayout.JustifyAlignment.Start,
             };
 
-            titleBar.Height = Size.Pixels(30);
-            titleBar.BgColor = ColorPallete.OverlayDarkenLevel1;
+            titleBar.Height = Root.Theme.Spacing.Huge - Root.Theme.LineThickness.Thin;
+            titleBar.BgColor = Root.Theme.Colors.OverlayDarkenLevel1;
             titleBar.Layout = new FlexLayout()
             {
                 Direction = FlexLayout.FlexDirection.Horizontal,
@@ -84,31 +84,30 @@ public partial class UiBuilderLibrary
                 Name = "window-title-bar-label",
                 Text = "Window Title",
                 Font = Font.Bold,
-                FontSize = Size.Pixels(20),
-                TextColor = ColorPallete.TextRegular,
+                FontSize = FontSizeForHeight(titleBar.Height),
+                TextColor = Root.Theme.Colors.TextRegular,
                 TextAlignment = TextAnchor.MiddleLeft,
                 Margin =
                 {
-                    Top = Size.Pixels(0),
-                    Right = Size.Pixels(8),
-                    Bottom = Size.Pixels(0),
-                    Left = Size.Pixels(8)
+                    Top = Size.Zero,
+                    Right = titleBar.Theme.Spacing.Medium,
+                    Bottom = Size.Zero,
+                    Left = titleBar.Theme.Spacing.Medium
                 }
             };
 
             var closeButton = new ButtonElement(titleBar)
             {
                 Name = "window-close-button",
-                BgColor = ColorPallete.Red,
-                BgColorSelected = ColorPallete.Red,
-                Width = Size.Pixels(64),
+                BgColor = titleBar.Theme.Colors.Danger,
+                BgColorSelected = titleBar.Theme.Colors.Danger,
+                Width = titleBar.Theme.ItemSizing.Large,
                 Weight = 100,
                 Action = UiAction.CloseUi(this),
                 Icon =
                 {
-                    Color = ColorPallete.OnRed,
                     Sprite = "assets/icons/close.png",
-                    Size = Size.Pixels(14),
+                    Size = titleBar.Theme.FontSize.Large,
                 }
             };
 
@@ -116,8 +115,8 @@ public partial class UiBuilderLibrary
             {
                 Name = "window-divider",
                 Weight = -0.5,
-                BgColor = ColorPallete.Border,
-                Height = Size.Pixels(1),
+                BgColor = Root.Theme.Colors.Border,
+                Height = Root.Theme.LineThickness.Thin,
             };
 
             Components = new WindowComponents(

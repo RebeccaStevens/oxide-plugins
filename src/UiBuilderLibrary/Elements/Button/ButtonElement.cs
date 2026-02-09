@@ -33,7 +33,7 @@ public partial class UiBuilderLibrary
         /// </summary>
         public Color BgColorHighlighted
         {
-            get => bgColorHighlighted ??= ColorMultiply(Color, 1.2f);
+            get => bgColorHighlighted ??= Theme.Colors.ButtonHighlighted ?? ColorMultiply(Color, 1.2f);
             set => bgColorHighlighted = value;
         }
 
@@ -47,7 +47,7 @@ public partial class UiBuilderLibrary
         /// </summary>
         public Color BgColorPressed
         {
-            get => bgColorPressed ??= ColorMultiply(Color, 0.8f);
+            get => bgColorPressed ??= Theme.Colors.ButtonPressed ?? ColorMultiply(Color, 0.8f);
             set => bgColorPressed = value;
         }
 
@@ -61,7 +61,7 @@ public partial class UiBuilderLibrary
         /// </summary>
         public Color BgColorSelected
         {
-            get => bgColorSelected ??= ColorPallete.RustGreen;
+            get => bgColorSelected ??= Theme.Colors.ButtonSelected ?? Color;
             set => bgColorSelected = value;
         }
 
@@ -112,9 +112,9 @@ public partial class UiBuilderLibrary
                 Name = $"{Name}-label",
                 Weight = -1,
                 TextAlignment = TextAnchor.MiddleCenter,
-                TextColor = ColorPallete.TextRegular,
+                TextColor = Theme.Colors.TextRegular,
                 Font = Font.Regular,
-                FontSize = Size.Pixels(18),
+                FontSize = Theme.FontSize.Large,
             };
             set => label = value;
         }
@@ -133,8 +133,8 @@ public partial class UiBuilderLibrary
             {
                 Name = $"{Name}-icon",
                 Weight = -2,
-                Size = Size.Pixels(16),
-                Color = ColorPallete.TextRegular,
+                Size = Theme.FontSize.Large,
+                Color = Theme.Colors.Icon,
             };
             set => icon = value;
         }
@@ -144,17 +144,17 @@ public partial class UiBuilderLibrary
         /// </summary>
         public ButtonElement(Element element) : base(element)
         {
-            BgColor = ColorPallete.ItemLevel1;
+            BgColor = Theme.Colors.ButtonBase;
             BgMaterial = null;
-            Padding.SetSize(Size.Pixels(8), Size.Zero);
-            Width = Size.Pixels(128);
-            Height = Size.Pixels(32);
+            Padding.SetSize(Theme.Spacing.Medium, Size.Zero);
+            Width = Theme.ItemSizing.ExtraLarge;
+            Height = Theme.ItemSizing.Small;
             Layout = new FlexLayout()
             {
                 Direction = FlexLayout.FlexDirection.Horizontal,
                 AlignItems = FlexLayout.ItemAlignment.Center,
                 JustifyContent = FlexLayout.JustifyAlignment.Center,
-                Gap = Size.Pixels(8),
+                Gap = Theme.Spacing.Medium,
             };
         }
 

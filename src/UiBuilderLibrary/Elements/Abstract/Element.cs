@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Oxide.Plugins;
 
@@ -49,6 +50,21 @@ public partial class UiBuilderLibrary
         {
             get => layout ??= AbsoluteLayout.Use();
             set => layout = value;
+        }
+
+        private Theme? theme;
+
+        /// <summary>
+        /// The theme used to style this element and its children.<br/>
+        /// If null, the element's parent's theme will be used, or if there is no parent, the default theme will be used.<br/>
+        /// <br/>
+        /// Note: Any changes to the theme will effect all elements that share that theme.
+        /// </summary>
+        [NotNull]
+        public Theme? Theme
+        {
+            get => theme ?? (parent != null ? parent.Theme : Theme.Default);
+            set => theme = value;
         }
 
         /// <summary>

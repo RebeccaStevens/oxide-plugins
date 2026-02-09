@@ -50,7 +50,7 @@ public partial class UiBuilderLibrary
         /// <summary>
         /// The color of the outline.
         /// </summary>
-        public Color Color = ColorPallete.Border;
+        public required Color Color;
 
         /// <summary>
         /// Set the size of the outline.

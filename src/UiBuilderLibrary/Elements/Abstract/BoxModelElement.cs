@@ -22,7 +22,8 @@ public partial class UiBuilderLibrary
         /// <summary>
         /// The border applied to this element.
         /// </summary>
-        public OutlineElementComponent Border => outline ??= new OutlineElementComponent();
+        public OutlineElementComponent Border =>
+            outline ??= new OutlineElementComponent { Color = Theme.Colors.Border };
 
         /// <summary>
         /// The color of the element.
