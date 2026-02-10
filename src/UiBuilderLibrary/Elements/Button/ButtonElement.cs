@@ -7,7 +7,7 @@ public partial class UiBuilderLibrary
     /// <summary>
     /// A button element.
     /// </summary>
-    public partial class ButtonElement : BoxModelElementState
+    public partial class ButtonElement : BoxModelElement
     {
         /// <summary>
         /// Whether the button is enabled or not.
@@ -85,7 +85,7 @@ public partial class UiBuilderLibrary
         /// </summary>
         public float BgColorMultiplier = 1f;
 
-        /// <inheritdoc cref="BoxModelElementState.Material"/>
+        /// <inheritdoc cref="BoxModelElement.Material"/>
         public string? BgMaterial
         {
             get => Material;

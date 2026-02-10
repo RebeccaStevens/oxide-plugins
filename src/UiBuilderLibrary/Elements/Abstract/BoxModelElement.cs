@@ -7,7 +7,7 @@ public partial class UiBuilderLibrary
     /// <summary>
     /// An element that has a margin, border, and padding.
     /// </summary>
-    public abstract class BoxModelElementState : Element
+    public abstract class BoxModelElement : Element
     {
         /// <summary>
         /// The padding applied to this element.
@@ -44,21 +44,21 @@ public partial class UiBuilderLibrary
         /// Create a new panel element.
         /// </summary>
         /// <param name="parent">The parent of this element.</param>
-        protected BoxModelElementState(Element parent) : this(parent, null)
+        protected BoxModelElement(Element parent) : this(parent, null)
         {
         }
 
         /// <summary>
         /// Create a new top level panel element.
         /// </summary>
-        protected BoxModelElementState(string layer) : this(null, layer)
+        protected BoxModelElement(string layer) : this(null, layer)
         {
         }
 
         /// <summary>
         /// Create a new panel element.
         /// </summary>
-        protected BoxModelElementState(Element? parent, string? layer) : base(parent, layer)
+        protected BoxModelElement(Element? parent, string? layer) : base(parent, layer)
         {
             Padding = new DirectionalSizeValues("Padding", this, Size.Zero);
         }
@@ -69,6 +69,6 @@ public partial class UiBuilderLibrary
         public bool HasBorder() => outline?.HasSize() ?? false;
 
         /// <inheritdoc/>
-        protected override ElementState InitialState(BasePlayer player) => new BoxModelElementStateState(this, player);
+        protected override ElementState InitialState(BasePlayer player) => new BoxModelElementState(this, player);
     }
 }

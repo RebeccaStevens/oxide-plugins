@@ -7,9 +7,9 @@ public partial class UiBuilderLibrary
     public partial class ButtonElement
     {
         /// <inheritdoc/>
-        public class ButtonElementState : BoxModelElementStateState
+        public class ButtonElementState : BoxModelElementState
         {
-            /// <inheritdoc cref="BoxModelElementStateState.Element"/>
+            /// <inheritdoc cref="BoxModelElementState.Element"/>
             public new ButtonElement Element => (ButtonElement)base.Element;
 
             /// <inheritdoc cref="ButtonElementState(ButtonElement, BasePlayer)"/>
