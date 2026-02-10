@@ -24,7 +24,6 @@ public partial class UiBuilderLibrary
 
                 cuiElements.Root.AddComponent(new CuiButtonComponent
                 {
-                    Enabled = Element.Enabled,
                     NormalColor = ColorToCuiColor(Element.BgColor),
                     DisabledColor = ColorToCuiColor(Element.BgColorDisabled),
                     HighlightedColor = ColorToCuiColor(Element.BgColorHighlighted),

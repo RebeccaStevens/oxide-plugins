@@ -10,11 +10,6 @@ public partial class UiBuilderLibrary
     public partial class ButtonElement : BoxModelElement
     {
         /// <summary>
-        /// Whether the button is enabled or not.
-        /// </summary>
-        public bool Enabled = true;
-
-        /// <summary>
         /// The background color of the element.
         /// </summary>
         public Color BgColor
