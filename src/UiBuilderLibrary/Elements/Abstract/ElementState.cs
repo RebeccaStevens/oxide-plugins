@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Facepunch;
+using Oxide.Core;
 using Oxide.Game.Rust.Cui;
 
 namespace Oxide.Plugins;
@@ -47,7 +48,7 @@ public partial class UiBuilderLibrary
         /// <summary>
         /// Does this state need to be (re)sent to the player?
         /// </summary>
-        protected bool NeedsSync { get; private set; }
+        protected bool NeedsSync { get; set; }
 
         /// <summary>
         /// States whether the element is being displayed to the player.
@@ -132,6 +133,28 @@ public partial class UiBuilderLibrary
             var result = list.ToArray();
             Pool.FreeUnmanaged(ref list);
             return result;
+        }
+
+        /// <summary>
+        /// Send all states in this state's hierarchy needing to be synced to the player.
+        /// </summary>
+        public void Sync()
+        {
+            var resyncStates = GetStatesNeedingSync(true);
+
+            var (createNewStates, destroyOldStates) =
+                TransposeAndFlatten(resyncStates.Select(ElementStateToJson));
+
+            var dataComponents = destroyOldStates.Concat(createNewStates).ToArray();
+            if (dataComponents.Length == 0)
+            {
+                Interface.Oxide.LogDebug("Cannot open UI: nothing to display (or remove).");
+                return;
+            }
+
+            var data = $"[{string.Join(",", dataComponents)}]";
+            CuiHelper.AddUi(Player, data);
+            // builder.Puts(data);
         }
 
         /// <summary>
@@ -246,6 +269,39 @@ public partial class UiBuilderLibrary
 
             public IEnumerable<SafeCuiElement> GetAll() =>
                 new[] { root, content }.Concat(others).OfType<SafeCuiElement>().Distinct();
+        }
+
+        /// <summary>
+        /// Get a JSON representation of the given element state.
+        /// </summary>
+        /// <param name="state">What to encode.</param>
+        /// <returns>A tuple of JSON representations of the new objects to create and the old objects to destroy.</returns>
+        private static (IEnumerable<string> Update, IEnumerable<string> Destroy) ElementStateToJson(ElementState state)
+        {
+            if (!state.IsOpen)
+                return (
+                    Enumerable.Empty<string>(),
+                    state.GetCuiElementNames().Select(name => $"{{\"destroyUi\":\"{name}\"}}")
+                );
+
+            ElementLayout.PositionElementInParent(state);
+            var cuiComponents = state.Element.Layout.Prepare(state);
+            var cuiElements = state.GetCuiElements();
+            Debug.Assert(cuiElements.Root != null);
+            Debug.Assert(cuiElements.Content != null);
+
+            if (cuiComponents != null)
+                foreach (var component in cuiComponents)
+                    cuiElements.Content.AddComponent(component);
+
+            var allCuis = cuiElements.GetAll().ToArray();
+            var updatedStates = allCuis.Select(cuiElement => cuiElement.Encode(state));
+            var deleteStates = state
+                .GetCuiElementNames()
+                .Except(allCuis.Select(cuiElement => cuiElement.Name))
+                .Select(name => $"{{\"destroyUi\":\"{name}\"}}");
+
+            return (updatedStates, deleteStates);
         }
     }
 }

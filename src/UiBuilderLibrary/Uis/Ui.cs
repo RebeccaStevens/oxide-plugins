@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using Oxide.Core;
 using Oxide.Game.Rust.Cui;
 
 namespace Oxide.Plugins;
@@ -45,25 +43,14 @@ public partial class UiBuilderLibrary
         /// <summary>
         /// Open this UI for the given player.
         /// </summary>
-        /// <param name="player"></param>
-        public virtual void Open(BasePlayer player)
+        /// <param name="player">The player to open the UI for.</param>
+        /// <param name="sync">Whether to send the updated UI to the player.</param>
+        public virtual void Open(BasePlayer player, bool sync = true)
         {
-            var rootState = Root.Open(player);
-            var resyncStates = rootState.GetStatesNeedingSync(true);
+            var state = Root.Open(player);
 
-            var (createNewStates, destroyOldStates) =
-                TransposeAndFlatten(resyncStates.Select(ElementStateToJson));
-
-            var dataComponents = destroyOldStates.Concat(createNewStates).ToArray();
-            if (dataComponents.Length == 0)
-            {
-                Interface.Oxide.LogDebug("Cannot open UI: nothing to display (or remove).");
-                return;
-            }
-
-            var data = $"[{string.Join(",", dataComponents)}]";
-            CuiHelper.AddUi(player, data);
-            builder.Puts(data);
+            if (sync)
+                state.Sync();
         }
 
         /// <summary>
@@ -79,7 +66,7 @@ public partial class UiBuilderLibrary
                 return;
 
             if (sync)
-                CuiHelper.DestroyUi(player, state.GetCuiRootName());
+                state.Sync();
         }
 
         /// <summary>
@@ -136,39 +123,6 @@ public partial class UiBuilderLibrary
         public string GetCloseCommand(bool sync = true)
         {
             return sync ? $"{CommandClose} {Id}" : $"{CommandClose} -S {Id}";
-        }
-
-        /// <summary>
-        /// Get a JSON representation of the given element state.
-        /// </summary>
-        /// <param name="state">What to encode.</param>
-        /// <returns>A tuple of JSON representations of the new objects to create and the old objects to destroy.</returns>
-        private static (IEnumerable<string> Update, IEnumerable<string> Destroy) ElementStateToJson(ElementState state)
-        {
-            if (!state.IsOpen)
-                return (
-                    Enumerable.Empty<string>(),
-                    state.GetCuiElementNames().Select(name => $"{{\"destroyUi\":\"{name}\"}}")
-                );
-
-            ElementLayout.PositionElementInParent(state);
-            var cuiComponents = state.Element.Layout.Prepare(state);
-            var cuiElements = state.GetCuiElements();
-            Debug.Assert(cuiElements.Root != null);
-            Debug.Assert(cuiElements.Content != null);
-
-            if (cuiComponents != null)
-                foreach (var component in cuiComponents)
-                    cuiElements.Content.AddComponent(component);
-
-            var allCuis = cuiElements.GetAll().ToArray();
-            var updatedStates = allCuis.Select(cuiElement => cuiElement.Encode(state));
-            var deleteStates = state
-                .GetCuiElementNames()
-                .Except(allCuis.Select(cuiElement => cuiElement.Name))
-                .Select(name => $"{{\"destroyUi\":\"{name}\"}}");
-
-            return (updatedStates, deleteStates);
         }
     }
 }
