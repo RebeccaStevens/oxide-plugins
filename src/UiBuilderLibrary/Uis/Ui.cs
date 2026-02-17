@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using Oxide.Game.Rust.Cui;
 
 namespace Oxide.Plugins;
@@ -11,6 +12,11 @@ public partial class UiBuilderLibrary
     /// </summary>
     public abstract class Ui
     {
+        /// <summary>
+        /// The command to close a UI.
+        /// </summary>
+        private const string CommandClose = $"{CommandScope}.close";
+
         /// <summary>
         /// All UIs that have been created.
         /// </summary>
@@ -123,6 +129,53 @@ public partial class UiBuilderLibrary
         public string GetCloseCommand(bool sync = true)
         {
             return sync ? $"{CommandClose} {Id}" : $"{CommandClose} -S {Id}";
+        }
+
+        /// <summary>
+        /// Register the commands UIs have available.
+        /// </summary>
+        internal static void RegisterCommands(RustPlugin plugin, Oxide.Game.Rust.Libraries.Command cmd)
+        {
+            cmd.AddConsoleCommand(CommandClose, plugin, (data) =>
+            {
+                var args = Utils.ParseCommandLineArgs(data.Args);
+
+                if (args.Values.Count == 0)
+                {
+                    data.ReplyWith($"No ids specified.\nUsage: {CommandClose} [flags] <id> [<id> ...]");
+                    return false;
+                }
+
+                bool sync;
+                try
+                {
+                    sync = Utils.ParseBooleanMultiFlag(args, 's', "sync", 'S', "no-sync", true);
+                }
+                catch (Exception e) when (e is InvalidDataException or InvalidOperationException)
+                {
+                    data.ReplyWith(e.Message);
+                    return false;
+                }
+
+                var player = (BasePlayer)data.Connection.player;
+                var uisClosed = 0;
+                foreach (var id in args.Values)
+                {
+                    Debug.Assert(!string.IsNullOrEmpty(id));
+
+                    var ui = Ui.Find(id);
+                    if (ui == null)
+                    {
+                        data.ReplyWith($"UI with id '{id}' not found.");
+                        continue;
+                    }
+
+                    ui.Close(player, sync);
+                    uisClosed += 1;
+                }
+
+                return uisClosed > 0;
+            });
         }
     }
 }
