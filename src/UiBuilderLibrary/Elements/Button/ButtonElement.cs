@@ -23,10 +23,10 @@ public partial class UiBuilderLibrary
         public ButtonElement(Element parent) : base(parent)
         {
             Name = "button";
-            BgColor = Theme.Colors.ButtonBase;
+            BgColor = Theme.Colors.Item.Level1;
             Padding.SetSize(Theme.Spacing.Medium, Size.Zero);
-            Width = Theme.ItemSizing.ExtraLarge;
-            Height = Theme.ItemSizing.Small;
+            Width = Theme.ItemSizing.Large;
+            Height = Theme.ItemSizing.ExtraSmall;
             Layout = new FlexLayout()
             {
                 Direction = FlexLayout.FlexDirection.Horizontal,
@@ -46,7 +46,7 @@ public partial class UiBuilderLibrary
         /// </summary>
         public Color BgColorHighlighted
         {
-            get => bgColorHighlighted ??= Theme.Colors.ButtonHighlighted ?? ColorMultiply(BgColor, 1.2f);
+            get => bgColorHighlighted ??= ColorMultiply(BgColor, 1.2f);
             set => bgColorHighlighted = value;
         }
 
@@ -55,7 +55,7 @@ public partial class UiBuilderLibrary
         /// </summary>
         public Color BgColorPressed
         {
-            get => bgColorPressed ??= Theme.Colors.ButtonPressed ?? ColorMultiply(BgColor, 0.8f);
+            get => bgColorPressed ??= ColorMultiply(BgColor, 0.8f);
             set => bgColorPressed = value;
         }
 
@@ -64,7 +64,7 @@ public partial class UiBuilderLibrary
         /// </summary>
         public Color BgColorSelected
         {
-            get => bgColorSelected ??= Theme.Colors.ButtonSelected ?? BgColor;
+            get => bgColorSelected ??= BgColor;
             set => bgColorSelected = value;
         }
 
@@ -103,7 +103,7 @@ public partial class UiBuilderLibrary
                 Name = $"{Name}-label",
                 Weight = -1,
                 TextAlignment = TextAnchor.MiddleCenter,
-                TextColor = Theme.Colors.TextRegular,
+                TextColor = Theme.Colors.Text.Regular,
                 Font = Font.Regular,
                 FontSize = Theme.FontSize.Large,
             };

@@ -62,7 +62,7 @@ public partial class UiBuilderLibrary
         public LabelElement(Element parent) : base(parent, null)
         {
             Text = "[no label]";
-            TextColor = Theme.Colors.TextRegular;
+            TextColor = Theme.Colors.Text.Regular;
             Font = Font.Regular;
             FontSizeContext = new SizeContext("FontSize", this, Theme.FontSize.Medium);
             TextAlignment = TextAnchor.UpperLeft;

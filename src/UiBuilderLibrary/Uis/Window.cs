@@ -71,7 +71,7 @@ public partial class UiBuilderLibrary
             };
 
             titleBar.Height = Root.Theme.Spacing.Huge - Root.Theme.LineThickness.Thin;
-            titleBar.BgColor = Root.Theme.Colors.OverlayDarkenLevel1;
+            titleBar.BgColor = Root.Theme.Colors.OverlayDarken.Level1;
             titleBar.Layout = new FlexLayout()
             {
                 Direction = FlexLayout.FlexDirection.Horizontal,
@@ -85,7 +85,7 @@ public partial class UiBuilderLibrary
                 Text = "Window Title",
                 Font = Font.Bold,
                 FontSize = FontSizeForHeight(titleBar.Height),
-                TextColor = Root.Theme.Colors.TextRegular,
+                TextColor = Root.Theme.Colors.Text.Regular,
                 TextAlignment = TextAnchor.MiddleLeft,
                 Margin =
                 {
@@ -99,14 +99,14 @@ public partial class UiBuilderLibrary
             var closeButton = new ButtonElement(titleBar)
             {
                 Name = "window-close-button",
-                BgColor = titleBar.Theme.Colors.Danger,
-                BgColorSelected = titleBar.Theme.Colors.Danger,
-                Width = titleBar.Theme.ItemSizing.Large,
+                BgColor = titleBar.Theme.Colors.Solid.Danger,
+                BgColorSelected = titleBar.Theme.Colors.Solid.Danger,
+                Width = titleBar.Theme.ItemSizing.Medium,
                 Weight = 100,
                 OnClick = UiAction.CloseUi(this),
                 Icon =
                 {
-                    Sprite = "assets/icons/close.png",
+                    Sprite = Theme.Icons.Close,
                     Size = titleBar.Theme.FontSize.Large,
                 }
             };
