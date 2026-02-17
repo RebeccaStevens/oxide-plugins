@@ -133,6 +133,7 @@ public partial class UiBuilderLibrary
         /// </summary>
         public ButtonElement(Element element) : base(element)
         {
+            Name = "button";
             BgColor = Theme.Colors.ButtonBase;
             BgMaterial = null;
             Padding.SetSize(Theme.Spacing.Medium, Size.Zero);
