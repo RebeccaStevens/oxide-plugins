@@ -40,6 +40,7 @@ public partial class UiBuilderLibrary
         /// </summary>
         public Size Gap = Size.Zero;
 
+        // TODO: Detect if already computed.
         /// <inheritdoc/>
         protected override void ComputeLayout(ElementState state)
         {
@@ -148,7 +149,7 @@ public partial class UiBuilderLibrary
                 }
 
                 childMajorOffset += childMajorSize + gapValue;
-                LayoutData.Add(child.state, bounds);
+                LayoutData.AddOrUpdate(child.state, bounds);
             }
         }
 
