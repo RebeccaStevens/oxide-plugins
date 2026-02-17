@@ -16,6 +16,11 @@ public partial class UiBuilderLibrary
     public abstract class ElementState
     {
         /// <summary>
+        /// All open states for all elements.
+        /// </summary>
+        private static readonly Dictionary<string, ElementState> AllOpenStates = new();
+
+        /// <summary>
         /// The id of this state.
         /// </summary>
         protected readonly string Id;
@@ -53,7 +58,7 @@ public partial class UiBuilderLibrary
         /// <summary>
         /// States whether the element is being displayed to the player.
         /// </summary>
-        public bool IsOpen { get; private set; }
+        public bool IsOpen => AllOpenStates.ContainsKey(Id);
 
         /// <summary>
         /// Create the state for the element for the player.
@@ -70,7 +75,6 @@ public partial class UiBuilderLibrary
             Id = id;
             Player = player;
             NeedsSync = false;
-            IsOpen = false;
             Bounds = new Bounds();
             ContentBounds = new Bounds();
             CuiBounds = new Bounds();
@@ -164,7 +168,6 @@ public partial class UiBuilderLibrary
         {
             foreach (var child in Element.GetChildren())
                 child.Open(Player);
-            IsOpen = true;
             NeedsSync = true;
         }
 
@@ -173,7 +176,6 @@ public partial class UiBuilderLibrary
         /// </summary>
         public void Close()
         {
-            IsOpen = false;
             NeedsSync = true;
             foreach (var child in Element.GetChildren())
                 child.Close(Player);
@@ -231,6 +233,13 @@ public partial class UiBuilderLibrary
         /// </summary>
         /// <returns>The Cui Elements that make up this element.</returns>
         protected abstract ElementCuiElements CreateCuiElements();
+
+        /// <summary>
+        /// Get the element state for the given id.
+        /// </summary>
+        /// <param name="id">The id of the element state.</param>
+        /// <returns>The element state for the given id when that state is open, otherwise null.</returns>
+        public static ElementState? GetById(string id) => AllOpenStates.GetValueOrDefault(id);
 
         /// <summary>
         /// The Cui Elements for the element in this state.
