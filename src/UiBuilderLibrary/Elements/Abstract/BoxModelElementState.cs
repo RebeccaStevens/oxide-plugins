@@ -1,18 +1,17 @@
 using System.Linq;
-using Oxide.Game.Rust.Cui;
 
 namespace Oxide.Plugins;
 
 public partial class UiBuilderLibrary
 {
     /// <inheritdoc cref="ElementState"/>
-    public class BoxModelElementState : ElementState
+    public abstract class BoxModelElementState : ElementState
     {
         /// <inheritdoc cref="ElementState.Element"/>
         public new BoxModelElement Element => (BoxModelElement)base.Element;
 
         /// <inheritdoc cref="ElementState"/>
-        public BoxModelElementState(BoxModelElement element, BasePlayer player) : base(element, player)
+        protected BoxModelElementState(BoxModelElement element, BasePlayer player) : base(element, player)
         {
         }
 
@@ -73,19 +72,6 @@ public partial class UiBuilderLibrary
         /// Add CUI components to the CUI elements for this state.
         /// </summary>
         /// <param name="cuiElements">The CUI elements to add components to.</param>
-        protected virtual void AddCuiComponents(ElementCuiElements cuiElements)
-        {
-            Debug.AssertNotNull(cuiElements.Root);
-
-            cuiElements.Root.AddComponent(new CuiImageComponent
-            {
-                Color = ColorToCuiColor(Element.Color),
-                Material = string.IsNullOrEmpty(Element.Material) ? null : Element.Material,
-                Sprite = string.IsNullOrEmpty(Element.Sprite) ? null : Element.Sprite,
-            });
-
-            if (Element.HasBorder())
-                cuiElements.Root.AddComponents(Element.Border.ApplyState(this));
-        }
+        protected abstract void AddCuiComponents(ElementCuiElements cuiElements);
     }
 }

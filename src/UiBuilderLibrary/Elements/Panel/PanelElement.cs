@@ -12,18 +12,12 @@ public partial class UiBuilderLibrary
         /// <summary>
         /// The background color of the element.
         /// </summary>
-        public Color BgColor
-        {
-            get => Color;
-            set => Color = value;
-        }
+        public Color BgColor { get; set; }
 
-        /// <inheritdoc cref="BoxModelElement.Material"/>
-        public new string? Material
-        {
-            get => base.Material;
-            set => base.Material = value;
-        }
+        /// <summary>
+        /// The material to apply to the element.
+        /// </summary>
+        public string? Material { get; set; }
 
         /// <summary>
         /// Create a new panel element.
@@ -48,5 +42,8 @@ public partial class UiBuilderLibrary
             BgColor = Theme.Colors.BackgroundLevel1;
             Material = "assets/content/ui/ui.background.tiletex.psd";
         }
+
+        /// <inheritdoc/>
+        protected override ElementState InitialState(BasePlayer player) => new PanelElementState(this, player);
     }
 }

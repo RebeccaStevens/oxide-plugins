@@ -9,19 +9,15 @@ public partial class UiBuilderLibrary
     /// </summary>
     public partial class ImageElement : BoxModelElement
     {
-        /// <inheritdoc cref="BoxModelElement.Color"/>
-        public new Color Color
-        {
-            get => base.Color;
-            set => base.Color = value;
-        }
+        /// <summary>
+        /// The background color of the image.
+        /// </summary>
+        public Color Color { get; set; }
 
-        /// <inheritdoc cref="BoxModelElement.Sprite"/>
-        public new string? Sprite
-        {
-            get => base.Sprite;
-            set => base.Sprite = value;
-        }
+        /// <summary>
+        /// The sprite of the image.
+        /// </summary>
+        public string? Sprite { get; set; }
 
         /// <summary>
         /// Create a new image element.
@@ -30,5 +26,8 @@ public partial class UiBuilderLibrary
         public ImageElement(Element parent) : base(parent, null)
         {
         }
+
+        /// <inheritdoc/>
+        protected override ElementState InitialState(BasePlayer player) => new ImageElementState(this, player);
     }
 }

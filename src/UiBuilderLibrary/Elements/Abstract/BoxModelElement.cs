@@ -1,5 +1,3 @@
-using UnityEngine;
-
 namespace Oxide.Plugins;
 
 public partial class UiBuilderLibrary
@@ -24,21 +22,6 @@ public partial class UiBuilderLibrary
         /// </summary>
         public OutlineElementComponent Border =>
             outline ??= new OutlineElementComponent { Color = Theme.Colors.Border };
-
-        /// <summary>
-        /// The color of the element.
-        /// </summary>
-        protected internal Color Color { get; protected set; }
-
-        /// <summary>
-        /// The material to apply to the element.
-        /// </summary>
-        protected internal string? Material { get; protected set; }
-
-        /// <summary>
-        /// The sprite to apply to the element.
-        /// </summary>
-        protected internal string? Sprite { get; protected set; }
 
         /// <summary>
         /// Create a new panel element.
@@ -66,9 +49,6 @@ public partial class UiBuilderLibrary
         /// <summary>
         /// Does this element have a border?
         /// </summary>
-        public bool HasBorder() => outline?.HasSize() ?? false;
-
-        /// <inheritdoc/>
-        protected override ElementState InitialState(BasePlayer player) => new BoxModelElementState(this, player);
+        public virtual bool HasBorder() => outline?.HasSize() ?? false;
     }
 }

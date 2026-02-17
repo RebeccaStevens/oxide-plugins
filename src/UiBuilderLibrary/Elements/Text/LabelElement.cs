@@ -15,12 +15,10 @@ public partial class UiBuilderLibrary
         /// </summary>
         public string Text;
 
-        /// <inheritdoc cref="BoxModelElement.Color"/>
-        public Color TextColor
-        {
-            get => Color;
-            set => Color = value;
-        }
+        /// <summary>
+        /// The color of the text.
+        /// </summary>
+        public Color TextColor { get; set; }
 
         /// <summary>
         /// The font face to use for the label.
@@ -32,7 +30,14 @@ public partial class UiBuilderLibrary
         /// </summary>
         internal readonly SizeContext FontSizeContext;
 
+        /// <summary>
+        /// The alignment of the text.
+        /// </summary>
         public TextAnchor TextAlignment;
+
+        /// <summary>
+        /// The vertical overflow of the text.
+        /// </summary>
         public VerticalWrapMode VerticalOverflow;
 
         /// <summary>

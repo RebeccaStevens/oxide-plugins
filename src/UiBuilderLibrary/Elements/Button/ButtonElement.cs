@@ -12,11 +12,7 @@ public partial class UiBuilderLibrary
         /// <summary>
         /// The background color of the element.
         /// </summary>
-        public Color BgColor
-        {
-            get => Color;
-            set => Color = value;
-        }
+        public Color BgColor { get; set; }
 
         /// <summary>
         /// The value stored for the background color when the button is highlighted.
@@ -28,7 +24,7 @@ public partial class UiBuilderLibrary
         /// </summary>
         public Color BgColorHighlighted
         {
-            get => bgColorHighlighted ??= Theme.Colors.ButtonHighlighted ?? ColorMultiply(Color, 1.2f);
+            get => bgColorHighlighted ??= Theme.Colors.ButtonHighlighted ?? ColorMultiply(BgColor, 1.2f);
             set => bgColorHighlighted = value;
         }
 
@@ -42,7 +38,7 @@ public partial class UiBuilderLibrary
         /// </summary>
         public Color BgColorPressed
         {
-            get => bgColorPressed ??= Theme.Colors.ButtonPressed ?? ColorMultiply(Color, 0.8f);
+            get => bgColorPressed ??= Theme.Colors.ButtonPressed ?? ColorMultiply(BgColor, 0.8f);
             set => bgColorPressed = value;
         }
 
@@ -56,7 +52,7 @@ public partial class UiBuilderLibrary
         /// </summary>
         public Color BgColorSelected
         {
-            get => bgColorSelected ??= Theme.Colors.ButtonSelected ?? Color;
+            get => bgColorSelected ??= Theme.Colors.ButtonSelected ?? BgColor;
             set => bgColorSelected = value;
         }
 
@@ -70,7 +66,7 @@ public partial class UiBuilderLibrary
         /// </summary>
         public Color BgColorDisabled
         {
-            get => bgColorDisabled ??= ColorMultiply(Color, 0.4f);
+            get => bgColorDisabled ??= ColorMultiply(BgColor, 0.4f);
             set => bgColorDisabled = value;
         }
 
@@ -80,12 +76,10 @@ public partial class UiBuilderLibrary
         /// </summary>
         public float BgColorMultiplier = 1f;
 
-        /// <inheritdoc cref="BoxModelElement.Material"/>
-        public string? BgMaterial
-        {
-            get => Material;
-            set => Material = value;
-        }
+        /// <summary>
+        /// The material to apply to the element.
+        /// </summary>
+        public string? BgMaterial { get; set; }
 
         /// <summary>
         /// The action to perform when the button is clicked.
