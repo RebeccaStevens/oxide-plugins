@@ -135,7 +135,6 @@ public partial class UiBuilderLibrary
         {
             Name = "button";
             BgColor = Theme.Colors.ButtonBase;
-            BgMaterial = null;
             Padding.SetSize(Theme.Spacing.Medium, Size.Zero);
             Width = Theme.ItemSizing.ExtraLarge;
             Height = Theme.ItemSizing.Small;
