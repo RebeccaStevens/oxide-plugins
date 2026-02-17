@@ -194,12 +194,13 @@ public partial class UiBuilderLibrary
         /// Open this element for the given player.
         /// </summary>
         /// <param name="player">The player to open this element for.</param>
+        /// <param name="force">If true, the element will be marked as needing to be resynced even if it was already open.</param>
         /// <returns>The state this element is in for the given player.</returns>
-        public virtual ElementState Open(BasePlayer player)
+        public virtual ElementState Open(BasePlayer player, bool force = false)
         {
             stateByPlayer.TryGetValueAndMarkStrong(player.userID, out var state);
             state = EnsureState(player, state);
-            state.Open();
+            state.Open(force);
             return state;
         }
 
@@ -207,11 +208,12 @@ public partial class UiBuilderLibrary
         /// Close this element for the given player.
         /// </summary>
         /// <param name="player">The player to close this element for.</param>
+        /// <param name="force">If true, the element will be marked as needing to be resynced even if it was already closed.</param>
         /// <returns>The state this element is in for the given player if one exists, otherwise null.</returns>
-        public virtual ElementState? Close(BasePlayer player)
+        public virtual ElementState? Close(BasePlayer player, bool force = false)
         {
             if (stateByPlayer.TryGetValueAndMarkWeak(player.userID, out var state))
-                state.Close();
+                state.Close(force);
             return state;
         }
 

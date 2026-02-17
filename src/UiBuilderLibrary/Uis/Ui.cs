@@ -53,7 +53,7 @@ public partial class UiBuilderLibrary
         /// <param name="sync">Whether to send the updated UI to the player.</param>
         public virtual void Open(BasePlayer player, bool sync = true)
         {
-            var state = Root.Open(player);
+            var state = Root.Open(player, sync);
 
             if (sync)
                 state.Sync();
@@ -66,7 +66,7 @@ public partial class UiBuilderLibrary
         /// <param name="sync">Whether to send the command to the player to close the UI on their end.</param>
         public virtual void Close(BasePlayer player, bool sync = true)
         {
-            var state = Root.Close(player);
+            var state = Root.Close(player, sync);
 
             if (state == null || !player.Connection.active)
                 return;

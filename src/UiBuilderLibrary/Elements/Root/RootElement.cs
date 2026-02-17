@@ -26,9 +26,9 @@ public partial class UiBuilderLibrary
         protected override ElementState InitialState(BasePlayer player) => new RootState(this, player);
 
         /// <inheritdoc/>
-        public override ElementState Open(BasePlayer player)
+        public override ElementState Open(BasePlayer player, bool force = false)
         {
-            var state = base.Open(player);
+            var state = base.Open(player, force);
             ElementLayout.PositionElementInParent(state);
             return state;
         }

@@ -170,21 +170,25 @@ public partial class UiBuilderLibrary
         /// <summary>
         /// Open this element (and its children).
         /// </summary>
-        public void Open()
+        /// <param name="force">If true, the element will be marked as needing to be resynced even if it was already open.</param>
+        public void Open(bool force = false)
         {
             foreach (var child in Element.GetChildren())
-                child.Open(Player);
-            NeedsSync = true;
+                child.Open(Player, force);
+            if (AllOpenStates.TryAdd(Id, this) || force)
+                NeedsSync = true;
         }
 
         /// <summary>
         /// Close this element (and its children).
         /// </summary>
-        public void Close()
+        /// <param name="force">If true, the element will be marked as needing to be resynced even if it was already closed.</param>
+        public void Close(bool force = false)
         {
-            NeedsSync = true;
             foreach (var child in Element.GetChildren())
-                child.Close(Player);
+                child.Close(Player, force);
+            if (AllOpenStates.Remove(Id) || force)
+                NeedsSync = true;
         }
 
         /// <summary>
