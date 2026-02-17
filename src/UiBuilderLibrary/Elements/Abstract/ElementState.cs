@@ -109,33 +109,39 @@ public partial class UiBuilderLibrary
         /// Get all the states that need to be synced/rerendered.<br />
         /// This looks at this state and all its children states.
         /// </summary>
-        /// <param name="markAsNoLongerNeedingResync">If true, each state that is returned will have its NeedsSync property set to false.</param>
+        /// <param name="markAsNoLongerNeedingResync">If true, each state that is returned will have its <see cref="NeedsSync"/> property set to false.</param>
         internal IEnumerable<ElementState> GetStatesNeedingSync(bool markAsNoLongerNeedingResync)
         {
-            var list = Pool.Get<List<ElementState>>();
+            var resultList = Pool.Get<List<ElementState>>();
 
             var stack = new Stack<ElementState>();
             stack.Push(this);
 
             var needsRerender = NeedsSync;
+            if (needsRerender && markAsNoLongerNeedingResync)
+                NeedsSync = false;
             while (stack.TryPop(out var state))
             {
-                // When an state needs to be rerendered, all its children do too.
+                // When a state needs to be rerendered, all its children do too.
                 needsRerender = needsRerender || state.NeedsSync;
+
+                // Add the state to the result if it needs to be rerendered.
                 if (needsRerender)
                 {
-                    list.Add(state);
+                    resultList.Add(state);
                     if (markAsNoLongerNeedingResync)
                         state.NeedsSync = false;
                 }
 
+                // Check all the child states of this state.
+                // TODO: Can this be optimized - reduce the number of iterations needed to add all the child states in the correct order?
                 foreach (var childState in state.Element.GetChildren().Select((child) => child.GetState(Player))
                              .Reverse())
                     stack.Push(childState);
             }
 
-            var result = list.ToArray();
-            Pool.FreeUnmanaged(ref list);
+            var result = resultList.ToArray();
+            Pool.FreeUnmanaged(ref resultList);
             return result;
         }
 
