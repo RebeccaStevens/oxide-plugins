@@ -8,20 +8,9 @@ public partial class UiBuilderLibrary
     public abstract class BoxModelElement : Element
     {
         /// <summary>
-        /// The padding applied to this element.
-        /// </summary>
-        public readonly DirectionalSizeValues Padding;
-
-        /// <summary>
         /// The stored outline element component.
         /// </summary>
         private OutlineElementComponent? outline;
-
-        /// <summary>
-        /// The border applied to this element.
-        /// </summary>
-        public OutlineElementComponent Border =>
-            outline ??= new OutlineElementComponent { Color = Theme.Colors.Border };
 
         /// <summary>
         /// Create a new panel element.
@@ -45,6 +34,17 @@ public partial class UiBuilderLibrary
         {
             Padding = new DirectionalSizeValues("Padding", this, Size.Zero);
         }
+
+        /// <summary>
+        /// The padding applied to this element.
+        /// </summary>
+        public DirectionalSizeValues Padding { get; }
+
+        /// <summary>
+        /// The border applied to this element.
+        /// </summary>
+        public OutlineElementComponent Border =>
+            outline ??= new OutlineElementComponent { Color = Theme.Colors.Border };
 
         /// <summary>
         /// Does this element have a border?

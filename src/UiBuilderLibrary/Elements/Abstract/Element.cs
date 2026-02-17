@@ -35,41 +35,8 @@ public partial class UiBuilderLibrary
         /// </summary>
         private readonly List<Element> children;
 
-        /// <summary>
-        /// Used to determine the order of this element in regards to its siblings.<br/>
-        /// Lower values are considered to come before higher values.
-        /// </summary>
-        public double Weight;
-
         private ElementLayout? layout;
-
-        /// <summary>
-        /// How to layout this element's children.
-        /// </summary>
-        public ElementLayout Layout
-        {
-            get => layout ??= AbsoluteLayout.Use();
-            set => layout = value;
-        }
-
         private Theme? theme;
-
-        /// <summary>
-        /// The theme used to style this element and its children.<br/>
-        /// If null, the element's parent's theme will be used, or if there is no parent, the default theme will be used.<br/>
-        /// </summary>
-        [NotNull]
-        public Theme? Theme
-        {
-            get => theme ?? (parent != null ? parent.Theme : Theme.Default);
-            set => theme = value;
-        }
-
-        /// <summary>
-        /// The anchor point of this element.
-        /// Used by some layouts; ignored by others.
-        /// </summary>
-        public PositionAnchor Anchor = PositionAnchor.UpperLeft;
 
         /// <summary>
         /// The context for the x position of this element.
@@ -90,6 +57,73 @@ public partial class UiBuilderLibrary
         /// The context for the height of this element.
         /// </summary>
         internal readonly SizeContext HeightContext;
+
+        /// <summary>
+        /// Create a new element.
+        /// </summary>
+        /// <param name="parent">The parent element of this element.</param>
+        protected Element(Element parent) : this(parent, null)
+        {
+        }
+
+        /// <summary>
+        /// Create a new top level element.
+        /// </summary>
+        /// <param name="parentId">The id of the parent element of this element.</param>
+        internal Element(string parentId) : this(null, parentId)
+        {
+        }
+
+        /// <summary>
+        /// Create a new element.
+        /// </summary>
+        protected Element(Element? parent, string? layer)
+        {
+            Debug.Assert(parent == null && layer != null || parent != null && layer == null,
+                "Must provide either parent or layer, but not both.");
+            this.parent = parent;
+            parentLayer = layer;
+            children = new List<Element>();
+            XContext = new SizeContext("X", this, Size.Auto);
+            YContext = new SizeContext("Y", this, Size.Auto);
+            WidthContext = new SizeContext("Width", this, Size.Auto);
+            HeightContext = new SizeContext("Height", this, Size.Auto);
+            Margin = new DirectionalSizeValues("Margin", this, Size.Zero);
+
+            parent?.children.Add(this);
+        }
+
+        /// <summary>
+        /// Used to determine the order of this element in regards to its siblings.<br/>
+        /// Lower values are considered to come before higher values.
+        /// </summary>
+        public double Weight { get; set; }
+
+        /// <summary>
+        /// How to layout this element's children.
+        /// </summary>
+        public ElementLayout Layout
+        {
+            get => layout ??= AbsoluteLayout.Use();
+            set => layout = value;
+        }
+
+        /// <summary>
+        /// The theme used to style this element and its children.<br/>
+        /// If null, the element's parent's theme will be used, or if there is no parent, the default theme will be used.<br/>
+        /// </summary>
+        [NotNull]
+        public Theme? Theme
+        {
+            get => theme ?? (parent != null ? parent.Theme : Theme.Default);
+            set => theme = value;
+        }
+
+        /// <summary>
+        /// The anchor point of this element.
+        /// Used by some layouts; ignored by others.
+        /// </summary>
+        public PositionAnchor Anchor { get; set; } = PositionAnchor.UpperLeft;
 
         /// <summary>
         /// The x position of this element.
@@ -146,42 +180,7 @@ public partial class UiBuilderLibrary
         /// <summary>
         /// The margin applied to this element.
         /// </summary>
-        public readonly DirectionalSizeValues Margin;
-
-        /// <summary>
-        /// Create a new element.
-        /// </summary>
-        /// <param name="parent">The parent element of this element.</param>
-        protected Element(Element parent) : this(parent, null)
-        {
-        }
-
-        /// <summary>
-        /// Create a new top level element.
-        /// </summary>
-        /// <param name="parentId">The id of the parent element of this element.</param>
-        internal Element(string parentId) : this(null, parentId)
-        {
-        }
-
-        /// <summary>
-        /// Create a new element.
-        /// </summary>
-        protected Element(Element? parent, string? layer)
-        {
-            Debug.Assert(parent == null && layer != null || parent != null && layer == null,
-                "Must provide either parent or layer, but not both.");
-            this.parent = parent;
-            parentLayer = layer;
-            children = new List<Element>();
-            XContext = new SizeContext("X", this, Size.Auto);
-            YContext = new SizeContext("Y", this, Size.Auto);
-            WidthContext = new SizeContext("Width", this, Size.Auto);
-            HeightContext = new SizeContext("Height", this, Size.Auto);
-            Margin = new DirectionalSizeValues("Margin", this, Size.Zero);
-
-            parent?.children.Add(this);
-        }
+        public DirectionalSizeValues Margin { get; }
 
         /// <summary>
         /// Does this element have a layout assigned to it?<br/>
