@@ -84,7 +84,7 @@ public partial class UiBuilderLibrary
         /// <summary>
         /// The action to perform when the button is clicked.
         /// </summary>
-        public UiAction? Action;
+        public UiAction? OnClick;
 
         /// <summary>
         /// The stored label element.

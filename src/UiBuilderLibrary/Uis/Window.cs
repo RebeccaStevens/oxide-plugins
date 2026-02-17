@@ -103,7 +103,7 @@ public partial class UiBuilderLibrary
                 BgColorSelected = titleBar.Theme.Colors.Danger,
                 Width = titleBar.Theme.ItemSizing.Large,
                 Weight = 100,
-                Action = UiAction.CloseUi(this),
+                OnClick = UiAction.CloseUi(this),
                 Icon =
                 {
                     Sprite = "assets/icons/close.png",
