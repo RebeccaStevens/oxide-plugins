@@ -20,7 +20,7 @@ public partial class UiBuilderLibrary
         private Color? bgColorHighlighted;
 
         /// <summary>
-        /// The color of the icon when it is highlighted.
+        /// The color of the button when it is highlighted.
         /// </summary>
         public Color BgColorHighlighted
         {
@@ -34,7 +34,7 @@ public partial class UiBuilderLibrary
         private Color? bgColorPressed;
 
         /// <summary>
-        /// The color of the icon when it is pressed.
+        /// The color of the button when it is pressed.
         /// </summary>
         public Color BgColorPressed
         {
@@ -48,7 +48,7 @@ public partial class UiBuilderLibrary
         private Color? bgColorSelected;
 
         /// <summary>
-        /// The color of the icon when it is selected.
+        /// The color of the button when it is selected.
         /// </summary>
         public Color BgColorSelected
         {
@@ -62,7 +62,7 @@ public partial class UiBuilderLibrary
         private Color? bgColorDisabled;
 
         /// <summary>
-        /// The color of the icon when it is disabled.
+        /// The color of the button when it is disabled.
         /// </summary>
         public Color BgColorDisabled
         {
