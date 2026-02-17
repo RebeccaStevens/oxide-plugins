@@ -19,7 +19,8 @@ public partial class UiBuilderLibrary
         /// <summary>
         /// Create a new button element.
         /// </summary>
-        public ButtonElement(Element element) : base(element)
+        /// <param name="parent">The parent of this element.</param>
+        public ButtonElement(Element parent) : base(parent)
         {
             Name = "button";
             BgColor = Theme.Colors.ButtonBase;
