@@ -31,8 +31,9 @@ public partial class UiBuilderLibrary
                     SelectedColor = ColorToCuiColor(Element.BgColorSelected),
                     ColorMultiplier = Element.BgColorMultiplier,
                     Material = string.IsNullOrEmpty(Element.BgMaterial) ? null : Element.BgMaterial,
-                    Close = (Element.OnClick as UiActionCloseUi)?.GetUiRootCuiElementName(Player),
-                    Command = Element.OnClick?.GetCommand(),
+                    Close = (Element.OnClick as UiAction.CloseUiAction)?.GetUiRootCuiElementName(Player),
+                    Command = (Element.OnClick as UiAction.CloseUiAction)?.GetCommand(false) ??
+                              Element.OnClick?.GetCommand(),
                 });
 
                 if (Element.HasBorder())
