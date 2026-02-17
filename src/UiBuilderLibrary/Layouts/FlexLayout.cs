@@ -203,6 +203,36 @@ public partial class UiBuilderLibrary
         }
 
         /// <summary>
+        /// Get the reversed version of a flex direction. For example, the reversed version of Horizontal is HorizontalReversed, and vice versa.
+        /// </summary>
+        public static FlexDirection ReverseDirection(FlexDirection direction)
+        {
+            return direction switch
+            {
+                FlexDirection.Horizontal => FlexDirection.HorizontalReversed,
+                FlexDirection.Vertical => FlexDirection.VerticalReversed,
+                FlexDirection.HorizontalReversed => FlexDirection.Horizontal,
+                FlexDirection.VerticalReversed => FlexDirection.Vertical,
+                _ => throw new ArgumentOutOfRangeException(nameof(direction)),
+            };
+        }
+
+        /// <summary>
+        /// Get the opposite version of a flex direction. For example, the opposite version of Horizontal is Vertical, and vice versa.
+        /// </summary>
+        public static FlexDirection OppositeDirection(FlexDirection direction)
+        {
+            return direction switch
+            {
+                FlexDirection.Horizontal => FlexDirection.Vertical,
+                FlexDirection.Vertical => FlexDirection.Horizontal,
+                FlexDirection.HorizontalReversed => FlexDirection.VerticalReversed,
+                FlexDirection.VerticalReversed => FlexDirection.HorizontalReversed,
+                _ => throw new ArgumentOutOfRangeException(nameof(direction)),
+            };
+        }
+
+        /// <summary>
         /// The direction of the flex layout.
         /// </summary>
         public enum FlexDirection
