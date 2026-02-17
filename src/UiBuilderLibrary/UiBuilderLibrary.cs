@@ -42,6 +42,7 @@ public partial class UiBuilderLibrary : RustPlugin
     {
         config.Init();
         Ui.RegisterCommands(this, cmd);
+        ToggleButtonElement.RegisterCommands(this, cmd);
     }
 
     private void Loaded()
