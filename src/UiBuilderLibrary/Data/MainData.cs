@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 
-
 namespace Oxide.Plugins;
 
 public partial class UiBuilderLibrary

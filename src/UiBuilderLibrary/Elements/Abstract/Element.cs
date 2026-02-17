@@ -23,7 +23,7 @@ public partial class UiBuilderLibrary
         /// <summary>
         /// A name for this element - useful for debugging.
         /// </summary>
-        public string Name = "unnamed";
+        public string Name { get; set; } = "unnamed";
 
         // TODO: Support changing parents.
         // `Parent` and `parentLayer` should not both be set.
@@ -57,8 +57,6 @@ public partial class UiBuilderLibrary
         /// <summary>
         /// The theme used to style this element and its children.<br/>
         /// If null, the element's parent's theme will be used, or if there is no parent, the default theme will be used.<br/>
-        /// <br/>
-        /// Note: Any changes to the theme will effect all elements that share that theme.
         /// </summary>
         [NotNull]
         public Theme? Theme

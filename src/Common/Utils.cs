@@ -146,7 +146,7 @@ internal static class Utils
     public static TValue DictionaryGetOrCreateNew<TKey, TValue>(IDictionary<TKey, TValue> dict, TKey key)
         where TKey : notnull where TValue : new()
     {
-        if (dict.TryGetValue(key, out TValue? val))
+        if (dict.TryGetValue(key, out var val))
             return val;
 
         val = new TValue();

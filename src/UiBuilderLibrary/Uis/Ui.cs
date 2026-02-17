@@ -115,7 +115,7 @@ public partial class UiBuilderLibrary
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public static Ui? Find(string id) => AllUIs.TryGetValue(id, out var ui) ? ui : null;
+        public static Ui? Find(string id) => AllUIs.GetValueOrDefault(id);
 
         /// <summary>
         /// Get the name of the root CUI element for this UI.

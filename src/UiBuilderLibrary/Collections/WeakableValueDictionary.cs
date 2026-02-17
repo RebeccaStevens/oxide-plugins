@@ -45,7 +45,6 @@ public class WeakableValueDictionary<TKey, TValue> : IDictionary<TKey, TValue> w
     {
     }
 
-
     /// <summary>
     /// Adds an element with the provided key and value to the dictionary, strongly referencing the value.
     /// </summary>
