@@ -304,14 +304,17 @@ public partial class UiBuilderLibrary
                 );
 
             ElementLayout.PositionElementInParent(state);
-            var cuiComponents = state.Element.Layout.Prepare(state);
+            var cuiComponents = state.Element.Layout.GetComponentsForContainer(state);
             var cuiElements = state.GetCuiElements();
             Debug.Assert(cuiElements.Root != null);
             Debug.Assert(cuiElements.Content != null);
 
             if (cuiComponents != null)
+            {
                 foreach (var component in cuiComponents)
                     cuiElements.Content.AddComponent(component);
+                Pool.FreeUnmanaged(ref cuiComponents);
+            }
 
             var allCuis = cuiElements.GetAll().ToArray();
             var updatedStates = allCuis.Select(cuiElement => cuiElement.Encode(state));

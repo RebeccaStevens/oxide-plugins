@@ -40,7 +40,6 @@ public partial class UiBuilderLibrary
         /// </summary>
         public Size Gap { get; set; } = Size.Zero;
 
-        // TODO: Detect if already computed.
         /// <inheritdoc/>
         protected override void ComputeLayout(ElementState state)
         {

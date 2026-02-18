@@ -24,11 +24,17 @@ public partial class UiBuilderLibrary
         protected abstract void PositionChild(ElementState childState);
 
         /// <summary>
-        /// Prepare this layout for positioning its children and any adjustments needed to the container element.
+        /// Prepare this layout for positioning the children of the given element.
         /// </summary>
-        /// <param name="state">The state of the element to position.</param>
+        /// <param name="state">The state of the element that needs to be prepared.</param>
+        protected abstract void Prepare(ElementState state);
+
+        /// <summary>
+        /// Get any cui components that should be added to the element's cui parent.
+        /// </summary>
+        /// <param name="state">The state of the element to get the components for.</param>
         /// <returns>The cui components that should be added to the element's cui parent.</returns>
-        public abstract List<ICuiComponent>? Prepare(ElementState state);
+        public virtual List<ICuiComponent>? GetComponentsForContainer(ElementState state) => null;
 
         /// <summary>
         /// Position the given element in its parent's layout.
@@ -37,6 +43,8 @@ public partial class UiBuilderLibrary
         public static void PositionElementInParent(ElementState state)
         {
             var parentLayout = GetParentLayoutOf(state);
+            var parentState = state.GetParent();
+            parentState?.Element.Layout.Prepare(parentState);
             parentLayout.PositionChild(state);
         }
 
@@ -60,9 +68,9 @@ public partial class UiBuilderLibrary
         }
 
         /// <inheritdoc/>
-        public override List<ICuiComponent>? Prepare(ElementState state)
+        protected sealed override void Prepare(ElementState state)
         {
-            return null;
+            // Static layouts don't need to prepare anything - that what makes them static.
         }
     }
 
@@ -71,21 +79,28 @@ public partial class UiBuilderLibrary
     /// </summary>
     public abstract class DynamicElementLayout : ElementLayout
     {
+        /// <summary>
+        /// The states that have been prepared for this layout.
+        /// </summary>
+        private readonly HashSet<ElementState> preparedFor = new();
+
         /// <inheritdoc cref="DynamicElementLayout"/>
         protected DynamicElementLayout()
         {
         }
 
+        /// <inheritdoc/>
+        protected override void Prepare(ElementState state)
+        {
+            // If the layout hasn't already been computed for this state, compute it.
+            if (preparedFor.Add(state))
+                ComputeLayout(state);
+        }
+
+
         /// <summary>
         /// Compute the layout of the element.
         /// </summary>
         protected abstract void ComputeLayout(ElementState state);
-
-        /// <inheritdoc/>
-        public override List<ICuiComponent>? Prepare(ElementState state)
-        {
-            ComputeLayout(state);
-            return null;
-        }
     }
 }

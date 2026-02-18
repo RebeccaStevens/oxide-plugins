@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Facepunch;
 using Oxide.Game.Rust.Cui;
 using UnityEngine;
 
@@ -51,9 +52,9 @@ public partial class UiBuilderLibrary
         }
 
         /// <inheritdoc/>
-        public override List<ICuiComponent> Prepare(ElementState state)
+        public override List<ICuiComponent> GetComponentsForContainer(ElementState state)
         {
-            var components = base.Prepare(state) ?? new List<ICuiComponent>();
+            var components = base.GetComponentsForContainer(state) ?? Pool.Get<List<ICuiComponent>>();
 
             CuiLayoutGroupComponent layoutComponent = Axis == Axis.X
                 ? new CuiHorizontalLayoutGroupComponent()
