@@ -197,8 +197,7 @@ public partial class UiBuilderLibrary
         /// <returns>The state this element is in for the given player.</returns>
         public virtual ElementState Open(BasePlayer player, bool force = false)
         {
-            stateByPlayer.TryGetValueAndMarkStrong(player.userID, out var state);
-            state = EnsureState(player, state);
+            var state = GetState(player, true);
             state.Open(force);
             return state;
         }
@@ -370,26 +369,20 @@ public partial class UiBuilderLibrary
         /// Get the state of this element for the given player.
         /// </summary>
         /// <param name="player">The player to get the state for.</param>
+        /// <param name="markStrong">Whether to mark the state as strongly held.</param>
         /// <returns>The existing state of this element for the given player if there is one, otherwise a newly created state.</returns>
-        public ElementState GetState(BasePlayer player)
+        public ElementState GetState(BasePlayer player, bool markStrong = false)
         {
-            stateByPlayer.TryGetValue(player.userID, out var state);
-            return EnsureState(player, state);
-        }
-
-        /// <summary>
-        /// Ensure the state exists for the given player.
-        /// </summary>
-        /// <param name="player">The player to get the state for.</param>
-        /// <param name="state">If not null, the state to use. If null, a new state will be created.</param>
-        /// <returns>The existing state of this element for the given player if there is one, otherwise a newly created state.</returns>
-        private ElementState EnsureState(BasePlayer player, ElementState? state)
-        {
-            if (state != null)
-                return state;
+            ElementState? state;
+            switch (markStrong)
+            {
+                case true when stateByPlayer.TryGetValueAndMarkStrong(player.userID, out state):
+                case false when stateByPlayer.TryGetValue(player.userID, out state):
+                    return state;
+            }
 
             state = InitialState(player);
-            stateByPlayer.Add(player.userID, state);
+            stateByPlayer.Add(player.userID, state, markStrong);
             return state;
         }
 
