@@ -190,13 +190,6 @@ public partial class UiBuilderLibrary
         public DirectionalSizeValues Margin { get; }
 
         /// <summary>
-        /// Does this element have a layout assigned to it?<br/>
-        /// <br/>
-        /// Note: A layout will be automatically assigned to an element when the layout is attempted to be used.
-        /// </summary>
-        public bool HasLayout() => LayoutBacking != null;
-
-        /// <summary>
         /// Open this element for the given player.
         /// </summary>
         /// <param name="player">The player to open this element for.</param>
