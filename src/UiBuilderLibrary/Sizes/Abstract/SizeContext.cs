@@ -43,10 +43,7 @@ public partial class UiBuilderLibrary
         /// <summary>
         /// Is this implicitly sized?
         /// </summary>
-        public bool IsImplisit()
-        {
-            return size == Size.Auto;
-        }
+        public bool IsImplisit() => size == Size.Auto;
 
         /// <summary>
         /// Set the value of this.
