@@ -9,12 +9,35 @@ public partial class UiBuilderLibrary
     /// </summary>
     public partial class ButtonElement : BoxModelElement
     {
-        private Color? bgColorHighlighted;
-        private Color? bgColorPressed;
-        private Color? bgColorSelected;
-        private Color? bgColorDisabled;
-        private LabelElement? label;
-        private ImageElement? icon;
+        /// <summary>
+        /// Backing field for the <see cref="BgColorHighlighted"/> property.
+        /// </summary>
+        protected Color? BgColorHighlightedBacking;
+
+        /// <summary>
+        /// Backing field for the <see cref="BgColorPressed"/> property.
+        /// </summary>
+        protected Color? BgColorPressedBacking;
+
+        /// <summary>
+        /// Backing field for the <see cref="BgColorSelected"/> property.
+        /// </summary>
+        protected Color? BgColorSelectedBacking;
+
+        /// <summary>
+        /// Backing field for the <see cref="BgColorDisabled"/> property.
+        /// </summary>
+        protected Color? BgColorDisabledBacking;
+
+        /// <summary>
+        /// The backing field for the <see cref="Label"/> property.
+        /// </summary>
+        protected LabelElement? LabelBacking;
+
+        /// <summary>
+        /// The backing field for the <see cref="Icon"/> property.
+        /// </summary>
+        protected ImageElement? IconBacking;
 
         /// <summary>
         /// Create a new button element.
@@ -46,8 +69,8 @@ public partial class UiBuilderLibrary
         /// </summary>
         public Color BgColorHighlighted
         {
-            get => bgColorHighlighted ??= ColorMultiply(BgColor, 1.2f);
-            set => bgColorHighlighted = value;
+            get => BgColorHighlightedBacking ??= ColorMultiply(BgColor, 1.2f);
+            set => BgColorHighlightedBacking = value;
         }
 
         /// <summary>
@@ -55,8 +78,8 @@ public partial class UiBuilderLibrary
         /// </summary>
         public Color BgColorPressed
         {
-            get => bgColorPressed ??= ColorMultiply(BgColor, 0.8f);
-            set => bgColorPressed = value;
+            get => BgColorPressedBacking ??= ColorMultiply(BgColor, 0.8f);
+            set => BgColorPressedBacking = value;
         }
 
         /// <summary>
@@ -64,8 +87,8 @@ public partial class UiBuilderLibrary
         /// </summary>
         public Color BgColorSelected
         {
-            get => bgColorSelected ??= BgColor;
-            set => bgColorSelected = value;
+            get => BgColorSelectedBacking ??= BgColor;
+            set => BgColorSelectedBacking = value;
         }
 
         /// <summary>
@@ -73,8 +96,8 @@ public partial class UiBuilderLibrary
         /// </summary>
         public Color BgColorDisabled
         {
-            get => bgColorDisabled ??= ColorMultiply(BgColor, 0.4f);
-            set => bgColorDisabled = value;
+            get => BgColorDisabledBacking ??= ColorMultiply(BgColor, 0.4f);
+            set => BgColorDisabledBacking = value;
         }
 
         /// <summary>
@@ -98,7 +121,7 @@ public partial class UiBuilderLibrary
         /// </summary>
         public LabelElement Label
         {
-            get => label ??= new LabelElement(this)
+            get => LabelBacking ??= new LabelElement(this)
             {
                 Name = $"{Name}-label",
                 Weight = -1,
@@ -107,7 +130,7 @@ public partial class UiBuilderLibrary
                 Font = Font.Regular,
                 FontSize = Theme.FontSize.Large,
             };
-            set => label = value;
+            set => LabelBacking = value;
         }
 
         /// <summary>
@@ -115,14 +138,14 @@ public partial class UiBuilderLibrary
         /// </summary>
         public ImageElement Icon
         {
-            get => icon ??= new ImageElement(this)
+            get => IconBacking ??= new ImageElement(this)
             {
                 Name = $"{Name}-icon",
                 Weight = -2,
                 Size = Theme.FontSize.Large,
                 Color = Theme.Colors.Icon,
             };
-            set => icon = value;
+            set => IconBacking = value;
         }
 
         /// <inheritdoc/>

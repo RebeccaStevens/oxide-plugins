@@ -35,8 +35,15 @@ public partial class UiBuilderLibrary
         /// </summary>
         private readonly List<Element> children;
 
-        private ElementLayout? layout;
-        private Theme? theme;
+        /// <summary>
+        /// The backing field for the <see cref="Theme"/> property.
+        /// </summary>
+        protected ElementLayout? LayoutBacking;
+
+        /// <summary>
+        /// The backing field for the <see cref="Theme"/> property.
+        /// </summary>
+        protected Theme? ThemeBacking;
 
         /// <summary>
         /// The context for the x position of this element.
@@ -104,8 +111,8 @@ public partial class UiBuilderLibrary
         /// </summary>
         public ElementLayout Layout
         {
-            get => layout ??= AbsoluteLayout.Use();
-            set => layout = value;
+            get => LayoutBacking ??= AbsoluteLayout.Use();
+            set => LayoutBacking = value;
         }
 
         /// <summary>
@@ -115,8 +122,8 @@ public partial class UiBuilderLibrary
         [NotNull]
         public Theme? Theme
         {
-            get => theme ?? (parent != null ? parent.Theme : Theme.Default);
-            set => theme = value;
+            get => ThemeBacking ?? (parent != null ? parent.Theme : Theme.Default);
+            set => ThemeBacking = value;
         }
 
         /// <summary>
@@ -187,7 +194,7 @@ public partial class UiBuilderLibrary
         /// <br/>
         /// Note: A layout will be automatically assigned to an element when the layout is attempted to be used.
         /// </summary>
-        public bool HasLayout() => layout != null;
+        public bool HasLayout() => LayoutBacking != null;
 
         /// <summary>
         /// Open this element for the given player.

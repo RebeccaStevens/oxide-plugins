@@ -10,17 +10,60 @@ public partial class UiBuilderLibrary
     /// </summary>
     public partial class ToggleButtonElement : BoxModelElement
     {
-        private Color? bgColorInactiveHighlighted;
-        private Color? bgColorActiveHighlighted;
-        private Color? bgColorInactivePressed;
-        private Color? bgColorActivePressed;
-        private Color? bgColorInactiveDisabled;
-        private Color? bgColorActiveDisabled;
-        private OutlineElementComponent? outlineActive;
-        private LabelElement? label;
-        private LabelElement? labelActive;
-        private ImageElement? icon;
-        private ImageElement? iconActive;
+        /// <summary>
+        /// Backing field for the <see cref="BgColorInactiveHighlighted"/> property.
+        /// </summary>
+        protected Color? BgColorInactiveHighlightedBacking;
+
+        /// <summary>
+        /// Backing field for the <see cref="BgColorActiveHighlighted"/> property.
+        /// </summary>
+        protected Color? BgColorActiveHighlightedBacking;
+
+        /// <summary>
+        /// Backing field for the <see cref="BgColorInactivePressed"/> property.
+        /// </summary>
+        protected Color? BgColorInactivePressedBacking;
+
+        /// <summary>
+        /// Backing field for the <see cref="BgColorActivePressed"/> property.
+        /// </summary>
+        protected Color? BgColorActivePressedBacking;
+
+        /// <summary>
+        /// Backing field for the <see cref="BgColorInactiveDisabled"/> property.
+        /// </summary>
+        protected Color? BgColorInactiveDisabledBacking;
+
+        /// <summary>
+        /// Backing field for the <see cref="BgColorActiveDisabled"/> property.
+        /// </summary>
+        protected Color? BgColorActiveDisabledBacking;
+
+        /// <summary>
+        /// Backing field for the <see cref="BorderActive"/> property.
+        /// </summary>
+        protected OutlineElementComponent? BorderActiveBacking;
+
+        /// <summary>
+        /// Backing field for the <see cref="Label"/> property.
+        /// </summary>
+        protected LabelElement? LabelBacking;
+
+        /// <summary>
+        /// Backing field for the <see cref="LabelActive"/> property.
+        /// </summary>
+        protected LabelElement? LabelActiveBacking;
+
+        /// <summary>
+        /// Backing field for the <see cref="Icon"/> property.
+        /// </summary>
+        protected ImageElement? IconBacking;
+
+        /// <summary>
+        /// Backing field for the <see cref="IconActive"/> property.
+        /// </summary>
+        protected ImageElement? IconActiveBacking;
 
         private const string ElementCommandScope = $"{CommandScope}.toggle-button";
         private const string CommandActivate = $"{ElementCommandScope}.activate";
@@ -87,8 +130,8 @@ public partial class UiBuilderLibrary
         /// </summary>
         public Color BgColorInactiveHighlighted
         {
-            get => bgColorInactiveHighlighted ??= ColorMultiply(BgColorInactive, 1.2f);
-            set => bgColorInactiveHighlighted = value;
+            get => BgColorInactiveHighlightedBacking ??= ColorMultiply(BgColorInactive, 1.2f);
+            set => BgColorInactiveHighlightedBacking = value;
         }
 
         /// <summary>
@@ -96,8 +139,8 @@ public partial class UiBuilderLibrary
         /// </summary>
         public Color BgColorActiveHighlighted
         {
-            get => bgColorActiveHighlighted ??= ColorMultiply(BgColorActive, 1.2f);
-            set => bgColorActiveHighlighted = value;
+            get => BgColorActiveHighlightedBacking ??= ColorMultiply(BgColorActive, 1.2f);
+            set => BgColorActiveHighlightedBacking = value;
         }
 
         /// <summary>
@@ -105,8 +148,8 @@ public partial class UiBuilderLibrary
         /// </summary>
         public Color BgColorInactivePressed
         {
-            get => bgColorInactivePressed ??= ColorMultiply(BgColorInactive, 0.8f);
-            set => bgColorInactivePressed = value;
+            get => BgColorInactivePressedBacking ??= ColorMultiply(BgColorInactive, 0.8f);
+            set => BgColorInactivePressedBacking = value;
         }
 
         /// <summary>
@@ -114,8 +157,8 @@ public partial class UiBuilderLibrary
         /// </summary>
         public Color BgColorActivePressed
         {
-            get => bgColorActivePressed ??= ColorMultiply(BgColorActive, 0.8f);
-            set => bgColorActivePressed = value;
+            get => BgColorActivePressedBacking ??= ColorMultiply(BgColorActive, 0.8f);
+            set => BgColorActivePressedBacking = value;
         }
 
         /// <summary>
@@ -123,8 +166,8 @@ public partial class UiBuilderLibrary
         /// </summary>
         public Color BgColorInactiveDisabled
         {
-            get => bgColorInactiveDisabled ??= ColorMultiply(BgColorInactive, 0.4f);
-            set => bgColorInactiveDisabled = value;
+            get => BgColorInactiveDisabledBacking ??= ColorMultiply(BgColorInactive, 0.4f);
+            set => BgColorInactiveDisabledBacking = value;
         }
 
         /// <summary>
@@ -132,8 +175,8 @@ public partial class UiBuilderLibrary
         /// </summary>
         public Color BgColorActiveDisabled
         {
-            get => bgColorActiveDisabled ??= ColorMultiply(BgColorActive, 0.4f);
-            set => bgColorActiveDisabled = value;
+            get => BgColorActiveDisabledBacking ??= ColorMultiply(BgColorActive, 0.4f);
+            set => BgColorActiveDisabledBacking = value;
         }
 
         /// <summary>
@@ -141,8 +184,8 @@ public partial class UiBuilderLibrary
         /// </summary>
         public LabelElement Label
         {
-            get => label ??= CreateLabel("inactive");
-            set => label = value;
+            get => LabelBacking ??= CreateLabel("inactive");
+            set => LabelBacking = value;
         }
 
         /// <summary>
@@ -151,8 +194,8 @@ public partial class UiBuilderLibrary
         /// </summary>
         public LabelElement LabelActive
         {
-            get => labelActive ??= CreateLabel("active");
-            set => labelActive = value;
+            get => LabelActiveBacking ??= CreateLabel("active");
+            set => LabelActiveBacking = value;
         }
 
         /// <summary>
@@ -160,8 +203,8 @@ public partial class UiBuilderLibrary
         /// </summary>
         public ImageElement Icon
         {
-            get => icon ??= CreateIcon("inactive");
-            set => icon = value;
+            get => IconBacking ??= CreateIcon("inactive");
+            set => IconBacking = value;
         }
 
         /// <summary>
@@ -169,21 +212,21 @@ public partial class UiBuilderLibrary
         /// </summary>
         public ImageElement IconActive
         {
-            get => iconActive ??= CreateIcon("active");
-            set => icon = value;
+            get => IconActiveBacking ??= CreateIcon("active");
+            set => IconBacking = value;
         }
 
         /// <summary>
         /// The border applied to this element when it is active.
         /// </summary>
-        public OutlineElementComponent BorderActive => outlineActive ??= Border;
+        public OutlineElementComponent BorderActive => BorderActiveBacking ??= Border;
 
         /// <summary>
         /// Does this element have a border?
         /// </summary>
         public override bool HasBorder() =>
             // Only true if there is both an active and inactive border - a null active outline just means to use the same border for both states.
-            base.HasBorder() && (outlineActive?.HasSize() ?? true);
+            base.HasBorder() && (BorderActiveBacking?.HasSize() ?? true);
 
         /// <inheritdoc/>
         protected override ElementState InitialState(BasePlayer player) => new ToggleButtonElementState(this, player);

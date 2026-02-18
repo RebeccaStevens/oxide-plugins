@@ -22,20 +22,23 @@ public partial class UiBuilderLibrary
         public Axis Axis;
 
         // TODO: Support other sizes - will require converting other sizes to pixels.
-        private Size.PixelSize? gapSize;
+        /// <summary>
+        /// The backing field for the <see cref="Gap"/> property.
+        /// </summary>
+        private Size.PixelSize? gapBacking;
 
         /// <summary>
         /// The spacing between elements.
         /// </summary>
         public Size Gap
         {
-            get => gapSize ??= (Size.PixelSize)Size.Zero;
+            get => gapBacking ??= (Size.PixelSize)Size.Zero;
             set
             {
                 if (value is not Size.PixelSize size)
                     throw new InvalidOperationException(
                         "Only pixel sizes are currently supported for distributed layout gaps.");
-                gapSize = size;
+                gapBacking = size;
             }
         }
 

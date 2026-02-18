@@ -9,7 +9,10 @@ public partial class UiBuilderLibrary
         /// <inheritdoc/>
         public class ToggleButtonElementState : BoxModelElementState
         {
-            private bool isActive;
+            /// <summary>
+            /// Backing field for the <see cref="IsActive"/> property.
+            /// </summary>
+            protected bool IsActiveBacking;
 
             /// <summary>
             /// The command to run to activate the toggle button.
@@ -36,13 +39,13 @@ public partial class UiBuilderLibrary
             /// </summary>
             public bool IsActive
             {
-                get => isActive;
+                get => IsActiveBacking;
                 set
                 {
-                    if (isActive == value)
+                    if (IsActiveBacking == value)
                         return;
-                    isActive = value;
-                    if (isActive)
+                    IsActiveBacking = value;
+                    if (IsActiveBacking)
                         Element.OnActivate?.Execute(Player);
                     else
                         Element.OnDeactivate?.Execute(Player);

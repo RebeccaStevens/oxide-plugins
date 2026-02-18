@@ -8,9 +8,9 @@ public partial class UiBuilderLibrary
     public abstract class BoxModelElement : Element
     {
         /// <summary>
-        /// The stored outline element component.
+        /// The backing field for the <see cref="Border"/> property.
         /// </summary>
-        private OutlineElementComponent? outline;
+        protected OutlineElementComponent? BorderBacking;
 
         /// <summary>
         /// Create a new panel element.
@@ -44,11 +44,11 @@ public partial class UiBuilderLibrary
         /// The border applied to this element.
         /// </summary>
         public OutlineElementComponent Border =>
-            outline ??= new OutlineElementComponent { Color = Theme.Colors.Border };
+            BorderBacking ??= new OutlineElementComponent { Color = Theme.Colors.Border };
 
         /// <summary>
         /// Does this element have a border?
         /// </summary>
-        public virtual bool HasBorder() => outline?.HasSize() ?? false;
+        public virtual bool HasBorder() => BorderBacking?.HasSize() ?? false;
     }
 }
