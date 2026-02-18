@@ -17,7 +17,6 @@ public partial class UiBuilderLibrary
             /// <summary>
             /// The main panel of the window.
             /// </summary>
-            ///
             PanelElement MainPanel,
             /// <summary>
             /// The title bar of the window.
