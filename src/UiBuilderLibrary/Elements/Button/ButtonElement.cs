@@ -50,13 +50,6 @@ public partial class UiBuilderLibrary
             Padding.SetSize(Theme.Spacing.Medium, Size.Zero);
             Width = Theme.ItemSizing.Large;
             Height = Theme.ItemSizing.ExtraSmall;
-            Layout = new FlexLayout()
-            {
-                Direction = FlexLayout.FlexDirection.Horizontal,
-                AlignItems = FlexLayout.ItemAlignment.Center,
-                JustifyContent = FlexLayout.JustifyAlignment.Center,
-                Gap = Theme.Spacing.Medium,
-            };
         }
 
         /// <summary>
@@ -146,6 +139,19 @@ public partial class UiBuilderLibrary
                 Color = Theme.Colors.Icon,
             };
             set => IconBacking = value;
+        }
+
+        /// <inheritdoc/>
+        public override ElementLayout Layout
+        {
+            get => LayoutBacking ??= new FlexLayout()
+            {
+                Direction = FlexLayout.FlexDirection.Horizontal,
+                AlignItems = FlexLayout.ItemAlignment.Center,
+                JustifyContent = FlexLayout.JustifyAlignment.Center,
+                Gap = Theme.Spacing.Medium,
+            };
+            set => LayoutBacking = value;
         }
 
         /// <inheritdoc/>

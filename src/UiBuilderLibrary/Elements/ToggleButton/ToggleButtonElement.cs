@@ -116,13 +116,6 @@ public partial class UiBuilderLibrary
             Height = Theme.ItemSizing.ExtraSmall;
             BgColorInactive = parent.Theme.Colors.Item.Level1;
             BgColorActive = parent.Theme.Colors.Branding.Primary;
-            Layout = new FlexLayout()
-            {
-                Direction = FlexLayout.FlexDirection.Horizontal,
-                AlignItems = FlexLayout.ItemAlignment.Center,
-                JustifyContent = FlexLayout.JustifyAlignment.Center,
-                Gap = Theme.Spacing.Medium,
-            };
         }
 
         /// <summary>
@@ -214,6 +207,19 @@ public partial class UiBuilderLibrary
         {
             get => IconActiveBacking ??= CreateIcon("active");
             set => IconBacking = value;
+        }
+
+        /// <inheritdoc/>
+        public override ElementLayout Layout
+        {
+            get => LayoutBacking ??= new FlexLayout()
+            {
+                Direction = FlexLayout.FlexDirection.Horizontal,
+                AlignItems = FlexLayout.ItemAlignment.Center,
+                JustifyContent = FlexLayout.JustifyAlignment.Center,
+                Gap = Theme.Spacing.Medium,
+            };
+            set => LayoutBacking = value;
         }
 
         /// <summary>

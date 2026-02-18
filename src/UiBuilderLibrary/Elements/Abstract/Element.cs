@@ -109,7 +109,7 @@ public partial class UiBuilderLibrary
         /// <summary>
         /// How to layout this element's children.
         /// </summary>
-        public ElementLayout Layout
+        public virtual ElementLayout Layout
         {
             get => LayoutBacking ??= AbsoluteLayout.Use();
             set => LayoutBacking = value;
