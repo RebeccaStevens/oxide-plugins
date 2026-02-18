@@ -23,22 +23,22 @@ public partial class UiBuilderLibrary
         /// <summary>
         /// The direction of the flex layout.
         /// </summary>
-        public FlexDirection Direction = FlexDirection.Horizontal;
+        public FlexDirection Direction { get; set; } = FlexDirection.Horizontal;
 
         /// <summary>
         /// The alignment of the items in the major axis in the flex layout.
         /// </summary>
-        public JustifyAlignment JustifyContent = JustifyAlignment.Center;
+        public JustifyAlignment JustifyContent { get; set; } = JustifyAlignment.Center;
 
         /// <summary>
         /// The alignment of the items in the minor axis in the flex layout.
         /// </summary>
-        public ItemAlignment AlignItems = ItemAlignment.Stretch;
+        public ItemAlignment AlignItems { get; set; } = ItemAlignment.Stretch;
 
         /// <summary>
         /// The spacing between elements.
         /// </summary>
-        public Size Gap = Size.Zero;
+        public Size Gap { get; set; } = Size.Zero;
 
         // TODO: Detect if already computed.
         /// <inheritdoc/>
@@ -217,6 +217,7 @@ public partial class UiBuilderLibrary
             };
         }
 
+        // TODO: Is there a better name for this opperation?
         /// <summary>
         /// Get the opposite version of a flex direction. For example, the opposite version of Horizontal is Vertical, and vice versa.
         /// </summary>

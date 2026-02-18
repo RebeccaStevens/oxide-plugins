@@ -13,7 +13,7 @@ public partial class UiBuilderLibrary
         /// <summary>
         /// The text of the label.
         /// </summary>
-        public string Text;
+        public string Text { get; set; }
 
         /// <summary>
         /// The color of the text.
@@ -23,7 +23,7 @@ public partial class UiBuilderLibrary
         /// <summary>
         /// The font face to use for the label.
         /// </summary>
-        public Font Font;
+        public Font Font { get; set; }
 
         /// <summary>
         /// The context for the font size of this element.
@@ -33,12 +33,12 @@ public partial class UiBuilderLibrary
         /// <summary>
         /// The alignment of the text.
         /// </summary>
-        public TextAnchor TextAlignment;
+        public TextAnchor TextAlignment { get; set; }
 
         /// <summary>
         /// The vertical overflow of the text.
         /// </summary>
-        public VerticalWrapMode VerticalOverflow;
+        public VerticalWrapMode VerticalOverflow { get; set; }
 
         /// <summary>
         /// The font size to use for the label.
