@@ -19,7 +19,6 @@ public partial class UiBuilderLibrary
         {
             private readonly Ui ui;
 
-            /// <inheritdoc cref="CloseUiAction"/>
             public CloseUiAction(Ui ui)
             {
                 this.ui = ui;

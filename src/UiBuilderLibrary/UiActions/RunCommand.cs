@@ -19,7 +19,6 @@ public partial class UiBuilderLibrary
         {
             private readonly string command;
 
-            /// <inheritdoc cref="RunCommandAction"/>
             public RunCommandAction(string command)
             {
                 this.command = command;

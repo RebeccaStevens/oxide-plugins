@@ -21,7 +21,6 @@ public partial class UiBuilderLibrary
         {
             private readonly Action action;
 
-            /// <inheritdoc cref="RunActionAction"/>
             public RunActionAction(Action action)
             {
                 this.action = action;
