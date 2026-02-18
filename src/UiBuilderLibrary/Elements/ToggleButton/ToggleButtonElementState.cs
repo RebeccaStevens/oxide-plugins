@@ -17,12 +17,12 @@ public partial class UiBuilderLibrary
             /// <summary>
             /// The command to run to activate the toggle button.
             /// </summary>
-            protected string ActivateCommand;
+            protected readonly string ActivateCommand;
 
             /// <summary>
             /// The command to run to deactivate the toggle button.
             /// </summary>
-            protected string DeactivateCommand;
+            protected readonly string DeactivateCommand;
 
             /// <inheritdoc cref="BoxModelElementState.Element"/>
             public new ToggleButtonElement Element => (ToggleButtonElement)base.Element;
