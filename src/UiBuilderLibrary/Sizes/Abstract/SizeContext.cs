@@ -13,12 +13,12 @@ public partial class UiBuilderLibrary
         /// A label for this size.<br />
         /// Useful for debugging, but doesn't have any other practical purpose.
         /// </summary>
-        public readonly string Name;
+        public string Name { get; }
 
         /// <summary>
         /// The element this is applied to.
         /// </summary>
-        public readonly Element Element;
+        public Element Element { get; }
 
         /// <summary>
         /// The value of this.

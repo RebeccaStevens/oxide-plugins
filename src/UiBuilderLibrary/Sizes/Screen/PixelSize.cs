@@ -17,7 +17,7 @@ public partial class UiBuilderLibrary
             /// <summary>
             /// The number of pixels.
             /// </summary>
-            public readonly int Value;
+            public int Value { get; }
 
             internal PixelSize(int value)
             {

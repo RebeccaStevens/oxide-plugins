@@ -15,7 +15,7 @@ public partial class UiBuilderLibrary
             /// <summary>
             /// The number of pixels.
             /// </summary>
-            public readonly Func<ElementState, Bounds.Value> ComputeBounds;
+            public Func<ElementState, Bounds.Value> ComputeBounds { get; }
 
             internal ComputedSize(Func<ElementState, Bounds.Value> computeBounds)
             {

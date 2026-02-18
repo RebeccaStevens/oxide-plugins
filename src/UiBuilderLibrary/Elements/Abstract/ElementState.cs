@@ -28,27 +28,27 @@ public partial class UiBuilderLibrary
         /// <summary>
         /// The element this state is for.
         /// </summary>
-        public readonly Element Element;
+        public Element Element { get; }
 
         /// <summary>
         /// The player this state is for.
         /// </summary>
-        public readonly BasePlayer Player;
+        public BasePlayer Player { get; }
 
         /// <summary>
         /// The bounds that this element will place itself within.
         /// </summary>
-        public readonly Bounds Bounds;
+        public Bounds Bounds { get; }
 
         /// <summary>
         /// The bounds of the content (children) of this element.
         /// </summary>
-        protected readonly Bounds ContentBounds;
+        protected Bounds ContentBounds { get; }
 
         /// <summary>
         /// The bounds of the root cui element taking into account things like the element's margin.
         /// </summary>
-        protected readonly Bounds CuiBounds;
+        protected Bounds CuiBounds { get; }
 
         /// <summary>
         /// Does this state need to be (re)sent to the player?

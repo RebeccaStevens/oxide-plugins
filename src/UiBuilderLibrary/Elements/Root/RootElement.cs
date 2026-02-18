@@ -10,7 +10,7 @@ public partial class UiBuilderLibrary
         /// <summary>
         /// The UI that this element is the root of.
         /// </summary>
-        public readonly Ui Ui;
+        public Ui Ui { get; }
 
         /// <summary>
         /// Create a new root element.
