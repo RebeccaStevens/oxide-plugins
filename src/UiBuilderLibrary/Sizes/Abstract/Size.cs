@@ -74,6 +74,11 @@ public partial class UiBuilderLibrary
         public static Size operator *(Size value, double multiplier) => value.Multiply(multiplier);
 
         /// <summary>
+        /// Multiply a size by a multiplier.
+        /// </summary>
+        public static Size operator *(double multiplier, Size value) => value.Multiply(multiplier);
+
+        /// <summary>
         /// Divide a size by a divisor.
         /// </summary>
         public static Size operator /(Size value, double divisor) => value.Divide(divisor);
