@@ -282,7 +282,6 @@ public partial class ResourceMaster : RustPlugin
         moddedRates.Load();
     }
 
-
     private void OnServerInitialized()
     {
         IEnumerable<ResourceDispenser> dispensers = BaseNetworkable.serverEntities
@@ -390,7 +389,6 @@ public partial class ResourceMaster : RustPlugin
             private readonly string? shortFilename;
 
             public T? Values { get; private set; }
-
 
             public PluginConfig(string? filename)
             {
