@@ -9,7 +9,7 @@ public partial class UiBuilderLibrary
         /// <summary>
         /// Run the given action.
         /// </summary>
-        public static UiAction RunAction(Action action)
+        public static UiAction RunAction(Action<BasePlayer> action)
         {
             return new RunActionAction(action);
         }
@@ -19,9 +19,9 @@ public partial class UiBuilderLibrary
         /// </summary>
         internal class RunActionAction : UiAction
         {
-            private readonly Action action;
+            private readonly Action<BasePlayer> action;
 
-            public RunActionAction(Action action)
+            public RunActionAction(Action<BasePlayer> action)
             {
                 this.action = action;
             }
@@ -34,7 +34,7 @@ public partial class UiBuilderLibrary
             }
 
             /// <inheritdoc/>
-            public override void Execute(BasePlayer player) => action();
+            public override void Execute(BasePlayer player) => action(player);
         }
     }
 }
