@@ -43,7 +43,7 @@ public partial class UiBuilderLibrary
         /// <inheritdoc/>
         protected override void ComputeLayout(ElementState state)
         {
-            var childrenStates = state.GetChildren().ToArray();
+            var childrenStates = state.GetChildren().Where(child => child.IsEnabled).ToArray();
             if (childrenStates.Length == 0)
                 return;
 
