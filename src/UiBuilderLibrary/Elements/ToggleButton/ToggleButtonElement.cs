@@ -67,9 +67,9 @@ public partial class UiBuilderLibrary
         protected ImageElement? IconActiveBacking;
 
         private const string ElementCommandScope = $"{CommandScope}.toggle-button";
-        private const string CommandActivate = $"{ElementCommandScope}.activate";
-        private const string CommandDeactivate = $"{ElementCommandScope}.deactivate";
-        private const string CommandClicked = $"{ElementCommandScope}.clicked";
+        private const string CommandBaseActivate = $"{ElementCommandScope}.activate";
+        private const string CommandBaseDeactivate = $"{ElementCommandScope}.deactivate";
+        private const string CommandBaseClicked = $"{ElementCommandScope}.clicked";
 
         /// <summary>
         /// The color of the button when it is inactive.
@@ -105,12 +105,12 @@ public partial class UiBuilderLibrary
         /// <summary>
         /// The action to perform when the button switched to the active state.
         /// </summary>
-        public UiAction? OnActivate;
+        public UiAction? OnActivate { get; set; }
 
         /// <summary>
         /// The action to perform when the button switched to the inactive state.
         /// </summary>
-        public UiAction? OnDeactivate;
+        public UiAction? OnDeactivate { get; set; }
 
         /// <summary>
         /// The action to perform when the button is clicked.
@@ -318,9 +318,9 @@ public partial class UiBuilderLibrary
         /// </summary>
         internal static void RegisterCommands(RustPlugin plugin, Oxide.Game.Rust.Libraries.Command cmd)
         {
-            cmd.AddConsoleCommand(CommandActivate, plugin, HandleCommandToggle(true));
-            cmd.AddConsoleCommand(CommandDeactivate, plugin, HandleCommandToggle(false));
-            cmd.AddConsoleCommand(CommandClicked, plugin, HandleCommandClicked);
+            cmd.AddConsoleCommand(CommandBaseActivate, plugin, HandleCommandToggle(true));
+            cmd.AddConsoleCommand(CommandBaseDeactivate, plugin, HandleCommandToggle(false));
+            cmd.AddConsoleCommand(CommandBaseClicked, plugin, HandleCommandClicked);
         }
 
         /// <summary>

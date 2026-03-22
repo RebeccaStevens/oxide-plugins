@@ -17,12 +17,12 @@ public partial class UiBuilderLibrary
             /// <summary>
             /// The command to run to activate the toggle button.
             /// </summary>
-            protected readonly string ActivateCommand;
+            protected readonly string CommandActivate;
 
             /// <summary>
             /// The command to run to deactivate the toggle button.
             /// </summary>
-            protected readonly string DeactivateCommand;
+            protected readonly string CommandDeactivate;
 
             /// <summary>
             /// The command to run when the toggle button is clicked while it is controlled.
@@ -35,9 +35,9 @@ public partial class UiBuilderLibrary
             /// <inheritdoc cref="ToggleButtonElementState(ToggleButtonElement, BasePlayer)"/>
             public ToggleButtonElementState(ToggleButtonElement element, BasePlayer player) : base(element, player)
             {
-                ActivateCommand = $"{CommandActivate} {Id}";
-                DeactivateCommand = $"{CommandDeactivate} {Id}";
-                CommandClicked = $"{CommandClicked} {Id}";
+                CommandActivate = $"{CommandBaseActivate} {Id}";
+                CommandDeactivate = $"{CommandBaseDeactivate} {Id}";
+                CommandClicked = $"{CommandBaseClicked} {Id}";
             }
 
             /// <summary>
