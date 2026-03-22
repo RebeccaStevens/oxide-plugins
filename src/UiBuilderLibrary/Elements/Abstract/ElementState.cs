@@ -202,24 +202,35 @@ public partial class UiBuilderLibrary
         /// Open this element (and its children).
         /// </summary>
         /// <param name="force">If true, the element will be marked as needing to be resynced even if it was already open.</param>
-        public void Open(bool force = false)
+        public virtual void Open(bool force = false)
         {
+            // Can't open a state that isn't enabled.
+            if (!IsEnabled)
+            {
+                // Debug.Fail("Attempted to open a state that isn't enabled.");
+                return;
+            }
+
+            if (!AllOpenStates.TryAdd(Id, this) && !force)
+                return;
+
+            NeedsSync = true;
             foreach (var child in Element.GetChildren())
                 child.Open(Player, force);
-            if (AllOpenStates.TryAdd(Id, this) || force)
-                NeedsSync = true;
         }
 
         /// <summary>
         /// Close this element (and its children).
         /// </summary>
         /// <param name="force">If true, the element will be marked as needing to be resynced even if it was already closed.</param>
-        public void Close(bool force = false)
+        public virtual void Close(bool force = false)
         {
+            if (!AllOpenStates.Remove(Id) && !force)
+                return;
+
+            NeedsSync = true;
             foreach (var child in Element.GetChildren())
                 child.Close(Player, force);
-            if (AllOpenStates.Remove(Id) || force)
-                NeedsSync = true;
         }
 
         /// <summary>
