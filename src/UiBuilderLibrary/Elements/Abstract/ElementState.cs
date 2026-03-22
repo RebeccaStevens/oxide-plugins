@@ -36,6 +36,11 @@ public partial class UiBuilderLibrary
         public BasePlayer Player { get; }
 
         /// <summary>
+        /// The backing field for the <see cref="IsEnabled"/> property.
+        /// </summary>
+        protected bool IsEnabledBacking;
+
+        /// <summary>
         /// The bounds that this element will place itself within.
         /// </summary>
         public Bounds Bounds { get; }
@@ -74,10 +79,31 @@ public partial class UiBuilderLibrary
             Element = element;
             Id = id;
             Player = player;
+            IsEnabled = true;
             NeedsSync = false;
             Bounds = new Bounds();
             ContentBounds = new Bounds();
             CuiBounds = new Bounds();
+        }
+
+        /// <summary>
+        /// Whether this state is enabled.<br/>
+        /// A state that is not enabled will not be rendered nor will any of its children.
+        /// </summary>
+        public bool IsEnabled
+        {
+            get => Element.IsEnabled != null
+                ? (IsEnabledBacking = Element.IsEnabled(this, IsEnabledBacking))
+                : IsEnabledBacking;
+            set
+            {
+                if (value == IsEnabledBacking)
+                    return;
+                IsEnabledBacking = value;
+                NeedsSync = true;
+                if (!IsEnabledBacking)
+                    Close();
+            }
         }
 
         /// <summary>
@@ -110,7 +136,7 @@ public partial class UiBuilderLibrary
         /// This looks at this state and all its children states.
         /// </summary>
         /// <param name="markAsNoLongerNeedingResync">If true, each state that is returned will have its <see cref="NeedsSync"/> property set to false.</param>
-        internal IEnumerable<ElementState> GetStatesNeedingSync(bool markAsNoLongerNeedingResync)
+        private IEnumerable<ElementState> GetStatesNeedingSync(bool markAsNoLongerNeedingResync)
         {
             var resultList = Pool.Get<List<ElementState>>();
 
@@ -132,6 +158,11 @@ public partial class UiBuilderLibrary
                     if (markAsNoLongerNeedingResync)
                         state.NeedsSync = false;
                 }
+
+                // No need to check the children of a state that isn't enabled.
+                // The disabled state itself still needs to be checked in case it needs to be destroyed on the client.
+                if (!state.IsEnabled)
+                    continue;
 
                 // Check all the child states of this state.
                 // TODO: Can this be optimized - reduce the number of iterations needed to add all the child states in the correct order?

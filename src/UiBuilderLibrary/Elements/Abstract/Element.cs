@@ -101,6 +101,19 @@ public partial class UiBuilderLibrary
         }
 
         /// <summary>
+        /// Used to determine whether an element is enabled or not.
+        /// </summary>
+        /// <param name="state">The state of the element needing to be checked.</param>
+        /// <param name="currentValue">The enabled state of the element before the check.</param>
+        /// <returns>The new enabled state for the element.</returns>
+        public delegate bool IsEnabledDelegate(ElementState state, bool currentValue);
+
+        /// <summary>
+        /// A function that determines whether this element is enabled.
+        /// </summary>
+        public IsEnabledDelegate? IsEnabled;
+
+        /// <summary>
         /// Used to determine the order of this element in regards to its siblings.<br/>
         /// Lower values are considered to come before higher values.
         /// </summary>
