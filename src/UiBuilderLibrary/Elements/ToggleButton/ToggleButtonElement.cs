@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using UnityEngine;
 
 namespace Oxide.Plugins;
@@ -68,6 +69,7 @@ public partial class UiBuilderLibrary
         private const string ElementCommandScope = $"{CommandScope}.toggle-button";
         private const string CommandActivate = $"{ElementCommandScope}.activate";
         private const string CommandDeactivate = $"{ElementCommandScope}.deactivate";
+        private const string CommandClicked = $"{ElementCommandScope}.clicked";
 
         /// <summary>
         /// The color of the button when it is inactive.
@@ -109,6 +111,11 @@ public partial class UiBuilderLibrary
         /// The action to perform when the button switched to the inactive state.
         /// </summary>
         public UiAction? OnDeactivate;
+
+        /// <summary>
+        /// The action to perform when the button is clicked.
+        /// </summary>
+        public UiAction? OnClick { get; set; }
 
         /// <summary>
         /// Create a new toggle button element.
@@ -313,63 +320,118 @@ public partial class UiBuilderLibrary
         {
             cmd.AddConsoleCommand(CommandActivate, plugin, HandleCommandToggle(true));
             cmd.AddConsoleCommand(CommandDeactivate, plugin, HandleCommandToggle(false));
+            cmd.AddConsoleCommand(CommandClicked, plugin, HandleCommandClicked);
         }
 
         /// <summary>
-        /// Create the handler for the command to toggle the active state of a toggle button element to either true or false.
+        /// Create the handler for the command indicating that the toggle button's state should be changed.
         /// </summary>
         internal static Func<ConsoleSystem.Arg, bool> HandleCommandToggle(bool markActive) =>
             (data) =>
             {
-                var args = Utils.ParseCommandLineArgs(data.Args);
+                if (!HandleCommandCommon(data, out var id, out var state))
+                    return false;
 
-                switch (args.Values.Count)
-                {
-                    case 0:
-                        data.ReplyWith($"No ids specified.\nUsage: {CommandActivate} <id>");
-                        return false;
-                    case > 2:
-                        data.ReplyWith($"Too many ids specified.\nUsage: {CommandActivate} <id>");
-                        return false;
-                }
-
-                var player = (BasePlayer)data.Connection.player;
-                var id = args.Values[0];
-                Debug.Assert(!string.IsNullOrEmpty(id));
-
-                var state = ElementState.GetById(id);
-                if (state == null)
+                if (state.Element.IsActive != null)
                 {
 #if DEBUG
-                    data.ReplyWith($"No element state with id '{id}' found.");
+                    data.ReplyWith($"Cannot use command \"{data.cmd.Name}\" on a toggle button that is controlled.");
 #else
-                    data.ReplyWith($"Invalid element state id '{id}'.");
+                    data.ReplyWith($"Internal error: Element state id: {id}");
 #endif
                     return false;
                 }
 
-                if (state is not ToggleButtonElementState elementState)
-                {
-#if DEBUG
-                    data.ReplyWith($"Element with id '{id}' is not a toggle button element state.");
-#else
-                    data.ReplyWith($"Invalid element state id '{id}'.");
-#endif
-                    return false;
-                }
+                state.IsActive = markActive;
+                state.Element.OnClick?.Execute(state.Player);
 
-                if (elementState.Player != player)
-                {
-#if DEBUG
-                    data.ReplyWith($"Element with id '{id}' is not owned by the player.");
-#else
-                    data.ReplyWith($"Invalid element state id '{id}'.");
-#endif
-                    return false;
-                }
-
-                elementState.IsActive = markActive;
+                state.Sync();
                 return true;
             };
+
+
+        /// <summary>
+        /// Create the handler for the command indidcating that the toggle button has been clicked while it is controlled.
+        /// </summary>
+        internal static bool HandleCommandClicked(ConsoleSystem.Arg data)
+        {
+            if (!HandleCommandCommon(data, out var id, out var state))
+                return false;
+
+            if (state.Element.IsActive == null)
+            {
+#if DEBUG
+                data.ReplyWith($"Cannot use command \"{data.cmd.Name}\" on a toggle button that is not controlled.");
+#else
+                data.ReplyWith($"Internal error: Element state id: {id}");
+#endif
+                return false;
+            }
+
+            state.Element.OnClick?.Execute(state.Player);
+            return true;
+        }
+
+        /// <summary>
+        /// Common code for handling commands.
+        /// </summary>
+        private static bool HandleCommandCommon(ConsoleSystem.Arg data, [NotNullWhen(true)] out string? id,
+            [NotNullWhen(true)] out ToggleButtonElementState? state)
+        {
+            var args = Utils.ParseCommandLineArgs(data.Args);
+            id = null;
+            state = null;
+
+            switch (args.Values.Count)
+            {
+                case 0:
+                    data.ReplyWith($"No ids specified.\nUsage: {data.cmd.Name} <id>");
+                    return false;
+                case > 2:
+                    data.ReplyWith($"Too many parameters specified.\nUsage: {data.cmd.Name} <id>");
+                    return false;
+            }
+
+            var player = (BasePlayer)data.Connection.player;
+            id = args.Values[0];
+            Debug.Assert(!string.IsNullOrEmpty(id));
+
+            try
+            {
+                state = (ToggleButtonElementState?)ElementState.GetById(id);
+            }
+            catch (InvalidCastException)
+            {
+#if DEBUG
+                data.ReplyWith($"Element with id '{id}' is not a toggle button element state.");
+#else
+                data.ReplyWith($"Invalid element state id '{id}'.");
+#endif
+                return false;
+            }
+
+
+            if (state == null)
+            {
+#if DEBUG
+                data.ReplyWith($"No element state with id '{id}' found.");
+#else
+                data.ReplyWith($"Invalid element state id '{id}'.");
+#endif
+                return false;
+            }
+
+            if (state.Player != player)
+            {
+#if DEBUG
+                data.ReplyWith($"Element with id '{id}' is not owned by the player.");
+#else
+                data.ReplyWith($"Invalid element state id '{id}'.");
+#endif
+                return false;
+            }
+
+            return true;
+        }
     }
 }

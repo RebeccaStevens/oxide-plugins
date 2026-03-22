@@ -24,6 +24,11 @@ public partial class UiBuilderLibrary
             /// </summary>
             protected readonly string DeactivateCommand;
 
+            /// <summary>
+            /// The command to run when the toggle button is clicked while it is controlled.
+            /// </summary>
+            protected readonly string CommandClicked;
+
             /// <inheritdoc cref="BoxModelElementState.Element"/>
             public new ToggleButtonElement Element => (ToggleButtonElement)base.Element;
 
@@ -32,6 +37,7 @@ public partial class UiBuilderLibrary
             {
                 ActivateCommand = $"{CommandActivate} {Id}";
                 DeactivateCommand = $"{CommandDeactivate} {Id}";
+                CommandClicked = $"{CommandClicked} {Id}";
             }
 
             /// <summary>
@@ -83,7 +89,12 @@ public partial class UiBuilderLibrary
                     Material = IsActive
                         ? (string.IsNullOrEmpty(Element.BgMaterialActive) ? null : Element.BgMaterialActive)
                         : (string.IsNullOrEmpty(Element.BgMaterial) ? null : Element.BgMaterial),
-                    Command = IsActive ? DeactivateCommand : ActivateCommand,
+                    Command =
+                        Element.IsActive == null
+                            ? IsActive
+                                ? CommandDeactivate
+                                : CommandActivate
+                            : CommandClicked,
                 });
 
                 if (Element.HasBorder())
