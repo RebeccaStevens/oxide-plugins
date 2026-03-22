@@ -112,34 +112,26 @@ public partial class UiBuilderLibrary
         /// <summary>
         /// The label element to display on the button.
         /// </summary>
-        public LabelElement Label
+        public LabelElement Label => LabelBacking ??= new LabelElement(this)
         {
-            get => LabelBacking ??= new LabelElement(this)
-            {
-                Name = $"{Name}-label",
-                Weight = -1,
-                TextAlignment = TextAnchor.MiddleCenter,
-                TextColor = Theme.Colors.Text.Regular,
-                Font = Font.Regular,
-                FontSize = Theme.FontSize.Large,
-            };
-            set => LabelBacking = value;
-        }
+            Name = $"{Name}-label",
+            Weight = -1,
+            TextAlignment = TextAnchor.MiddleCenter,
+            TextColor = Theme.Colors.Text.Regular,
+            Font = Font.Regular,
+            FontSize = Theme.FontSize.Large,
+        };
 
         /// <summary>
         /// The icon element to display on the button.
         /// </summary>
-        public ImageElement Icon
+        public ImageElement Icon => IconBacking ??= new ImageElement(this)
         {
-            get => IconBacking ??= new ImageElement(this)
-            {
-                Name = $"{Name}-icon",
-                Weight = -2,
-                Size = Theme.FontSize.Large,
-                Color = Theme.Colors.Icon,
-            };
-            set => IconBacking = value;
-        }
+            Name = $"{Name}-icon",
+            Weight = -2,
+            Size = Theme.FontSize.Large,
+            Color = Theme.Colors.Icon,
+        };
 
         /// <inheritdoc/>
         public override ElementLayout Layout

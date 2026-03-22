@@ -175,39 +175,23 @@ public partial class UiBuilderLibrary
         /// <summary>
         /// The label element to display on the button.
         /// </summary>
-        public LabelElement Label
-        {
-            get => LabelBacking ??= CreateLabel("inactive");
-            set => LabelBacking = value;
-        }
+        public LabelElement Label => LabelBacking ??= CreateLabel("inactive");
 
         /// <summary>
         /// The label element to display on the button when it is active.<br/>
         /// If this is not set, the same label as the inactive state will be used.
         /// </summary>
-        public LabelElement LabelActive
-        {
-            get => LabelActiveBacking ??= CreateLabel("active");
-            set => LabelActiveBacking = value;
-        }
+        public LabelElement LabelActive => LabelActiveBacking ??= CreateLabel("active");
 
         /// <summary>
         /// The icon element to display on the button.
         /// </summary>
-        public ImageElement Icon
-        {
-            get => IconBacking ??= CreateIcon("inactive");
-            set => IconBacking = value;
-        }
+        public ImageElement Icon => IconBacking ??= CreateIcon("inactive");
 
         /// <summary>
         /// The active icon element to display on the button.
         /// </summary>
-        public ImageElement IconActive
-        {
-            get => IconActiveBacking ??= CreateIcon("active");
-            set => IconBacking = value;
-        }
+        public ImageElement IconActive => IconActiveBacking ??= CreateIcon("active");
 
         /// <inheritdoc/>
         public override ElementLayout Layout
