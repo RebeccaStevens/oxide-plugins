@@ -13,6 +13,11 @@ public partial class UiBuilderLibrary
         protected OutlineElementComponent? BorderBacking;
 
         /// <summary>
+        /// The context for the rotation of this element.
+        /// </summary>
+        internal readonly RotationContext ContentRotationContext;
+
+        /// <summary>
         /// Create a new panel element.
         /// </summary>
         /// <param name="parent">The parent of this element.</param>
@@ -32,7 +37,27 @@ public partial class UiBuilderLibrary
         /// </summary>
         protected BoxModelElement(Element? parent, string? layer) : base(parent, layer)
         {
+            ContentRotationContext = new RotationContext(RotationContext);
             Padding = new DirectionalSizeValues("Padding", this, Size.Zero);
+        }
+
+        /// <summary>
+        /// The rotation (in degrees) of this element's conent.
+        /// </summary>
+        public double ContentRotation
+        {
+            get => ContentRotationContext.Degrees;
+            set => ContentRotationContext.Degrees = value;
+        }
+
+        /// <summary>
+        /// The pivot of this element's content.<br />
+        /// See <see cref="Element.Pivot"/> for more information.
+        /// </summary>
+        public PositionAnchor ContentPivot
+        {
+            get => ContentRotationContext.Pivot;
+            set => ContentRotationContext.Pivot = value;
         }
 
         /// <summary>
@@ -45,6 +70,9 @@ public partial class UiBuilderLibrary
         /// </summary>
         public OutlineElementComponent Border =>
             BorderBacking ??= new OutlineElementComponent { Color = Theme.Colors.Border };
+
+        /// <inheritdoc/>
+        public override RotationContext GetChildRotationContext() => ContentRotationContext;
 
         /// <summary>
         /// Does this element have a border?

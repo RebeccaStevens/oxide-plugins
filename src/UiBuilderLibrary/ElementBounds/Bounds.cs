@@ -49,15 +49,15 @@ public partial class UiBuilderLibrary
         public Value Height => Value.Full - FromTop - FromBottom;
 
         /// <summary>
-        /// The pivot point of this element relative to the element's anchor.
-        /// Defaults to (0.5, 0.5) (the center of the element).
+        /// When <see cref="Rotation"/> is not 0, this point on the element
+        /// will be moved to the center of the element.
+        /// Then the element will be rotated around this point.
         /// </summary>
-        public (double X, double Y) PivotPoint;
-
-        // TODO: Document rotation units (degrees, radians, etc.)
+        public PositionAnchor Pivot;
 
         /// <summary>
-        /// The rotation of this element around its pivot point.<br />
+        /// The rotation (in degrees) of this element.<br />
+        /// Positive values rotate counter-clockwise, negative values clockwise.<br />
         /// Defaults to 0.
         /// </summary>
         public double Rotation;
@@ -67,7 +67,7 @@ public partial class UiBuilderLibrary
         /// </summary>
         public Bounds()
         {
-            PivotPoint = PositionAnchorToPointComponents(PositionAnchor.MiddleCenter);
+            Pivot = PositionAnchor.MiddleCenter;
             Rotation = 0;
         }
 
@@ -90,7 +90,7 @@ public partial class UiBuilderLibrary
             FromRight = source.FromRight;
             FromBottom = source.FromBottom;
             FromLeft = source.FromLeft;
-            PivotPoint = source.PivotPoint;
+            Pivot = source.Pivot;
             Rotation = source.Rotation;
             return this;
         }
@@ -108,7 +108,7 @@ public partial class UiBuilderLibrary
         }
 
         /// <summary>
-        /// Set the rotation of this to the given value.
+        /// Set the rotation (in degrees) of this to the given value.
         /// </summary>
         public Bounds SetRotation(double rotation)
         {
@@ -126,38 +126,20 @@ public partial class UiBuilderLibrary
         }
 
         /// <summary>
-        /// Set the pivot point of this to the given anchor.
+        /// Set the pivot of this to the given anchor.
         /// </summary>
-        public Bounds SetPivotPoint(PositionAnchor anchor)
+        public Bounds SetPivot(PositionAnchor anchor)
         {
-            PivotPoint = PositionAnchorToPointComponents(anchor);
+            Pivot = anchor;
             return this;
         }
 
         /// <summary>
-        /// Set the pivot point of this to the given position.
+        /// Set the pivot of this to that of the given bounds.
         /// </summary>
-        public Bounds SetPivotPoint((double X, double Y) pivotPoint)
+        public Bounds SetPivot(Bounds source)
         {
-            PivotPoint = pivotPoint;
-            return this;
-        }
-
-        /// <summary>
-        /// Set the pivot point of this to the given x and y values.
-        /// </summary>
-        public Bounds SetPivotPoint(double x, double y)
-        {
-            PivotPoint = (x, y);
-            return this;
-        }
-
-        /// <summary>
-        /// Set the pivot point of this to that of the given bounds.
-        /// </summary>
-        public Bounds SetPivotPoint(Bounds source)
-        {
-            PivotPoint = source.PivotPoint;
+            Pivot = source.Pivot;
             return this;
         }
 
@@ -200,7 +182,7 @@ public partial class UiBuilderLibrary
         }
 
         /// <summary>
-        /// Add the given rotation to this.
+        /// Add the given rotation (in degrees) to this.
         /// </summary>
         public Bounds AddRotation(double rotation)
         {
@@ -256,7 +238,7 @@ public partial class UiBuilderLibrary
         }
 
         /// <summary>
-        /// Subtract the given rotation from this.
+        /// Subtract the given rotation (in degrees) from this.
         /// </summary>
         public Bounds SubtractRotation(double rotation)
         {
@@ -393,13 +375,15 @@ public partial class UiBuilderLibrary
             if (!HasSize(top, right, bottom, left))
                 return null;
 
+            var pivot = PositionAnchorToPointComponents(Pivot);
+
             return new CuiRectTransformComponent
             {
                 AnchorMin = $"{left.Anchor} {bottom.Anchor}",
                 AnchorMax = $"{right.Anchor} {top.Anchor}",
                 OffsetMin = $"{left.Offset} {bottom.Offset}",
                 OffsetMax = $"{right.Offset} {top.Offset}",
-                Pivot = $"{PivotPoint.X} {PivotPoint.Y}",
+                Pivot = $"{pivot.X} {pivot.Y}",
                 Rotation = (float)Rotation,
             };
         }

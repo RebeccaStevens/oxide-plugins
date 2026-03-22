@@ -78,7 +78,7 @@ public partial class UiBuilderLibrary
     }
 
     /// <summary>
-    /// Convert a PositionAnchor to a pivot point.
+    /// Convert a PositionAnchor to point components.
     /// </summary>
     public static (double X, double Y) PositionAnchorToPointComponents(PositionAnchor anchor)
     {

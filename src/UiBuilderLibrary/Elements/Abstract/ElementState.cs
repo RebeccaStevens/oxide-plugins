@@ -259,7 +259,12 @@ public partial class UiBuilderLibrary
         {
             CuiBounds.SetTo(Bounds);
             CuiBounds.AddPosition(Element.Margin.GetInnerBounds(this));
+            CuiBounds.SetPivot(Element.Pivot);
+            CuiBounds.SetRotation(Element.Rotation);
+
             ContentBounds.MaximizePosition();
+            ContentBounds.SetPivot(Element.Pivot);
+            ContentBounds.SetRotation(Element.Rotation);
         }
 
         /// <summary>

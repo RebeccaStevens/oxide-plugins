@@ -32,12 +32,16 @@ public partial class UiBuilderLibrary
         {
             CuiBounds.SetTo(Bounds);
             CuiBounds.AddPosition(Element.Margin.GetInnerBounds(this));
+            CuiBounds.SetPivot(Element.Pivot);
+            CuiBounds.SetRotation(Element.Rotation);
 
             if (Element.HasBorder())
                 CuiBounds.AddPosition(Element.Border.GetInnerBounds(this));
 
             ContentBounds.MaximizePosition();
             ContentBounds.AddPosition(Element.Padding.GetInnerBounds(this));
+            ContentBounds.SetPivot(Element.ContentPivot);
+            ContentBounds.SetRotation(Element.ContentRotation);
         }
 
         /// <inheritdoc/>

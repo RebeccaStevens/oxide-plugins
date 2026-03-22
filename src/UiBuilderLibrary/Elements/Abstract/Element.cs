@@ -66,6 +66,11 @@ public partial class UiBuilderLibrary
         internal readonly SizeContext HeightContext;
 
         /// <summary>
+        /// The context for the rotation of this element.
+        /// </summary>
+        internal readonly RotationContext RotationContext;
+
+        /// <summary>
         /// Create a new element.
         /// </summary>
         /// <param name="parent">The parent element of this element.</param>
@@ -96,6 +101,7 @@ public partial class UiBuilderLibrary
             WidthContext = new SizeContext("Width", this, Size.Auto);
             HeightContext = new SizeContext("Height", this, Size.Auto);
             Margin = new DirectionalSizeValues("Margin", this, Size.Zero);
+            RotationContext = new RotationContext(parent?.GetChildRotationContext());
 
             parent?.children.Add(this);
         }
@@ -201,6 +207,27 @@ public partial class UiBuilderLibrary
         /// The margin applied to this element.
         /// </summary>
         public DirectionalSizeValues Margin { get; }
+
+        /// <summary>
+        /// The rotation (in degrees) of this element.
+        /// </summary>
+        public double Rotation
+        {
+            get => RotationContext.Degrees;
+            set => RotationContext.Degrees = value;
+        }
+
+        /// <summary>
+        /// When <see cref="Rotation"/> is not 0, this point on the element
+        /// will be moved to the center of the element.
+        /// Then the element will be rotated around this point.<br />
+        /// Note: Currently the element will always be rotated around its center point.
+        /// </summary>
+        public PositionAnchor Pivot
+        {
+            get => RotationContext.Pivot;
+            set => RotationContext.Pivot = value;
+        }
 
         /// <summary>
         /// Open this element for the given player.
@@ -377,6 +404,11 @@ public partial class UiBuilderLibrary
             children.Sort((a, b) => a.Weight.CompareTo(b.Weight));
             return children;
         }
+
+        /// <summary>
+        /// Get the rotation context that child elements will be in.
+        /// </summary>
+        public virtual RotationContext GetChildRotationContext() => RotationContext;
 
         /// <summary>
         /// Get the state of this element for the given player.
