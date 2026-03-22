@@ -231,7 +231,7 @@ public partial class UiBuilderLibrary
         /// <returns>A new label element.</returns>
         protected LabelElement CreateLabel(string subname) => new LabelElement(this)
         {
-            Name = $"{Name}-label-${subname}",
+            Name = $"{Name}-label-{subname}",
             Weight = -1,
             TextAlignment = TextAnchor.MiddleCenter,
             TextColor = Theme.Colors.Text.Regular,
