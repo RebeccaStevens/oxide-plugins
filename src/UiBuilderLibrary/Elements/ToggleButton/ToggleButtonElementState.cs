@@ -58,7 +58,6 @@ public partial class UiBuilderLibrary
                     else
                         Element.OnDeactivate?.Execute(Player);
                     NeedsSync = true;
-                    Sync();
                 }
             }
 
