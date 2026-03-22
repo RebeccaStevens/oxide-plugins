@@ -88,7 +88,7 @@ public partial class UiBuilderLibrary
                 };
             }
 
-            // Only serialize non-default rotation.
+            // Only serialize non-default setTransformIndex.
             else if (property.PropertyName == "setTransformIndex")
             {
                 property.ShouldSerialize = instance =>
