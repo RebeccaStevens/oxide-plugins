@@ -284,8 +284,8 @@ public partial class UiBuilderLibrary
         protected override ElementState InitialState(BasePlayer player) => new ToggleButtonElementState(this, player);
 
         /// <inheritdoc cref="Element.GetState"/>
-        public new ToggleButtonElementState GetState(BasePlayer player) =>
-            (ToggleButtonElementState)base.GetState(player);
+        public new ToggleButtonElementState GetState(BasePlayer player, bool markStrong = false) =>
+            (ToggleButtonElementState)base.GetState(player, markStrong);
 
         /// <summary>
         /// Creates the label element to be used by this element.
