@@ -39,7 +39,9 @@ public partial class UiBuilderLibrary
             /// </summary>
             public bool IsActive
             {
-                get => IsActiveBacking;
+                get => Element.IsActive != null
+                    ? (IsActiveBacking = Element.IsActive(this, IsActiveBacking))
+                    : IsActiveBacking;
                 set
                 {
                     if (IsActiveBacking == value)
@@ -69,7 +71,14 @@ public partial class UiBuilderLibrary
                             IsActive ? Element.BgColorActiveHighlighted : Element.BgColorInactiveHighlighted),
                     PressedColor =
                         ColorToCuiColor(IsActive ? Element.BgColorActivePressed : Element.BgColorInactivePressed),
-                    SelectedColor = ColorToCuiColor(IsActive ? Element.BgColorInactive : Element.BgColorActive),
+                    SelectedColor = ColorToCuiColor(
+                        Element.IsActive == null
+                            ? IsActive
+                                ? Element.BgColorInactive
+                                : Element.BgColorActive
+                            : IsActive
+                                ? Element.BgColorActive
+                                : Element.BgColorInactive),
                     ColorMultiplier = Element.BgColorMultiplier,
                     Material = IsActive
                         ? (string.IsNullOrEmpty(Element.BgMaterialActive) ? null : Element.BgMaterialActive)

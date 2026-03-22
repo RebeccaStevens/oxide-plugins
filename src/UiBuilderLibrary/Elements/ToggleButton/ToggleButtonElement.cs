@@ -96,6 +96,11 @@ public partial class UiBuilderLibrary
         public string? BgMaterialActive { get; set; }
 
         /// <summary>
+        /// If set, the button's active state is controlled by this function rather than being freely toggleable.
+        /// </summary>
+        public Func<ToggleButtonElementState, bool, bool>? IsActive { get; set; }
+
+        /// <summary>
         /// The action to perform when the button switched to the active state.
         /// </summary>
         public UiAction? OnActivate;
@@ -175,23 +180,73 @@ public partial class UiBuilderLibrary
         /// <summary>
         /// The label element to display on the button.
         /// </summary>
-        public LabelElement Label => LabelBacking ??= CreateLabel("inactive");
+        public LabelElement Label
+        {
+            get
+            {
+                if (LabelBacking == null)
+                {
+                    LabelBacking = CreateLabel("base");
+                    if (LabelActiveBacking != null)
+                        LabelBacking.IsEnabled = (labelState, _) => !GetState(labelState.Player).IsActive;
+                }
+
+                return LabelBacking;
+            }
+        }
 
         /// <summary>
         /// The label element to display on the button when it is active.<br/>
         /// If this is not set, the same label as the inactive state will be used.
         /// </summary>
-        public LabelElement LabelActive => LabelActiveBacking ??= CreateLabel("active");
+        public LabelElement LabelActive
+        {
+            get
+            {
+                if (LabelActiveBacking == null)
+                {
+                    LabelActiveBacking = CreateLabel("active");
+                    LabelActiveBacking.IsEnabled = (labelState, _) => GetState(labelState.Player).IsActive;
+                }
+
+                return LabelActiveBacking;
+            }
+        }
 
         /// <summary>
         /// The icon element to display on the button.
         /// </summary>
-        public ImageElement Icon => IconBacking ??= CreateIcon("inactive");
+        public ImageElement Icon
+        {
+            get
+            {
+                if (IconBacking == null)
+                {
+                    IconBacking = CreateIcon("base");
+                    if (IconActiveBacking != null)
+                        IconBacking.IsEnabled = (iconState, _) => !GetState(iconState.Player).IsActive;
+                }
+
+                return IconBacking;
+            }
+        }
 
         /// <summary>
         /// The active icon element to display on the button.
         /// </summary>
-        public ImageElement IconActive => IconActiveBacking ??= CreateIcon("active");
+        public ImageElement IconActive
+        {
+            get
+            {
+                if (IconActiveBacking == null)
+                {
+                    IconActiveBacking = CreateIcon("active");
+                    IconActiveBacking.IsEnabled = (iconState, _) => GetState(iconState.Player).IsActive;
+                }
+
+                return IconActiveBacking;
+            }
+        }
 
         /// <inheritdoc/>
         public override ElementLayout Layout
