@@ -10,7 +10,7 @@ public partial class UiBuilderLibrary
         /// <summary>
         /// The backing field for the <see cref="Border"/> property.
         /// </summary>
-        protected OutlineElementComponent? BorderBacking;
+        public OutlineElementComponent? BorderBacking { get; protected set; }
 
         /// <summary>
         /// The context for the rotation of this element.

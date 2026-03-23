@@ -36,14 +36,14 @@ public partial class UiBuilderLibrary
         private readonly List<Element> children;
 
         /// <summary>
-        /// The backing field for the <see cref="Theme"/> property.
+        /// The backing field for the <see cref="Layout"/> property.
         /// </summary>
-        protected ElementLayout? LayoutBacking;
+        public ElementLayout? LayoutBacking { get; protected set; }
 
         /// <summary>
         /// The backing field for the <see cref="Theme"/> property.
         /// </summary>
-        protected Theme? ThemeBacking;
+        public Theme? ThemeBacking { get; protected set; }
 
         /// <summary>
         /// The context for the x position of this element.

@@ -12,32 +12,32 @@ public partial class UiBuilderLibrary
         /// <summary>
         /// Backing field for the <see cref="BgColorHighlighted"/> property.
         /// </summary>
-        protected Color? BgColorHighlightedBacking;
+        public Color? BgColorHighlightedBacking { get; protected set; }
 
         /// <summary>
         /// Backing field for the <see cref="BgColorPressed"/> property.
         /// </summary>
-        protected Color? BgColorPressedBacking;
+        public Color? BgColorPressedBacking { get; protected set; }
 
         /// <summary>
         /// Backing field for the <see cref="BgColorSelected"/> property.
         /// </summary>
-        protected Color? BgColorSelectedBacking;
+        public Color? BgColorSelectedBacking { get; protected set; }
 
         /// <summary>
         /// Backing field for the <see cref="BgColorDisabled"/> property.
         /// </summary>
-        protected Color? BgColorDisabledBacking;
+        public Color? BgColorDisabledBacking { get; protected set; }
 
         /// <summary>
         /// The backing field for the <see cref="Label"/> property.
         /// </summary>
-        protected LabelElement? LabelBacking;
+        public LabelElement? LabelBacking { get; protected set; }
 
         /// <summary>
         /// The backing field for the <see cref="Icon"/> property.
         /// </summary>
-        protected ImageElement? IconBacking;
+        public ImageElement? IconBacking { get; protected set; }
 
         /// <summary>
         /// Create a new button element.

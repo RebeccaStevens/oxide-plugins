@@ -14,57 +14,57 @@ public partial class UiBuilderLibrary
         /// <summary>
         /// Backing field for the <see cref="BgColorInactiveHighlighted"/> property.
         /// </summary>
-        protected Color? BgColorInactiveHighlightedBacking;
+        public Color? BgColorInactiveHighlightedBacking { get; protected set; }
 
         /// <summary>
         /// Backing field for the <see cref="BgColorActiveHighlighted"/> property.
         /// </summary>
-        protected Color? BgColorActiveHighlightedBacking;
+        public Color? BgColorActiveHighlightedBacking { get; protected set; }
 
         /// <summary>
         /// Backing field for the <see cref="BgColorInactivePressed"/> property.
         /// </summary>
-        protected Color? BgColorInactivePressedBacking;
+        public Color? BgColorInactivePressedBacking { get; protected set; }
 
         /// <summary>
         /// Backing field for the <see cref="BgColorActivePressed"/> property.
         /// </summary>
-        protected Color? BgColorActivePressedBacking;
+        public Color? BgColorActivePressedBacking { get; protected set; }
 
         /// <summary>
         /// Backing field for the <see cref="BgColorInactiveDisabled"/> property.
         /// </summary>
-        protected Color? BgColorInactiveDisabledBacking;
+        public Color? BgColorInactiveDisabledBacking { get; protected set; }
 
         /// <summary>
         /// Backing field for the <see cref="BgColorActiveDisabled"/> property.
         /// </summary>
-        protected Color? BgColorActiveDisabledBacking;
+        public Color? BgColorActiveDisabledBacking { get; protected set; }
 
         /// <summary>
         /// Backing field for the <see cref="BorderActive"/> property.
         /// </summary>
-        protected OutlineElementComponent? BorderActiveBacking;
+        public OutlineElementComponent? BorderActiveBacking { get; protected set; }
 
         /// <summary>
         /// Backing field for the <see cref="Label"/> property.
         /// </summary>
-        protected LabelElement? LabelBacking;
+        public LabelElement? LabelBacking { get; protected set; }
 
         /// <summary>
         /// Backing field for the <see cref="LabelActive"/> property.
         /// </summary>
-        protected LabelElement? LabelActiveBacking;
+        public LabelElement? LabelActiveBacking { get; protected set; }
 
         /// <summary>
         /// Backing field for the <see cref="Icon"/> property.
         /// </summary>
-        protected ImageElement? IconBacking;
+        public ImageElement? IconBacking { get; protected set; }
 
         /// <summary>
         /// Backing field for the <see cref="IconActive"/> property.
         /// </summary>
-        protected ImageElement? IconActiveBacking;
+        public ImageElement? IconActiveBacking { get; protected set; }
 
         private const string ElementCommandScope = $"{CommandScope}.toggle-button";
         private const string CommandBaseActivate = $"{ElementCommandScope}.activate";
