@@ -204,7 +204,7 @@ public partial class UiBuilderLibrary
         /// <summary>
         /// Get the reversed version of a flex direction. For example, the reversed version of Horizontal is HorizontalReversed, and vice versa.
         /// </summary>
-        public static FlexDirection ReverseDirection(FlexDirection direction)
+        public static FlexDirection Reverse(FlexDirection direction)
         {
             return direction switch
             {
@@ -220,7 +220,7 @@ public partial class UiBuilderLibrary
         /// <summary>
         /// Get the opposite version of a flex direction. For example, the opposite version of Horizontal is Vertical, and vice versa.
         /// </summary>
-        public static FlexDirection OppositeDirection(FlexDirection direction)
+        public static FlexDirection Opposite(FlexDirection direction)
         {
             return direction switch
             {
@@ -231,6 +231,57 @@ public partial class UiBuilderLibrary
                 _ => throw new ArgumentOutOfRangeException(nameof(direction)),
             };
         }
+
+
+        /// <summary>
+        /// Rotate the given direction clockwise.
+        /// </summary>
+        public static FlexDirection RotateClockwise(FlexDirection direction) => direction switch
+        {
+            FlexDirection.Horizontal => FlexDirection.Vertical,
+            FlexDirection.Vertical => FlexDirection.HorizontalReversed,
+            FlexDirection.HorizontalReversed => FlexDirection.VerticalReversed,
+            FlexDirection.VerticalReversed => FlexDirection.Horizontal,
+            _ => throw new ArgumentOutOfRangeException(nameof(direction)),
+        };
+
+        /// <summary>
+        /// Rotate the given direction counter-clockwise.
+        /// </summary>
+        public static FlexDirection RotateCounterClockwise(FlexDirection direction) => direction switch
+        {
+            FlexDirection.Horizontal => FlexDirection.VerticalReversed,
+            FlexDirection.Vertical => FlexDirection.Horizontal,
+            FlexDirection.HorizontalReversed => FlexDirection.Vertical,
+            FlexDirection.VerticalReversed => FlexDirection.HorizontalReversed,
+            _ => throw new ArgumentOutOfRangeException(nameof(direction)),
+        };
+
+        /// <summary>
+        /// Rotate the given direction by the given rotation.
+        /// </summary>
+        private static FlexDirection Rotate(FlexDirection direction, double rotation)
+        {
+            var normalizedRotation = RotationContext.Normalize(rotation);
+            var quarterTurns =
+                (RotationContext.RoughlyEqual(normalizedRotation, 0)) ? 0 :
+                (RotationContext.RoughlyEqual(normalizedRotation, 90)) ? 1 :
+                (RotationContext.RoughlyEqual(normalizedRotation, 180)) ? 2 :
+                (RotationContext.RoughlyEqual(normalizedRotation, 270)) ? 3 :
+                -1;
+
+            Debug.Assert(quarterTurns != -1, $"Rotation {rotation} is not a multiple of 90 degrees.");
+
+            return quarterTurns switch
+            {
+                0 => direction,
+                1 => RotateClockwise(direction),
+                2 => Reverse(direction),
+                3 => RotateCounterClockwise(direction),
+                _ => throw new Panic.Exception(),
+            };
+        }
+
 
         /// <summary>
         /// The direction of the flex layout.

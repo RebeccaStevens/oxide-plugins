@@ -52,8 +52,8 @@ public partial class UiBuilderLibrary
                 BgColor = Theme.Colors.Item.Level1,
                 Layout = new FlexLayout()
                 {
-                    Direction = FlexLayout.OppositeDirection((Layout as FlexLayout)?.Direction ??
-                                                             FlexLayout.FlexDirection.Vertical),
+                    Direction = FlexLayout.Opposite((Layout as FlexLayout)?.Direction ??
+                                                    FlexLayout.FlexDirection.Vertical),
                     JustifyContent = FlexLayout.JustifyAlignment.Start,
                 }
             };
