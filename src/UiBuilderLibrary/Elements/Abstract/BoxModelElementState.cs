@@ -55,10 +55,10 @@ public partial class UiBuilderLibrary
         /// <summary>
         /// Create the CUI elements for this state without adding any CUI components to them.
         /// </summary>
-        protected virtual ElementCuiElements CreateCuiElementsBase()
+        protected virtual ElementCuiElements CreateCuiElementsBase(bool forceContent = false)
         {
             var root = new SafeCuiElement(GetCuiRootName(), GetParentCuiContentName());
-            var content = Element.GetChildren().Any()
+            var content = forceContent || Element.GetChildren().Any()
                 ? new SafeCuiElement(GetCuiContentName(), root.Name)
                 : null; // Content isn't needed if there are no children.
 
