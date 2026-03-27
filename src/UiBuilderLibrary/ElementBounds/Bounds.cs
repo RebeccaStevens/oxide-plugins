@@ -367,10 +367,12 @@ public partial class UiBuilderLibrary
         /// </summary>
         public CuiRectTransformComponent? CreateCuiRectTransformComponent(ElementState state)
         {
-            var top = FromTop.ToCuiPositionComponents(Direction.Top);
-            var right = FromRight.ToCuiPositionComponents(Direction.Right);
-            var bottom = FromBottom.ToCuiPositionComponents(Direction.Bottom);
-            var left = FromLeft.ToCuiPositionComponents(Direction.Left);
+            // var top = FromTop.ToCuiPositionComponents(Direction.Top);
+            // var right = FromRight.ToCuiPositionComponents(Direction.Right);
+            // var bottom = FromBottom.ToCuiPositionComponents(Direction.Bottom);
+            // var left = FromLeft.ToCuiPositionComponents(Direction.Left);
+
+            var (top, right, bottom, left) = GetBoundingBox();
 
             if (!HasSize(top, right, bottom, left))
                 return null;
@@ -386,6 +388,31 @@ public partial class UiBuilderLibrary
                 Pivot = $"{pivot.X} {pivot.Y}",
                 Rotation = (float)Rotation,
             };
+        }
+
+        public (
+            (double Anchor, double Offset) Top,
+            (double Anchor, double Offset) Right,
+            (double Anchor, double Offset) Bottom,
+            (double Anchor, double Offset) Left
+            ) GetBoundingBox()
+        {
+            var radians = Rotation * Math.PI / 180;
+            var absCosRotation = Math.Abs(Math.Cos(radians));
+            var absSinRotation = Math.Abs(Math.Sin(radians));
+
+            var bbWidth = Width * absCosRotation + Height * absSinRotation;
+            var bbHeight = Width * absSinRotation + Height * absCosRotation;
+
+            var dx = (bbWidth - Width) / 2;
+            var dy = (bbHeight - Height) / 2;
+
+            return (
+                (FromTop - dx).ToCuiPositionComponents(Direction.Top),
+                (FromRight + dx).ToCuiPositionComponents(Direction.Right),
+                (FromBottom + dy).ToCuiPositionComponents(Direction.Bottom),
+                (FromLeft - dy).ToCuiPositionComponents(Direction.Left)
+            );
         }
 
         /// <inheritdoc/>
