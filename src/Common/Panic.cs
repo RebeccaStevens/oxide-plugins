@@ -10,7 +10,7 @@ namespace Oxide.Plugins;
 /// Use <see cref="Debug"/> instead if any of the following are true:
 /// <ul>
 /// <li>An exception would immediately be thrown after a check fails regardless.</li>
-/// <li>The logic immediately before the check ensures that the check will never fail.</li>
+/// <li>The logic immediately before the check ensures that the check will never fail and a value isn't required.</li>
 /// </ul>
 /// </summary>
 public sealed class Panic
@@ -54,11 +54,16 @@ public sealed class Panic
     /// Somthing is wrong and the plugin should not continue.
     /// </summary>
     [DoesNotReturn]
-    public static void Now(string? message = null) => throw new PanicException(message);
+    public static void Now(string? message = null) => throw Exception(message);
 
-    private sealed class PanicException : Exception
+    /// <summary>
+    /// Create a new panic exception.
+    /// </summary>
+    public static Exception Exception(string? message = null) => new PanicException(message);
+
+    internal sealed class PanicException : Exception
     {
-        internal PanicException(string? message) : base(message)
+        internal PanicException(string? message = null) : base(message)
         {
         }
     }
