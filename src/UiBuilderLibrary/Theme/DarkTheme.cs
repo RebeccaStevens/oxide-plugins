@@ -34,7 +34,8 @@ public partial class UiBuilderLibrary
                 {
                     Regular = new Color(0.914f, 0.875f, 0.843f),
                     Highlighted = Color.white,
-                    Muted = new Color(0.369f, 0.353f, 0.329f)
+                    Muted = new Color(0.369f, 0.353f, 0.329f),
+                    Outline = Color.black
                 },
             }
         };

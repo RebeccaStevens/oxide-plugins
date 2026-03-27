@@ -145,6 +145,11 @@ public partial class UiBuilderLibrary
                 /// This text color should contrast well with item backgrounds (<see cref="Item"/>).
                 /// </summary>
                 public required Color Muted { get; init; }
+
+                /// <summary>
+                /// The color used to outline text.
+                /// </summary>
+                public required Color Outline { get; init; }
             }
 
             /// <inheritdoc cref="Rust"/>
