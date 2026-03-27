@@ -47,16 +47,35 @@ public partial class UiBuilderLibrary
             if (childrenStates.Length == 0)
                 return;
 
-            if (Direction is FlexDirection.HorizontalReversed or FlexDirection.VerticalReversed)
+            var direction = Rotate(Direction, state.Element.GetChildRotationContext().Degrees);
+            if (direction is FlexDirection.HorizontalReversed or FlexDirection.VerticalReversed)
                 Array.Reverse(childrenStates);
 
-            var majorAxis = ToAxis(Direction);
+            var majorAxis = ToAxis(direction);
             var majorAxisChildrenExplicitSize = new Bounds.Value();
             var numberOfImplicitlySizedChildren = 0;
             var gapContext = new SizeContext("Gap", state.Element, Gap);
 
+            // IEnumerable<(
+            //     ElementState state,
+            //     (SizeContext Major,
+            //     SizeContext Minor,
+            //     Func<(Bounds.Value Major, Bounds.Value Minor), (Bounds.Value Major, Bounds.Value Minor)>
+            //     GetBoundsValues) BoundingBoxSize
+            //     )> childrenData =
+            //     childrenStates.Select(childState => (childState, GetBoundingBoxSize(childState))).ToArray();
+
+            // // Get sizing information for all children in regards of the major axis.
+            // foreach (var child in childrenData)
+            // {
+            //     if (child.BoundingBoxSize.Major.IsImplisit())
+            //         numberOfImplicitlySizedChildren += 1;
+            //     else
+            //         majorAxisChildrenExplicitSize += child.BoundingBoxSize.GetBoundsValues(default).Major;
+            // }
+
             IEnumerable<(ElementState state, (SizeContext Major, SizeContext Minor) SizeContext)> childrenData =
-                childrenStates.Select(childState => (childState, GetSizeContext(childState))).ToArray();
+                childrenStates.Select(childState => (childState, GetSizeContext(childState, direction))).ToArray();
 
             // Get sizing information for all children in regards of the major axis.
             foreach (var child in childrenData)
@@ -115,6 +134,16 @@ public partial class UiBuilderLibrary
 
             foreach (var child in childrenData)
             {
+                // var (childMajorSize, childMinorSize) =
+                //     child.BoundingBoxSize.GetBoundsValues((majorChildImplicitSize, Bounds.Value.Full));
+                // childMinorSize = AlignItems switch
+                // {
+                //     ItemAlignment.Start or
+                //         ItemAlignment.Center or
+                //         ItemAlignment.End => childMinorSize,
+                //     ItemAlignment.Stretch => Bounds.Value.Full,
+                //     _ => throw new ArgumentOutOfRangeException($"Invalid alignment: {AlignItems}"),
+                // };
                 var childMajorSize = child.SizeContext.Major.GetBoundsValue(child.state, majorChildImplicitSize);
                 var childMinorSize = AlignItems switch
                 {
@@ -155,12 +184,36 @@ public partial class UiBuilderLibrary
         /// <summary>
         /// Get the major and minor axis bounds' values for the given element state.
         /// </summary>
-        private (SizeContext Major, SizeContext Minor) GetSizeContext(ElementState state)
+        private (SizeContext Major, SizeContext Minor) GetSizeContext(ElementState state, FlexDirection direction)
         {
-            var (majorAxis, minorAxis) = ToAxes(Direction);
+            var axes = ToAxes(direction);
+            var rotatedAxes = UiBuilderLibrary.Rotate(axes, state.Element.Rotation);
+            var (majorAxis, minorAxis) = rotatedAxes ?? axes;
             return (state.Element.GetSizeContext(majorAxis),
                 state.Element.GetSizeContext(minorAxis));
         }
+
+        // /// <summary>
+        // /// Get the bounding box size for the given state.
+        // /// </summary>
+        // private (
+        //     SizeContext Width,
+        //     SizeContext Height,
+        //     Func<(Bounds.Value Width, Bounds.Value Height), (Bounds.Value Width, Bounds.Value Height)> GetBoundsValues
+        //     ) GetBoundingBoxSize(ElementState state)
+        // {
+        //     var bb = SizeContext.GetBoundingBoxSize(state);
+        //     Panic.If(bb.Width == null || bb.Height == null,
+        //         "FlexLayout currently only supports child rotations that are increments of 90 degrees.");
+
+        //     return ToAxis(Direction) == Axis.X
+        //         ? (bb.Width, bb.Height, bb.GetBoundsValues)
+        //         : (bb.Height, bb.Width, (autoValues =>
+        //         {
+        //             var (width, height) = bb.GetBoundsValues((autoValues.Height, autoValues.Width));
+        //             return (height, width);
+        //         }));
+        // }
 
         /// <inheritdoc/>
         protected override void PositionChild(ElementState childState)
@@ -196,7 +249,7 @@ public partial class UiBuilderLibrary
             {
                 Axis.X => Axis.Y,
                 Axis.Y => Axis.X,
-                _ => throw new ArgumentOutOfRangeException(nameof(majorAxis)),
+                _ => throw new Panic.Exception(),
             };
             return (majorAxis, minorAxis);
         }
@@ -282,6 +335,45 @@ public partial class UiBuilderLibrary
             };
         }
 
+        // /// <summary>
+        // /// Get the rotation for an element that should be rotated around an parent element using the given direction.
+        // /// </summary>
+        // /// <param name="direction">The direction of the parent element's flex layout.</param>
+        // /// <param name="allowUpsideDown">Whether the element should be allowed to be put upside down.</param>
+        // public static double RotateAround(FlexDirection direction, bool allowUpsideDown = true)
+        // {
+        //     return direction switch
+        //     {
+        //         FlexDirection.Horizontal => 90d,
+        //         FlexDirection.HorizontalReversed => 270d,
+        //         FlexDirection.Vertical => 0d,
+        //         FlexDirection.VerticalReversed => allowUpsideDown ? 180d : 0d,
+        //         _ => throw new ArgumentOutOfRangeException(nameof(direction)),
+        //     };
+        // }
+
+        // /// <summary>
+        // /// Get the rotation for an element that should be rotated around an parent element using the given direction.
+        // /// </summary>
+        // /// <param name="direction">The direction of the parent element's flex layout.</param>
+        // /// <param name="allowUpsideDown">Whether the element should be allowed to be put upside down.</param>
+        // public static FlexDirection RotateAround(double rotation, bool allowReversed = true)
+        // {
+        //     var normalizedRotation = RotationContext.Normalize(rotation);
+
+        //     if (RotationContext.RoughlyEqual(normalizedRotation, 0))
+        //         return FlexDirection.Horizontal;
+        //     if (RotationContext.RoughlyEqual(normalizedRotation, 90))
+        //         return FlexDirection.Vertical;
+        //     if (RotationContext.RoughlyEqual(normalizedRotation, 180))
+        //         return allowReversed ? FlexDirection.HorizontalReversed : FlexDirection.Horizontal;
+        //     if (RotationContext.RoughlyEqual(normalizedRotation, 270))
+        //         return allowReversed ? FlexDirection.VerticalReversed : FlexDirection.Vertical;
+
+        //     Panic.Now(
+        //         $"{nameof(RotateAround)}: Invalid rotation \"{rotation}\". Only increments of 90 degrees are supported for this function.");
+        //     return FlexDirection.Horizontal;
+        // }
 
         /// <summary>
         /// The direction of the flex layout.
